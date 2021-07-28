@@ -21,6 +21,7 @@ library(tidyverse)
 library(skimr)
 library(uwot)
 library(factoextra)
+library(cowplot)
 ```
 
 Read filtered TCGA RRPA data and display summary statistics.
@@ -49,7 +50,7 @@ fviz_silhouette(tcga.hclust) +
 
 Project to 2D with PCA and UMAP and plot
 
-```{r dev="svg"}
+```{r}
 tcga.pca <- prcomp(tcga)
 summary(tcga.pca)
 
@@ -65,4 +66,24 @@ tcga.umap <- umap(tcga, n_neighbors = 5, n_epochs = 1000) %>%
 ggplot(tcga.umap, aes(x = U1, y = U2, color = Cluster, shape = Cluster)) +
   geom_point() +
   theme_classic()
+```
+
+Expression profiles per cluster 
+
+```{r fig.width=10, fig.height=10}
+tcga.clustered <- tcga %>%
+  mutate(Cluster = as.factor(tcga.hclust$cluster)) %>%
+  pivot_longer(names_to = "Marker", values_to = "Z", -Cluster)
+
+profiles <- seq_len(4) %>% map(~
+ggplot(
+  tcga.clustered %>% filter(Cluster == .x),
+  aes(x = Marker, y = Z, color = Marker)
+) +
+  stat_summary(fun.data = mean_sdl, show.legend = FALSE) +
+  ylim(-3, 3) +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)))
+
+plot_grid(plotlist = profiles, labels = paste("Cluster", seq_len(4)))
 ```
