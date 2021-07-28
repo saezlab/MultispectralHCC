@@ -21,7 +21,9 @@ library(factoextra)
 Read filtered TCGA RRPA data and display summary statistics.
 
 ```{r}
-tcga <- read_csv("data/TCGA-RPPA-LIHC_selected.csv", col_types = cols())
+tcga <- read_csv("data/TCGA-RPPA-LIHC_selected.csv", col_types = cols()) %>%
+  select(-TumorType) %>%
+  column_to_rownames("SampleID")
 skim(tcga)
 ```
 
@@ -31,32 +33,31 @@ skim(tcga)
 Perform hierarchical clustering of the data and plot the resulting dendrogram
 
 ```{r dev="svg", fig.width=16, fig.height=9}
-tcga.dist <- dist(tcga %>% select(-SampleID, -TumorType))
-tcga.hclust <- hclust(tcga.dist, method = "average")
+tcga.hclust <- eclust(tcga, "hclust", k = 4)
 
-plot(tcga.hclust,
-  hang = -1, cex = 0.6,
-  labels = tcga %>% pull("SampleID") %>%
-    str_extract("[A-Z0-9]{2}-[A-Z0-9]{4}")
-)
+fviz_dend(tcga.hclust, rect = TRUE)
+
+fviz_silhouette(tcga.hclust) +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
 ```
 
 Project to 2D with PCA and UMAP and plot
 
 ```{r}
-tcga.pca <- prcomp(tcga %>% select(-SampleID, -TumorType))
+tcga.pca <- prcomp(tcga)
 summary(tcga.pca)
 
-fviz_pca_biplot(tcga.pca, label = "var", col.var = "cos2") + theme_classic()
-
-tcga.umap <- umap(tcga %>% select(-SampleID, -TumorType),
-  n_neighbors = 5, n_epochs = 1000
-)
-colnames(tcga.umap) <- c("U1", "U2")
-                   
-ggplot(tcga.umap %>% as_tibble(), aes(x = U1, y = U2)) +
-  geom_point() +
+fviz_pca_biplot(tcga.pca, label = "var", col.ind = as.factor(tcga.hclust$cluster)) +
   theme_classic()
 
+tcga.umap <- umap(tcga, n_neighbors = 5, n_epochs = 1000) %>%
+  cbind(tcga.hclust$cluster) %>%
+  `colnames<-`(c("U1", "U2", "Cluster")) %>%
+  as_tibble() %>%
+  mutate_at("Cluster", as.factor)
 
+ggplot(tcga.umap, aes(x = U1, y = U2, color = Cluster, shape = Cluster)) +
+  geom_point() +
+  theme_classic()
 ```
