@@ -15,6 +15,7 @@ Load required libraries.
 library(tidyverse)
 library(skimr)
 library(uwot)
+library(factoextra)
 ```
 
 Read filtered TCGA RRPA data and display summary statistics.
@@ -40,15 +41,22 @@ plot(tcga.hclust,
 )
 ```
 
-Project to 2D with UMAP and plot
+Project to 2D with PCA and UMAP and plot
 
 ```{r}
+tcga.pca <- prcomp(tcga %>% select(-SampleID, -TumorType))
+summary(tcga.pca)
+
+fviz_pca_biplot(tcga.pca, label = "var", col.var = "cos2") + theme_classic()
+
 tcga.umap <- umap(tcga %>% select(-SampleID, -TumorType),
   n_neighbors = 5, n_epochs = 1000
 )
 colnames(tcga.umap) <- c("U1", "U2")
-
+                   
 ggplot(tcga.umap %>% as_tibble(), aes(x = U1, y = U2)) +
   geom_point() +
   theme_classic()
+
+
 ```
