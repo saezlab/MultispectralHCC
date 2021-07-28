@@ -1,0 +1,42 @@
+---
+title: "Analysis of TCGA RPPA LIHC samples"
+author: "Jovan Tanevski"
+date: "`r Sys.Date()`"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+## Setup
+
+Load required libraries.
+
+```{r setup}
+library(readr)
+library(skimr)
+library(stringr)
+library(dplyr)
+```
+
+Read filtered TCGA RRPA data and display summary statistics.
+
+```{r}
+tcga <- read_csv("data/TCGA-RPPA-LIHC_selected.csv", col_types = cols())
+skim(tcga)
+```
+
+
+## Unsupervised analysis
+
+Perform hierarchical clustering of the data and plot the resulting dendrogram
+
+```{r dev="svg", fig.width=16, fig.height=9}
+tcga.dist <- dist(tcga %>% select(-SampleID, -TumorType))
+tcga.hclust <- hclust(tcga.dist, method = "average")
+
+plot(tcga.hclust,
+  hang = -1, cex = 0.6,
+  labels = tcga %>% pull("SampleID") %>%
+    str_extract("[A-Z0-9]{2}-[A-Z0-9]{4}")
+)
+```
