@@ -6,12 +6,17 @@ output: workflowr::wflow_html
 editor_options:
   chunk_output_type: console
 ---
+```{r include = FALSE}
+knitr::opts_chunk$set(dev = "svg")
+```
+
 
 ## Setup
 
 Load required libraries.
 
 ```{r setup}
+
 library(tidyverse)
 library(skimr)
 library(uwot)
@@ -32,7 +37,7 @@ skim(tcga)
 
 Perform hierarchical clustering of the data and plot the resulting dendrogram
 
-```{r dev="svg", fig.width=16, fig.height=9}
+```{r fig.width=16, fig.height=9}
 tcga.hclust <- eclust(tcga, "hclust", k = 4)
 
 fviz_dend(tcga.hclust, rect = TRUE)
@@ -44,7 +49,7 @@ fviz_silhouette(tcga.hclust) +
 
 Project to 2D with PCA and UMAP and plot
 
-```{r}
+```{r dev="svg"}
 tcga.pca <- prcomp(tcga)
 summary(tcga.pca)
 
