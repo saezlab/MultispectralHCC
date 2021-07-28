@@ -468,16 +468,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomsaezlabMultispectralHCCtreed0b6e0ff449d0fefe4f2f9159d1f5164abc24085targetblankd0b6e0fa"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/saezlab/MultispectralHCC/tree/d0b6e0ff449d0fefe4f2f9159d1f5164abc24085" target="_blank">d0b6e0f</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomsaezlabMultispectralHCCtreebb998b84e7e6870f78370e83689d417385119fb1targetblankbb998b8a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/saezlab/MultispectralHCC/tree/bb998b84e7e6870f78370e83689d417385119fb1" target="_blank">bb998b8</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomsaezlabMultispectralHCCtreed0b6e0ff449d0fefe4f2f9159d1f5164abc24085targetblankd0b6e0fa" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomsaezlabMultispectralHCCtreebb998b84e7e6870f78370e83689d417385119fb1targetblankbb998b8a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/saezlab/MultispectralHCC/tree/d0b6e0ff449d0fefe4f2f9159d1f5164abc24085" target="_blank">d0b6e0f</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/saezlab/MultispectralHCC/tree/bb998b84e7e6870f78370e83689d417385119fb1" target="_blank">bb998b8</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -529,6 +529,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/saezlab/MultispectralHCC/blob/bb998b84e7e6870f78370e83689d417385119fb1/analysis/tcga.Rmd" target="_blank">bb998b8</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-07-28
+</td>
+<td>
+hclust with factoextra
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/saezlab/MultispectralHCC/1cb80afdb9452638c93851bbf8c384c02de3515b/docs/tcga.html" target="_blank">1cb80af</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-07-28
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -644,7 +678,9 @@ Attaching package: &#39;Matrix&#39;</code></pre>
 <pre class="r"><code>library(factoextra)</code></pre>
 <pre><code>Welcome! Want to learn more? See two factoextra-related books at https://goo.gl/ve3WBa</code></pre>
 <p>Read filtered TCGA RRPA data and display summary statistics.</p>
-<pre class="r"><code>tcga &lt;- read_csv(&quot;data/TCGA-RPPA-LIHC_selected.csv&quot;, col_types = cols())
+<pre class="r"><code>tcga &lt;- read_csv(&quot;data/TCGA-RPPA-LIHC_selected.csv&quot;, col_types = cols()) %&gt;%
+  select(-TumorType) %&gt;%
+  column_to_rownames(&quot;SampleID&quot;)
 skim(tcga)</code></pre>
 <table>
 <caption>Data summary</caption>
@@ -659,7 +695,7 @@ skim(tcga)</code></pre>
 </tr>
 <tr class="odd">
 <td align="left">Number of columns</td>
-<td align="left">14</td>
+<td align="left">12</td>
 </tr>
 <tr class="even">
 <td align="left">_______________________</td>
@@ -670,57 +706,16 @@ skim(tcga)</code></pre>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td align="left">character</td>
-<td align="left">2</td>
-</tr>
-<tr class="odd">
 <td align="left">numeric</td>
 <td align="left">12</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">________________________</td>
 <td align="left"></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">Group variables</td>
 <td align="left">None</td>
-</tr>
-</tbody>
-</table>
-<p><strong>Variable type: character</strong></p>
-<table>
-<thead>
-<tr class="header">
-<th align="left">skim_variable</th>
-<th align="right">n_missing</th>
-<th align="right">complete_rate</th>
-<th align="right">min</th>
-<th align="right">max</th>
-<th align="right">empty</th>
-<th align="right">n_unique</th>
-<th align="right">whitespace</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">SampleID</td>
-<td align="right">0</td>
-<td align="right">1</td>
-<td align="right">27</td>
-<td align="right">27</td>
-<td align="right">0</td>
-<td align="right">184</td>
-<td align="right">0</td>
-</tr>
-<tr class="even">
-<td align="left">TumorType</td>
-<td align="right">0</td>
-<td align="right">1</td>
-<td align="right">4</td>
-<td align="right">4</td>
-<td align="right">0</td>
-<td align="right">1</td>
-<td align="right">0</td>
 </tr>
 </tbody>
 </table>
@@ -904,14 +899,12 @@ skim(tcga)</code></pre>
 <div id="unsupervised-analysis" class="section level2">
 <h2>Unsupervised analysis</h2>
 <p>Perform hierarchical clustering of the data and plot the resulting dendrogram</p>
-<pre class="r"><code>tcga.dist &lt;- dist(tcga %&gt;% select(-SampleID, -TumorType))
-tcga.hclust &lt;- hclust(tcga.dist, method = &quot;average&quot;)
-
-plot(tcga.hclust,
-  hang = -1, cex = 0.6,
-  labels = tcga %&gt;% pull(&quot;SampleID&quot;) %&gt;%
-    str_extract(&quot;[A-Z0-9]{2}-[A-Z0-9]{4}&quot;)
-)</code></pre>
+<pre class="r"><code>tcga.hclust &lt;- eclust(tcga, &quot;hclust&quot;, k = 4)</code></pre>
+<pre><code>Warning: `guides(&lt;scale&gt; = FALSE)` is deprecated. Please use `guides(&lt;scale&gt; =
+&quot;none&quot;)` instead.</code></pre>
+<pre class="r"><code>fviz_dend(tcga.hclust, rect = TRUE)</code></pre>
+<pre><code>Warning: `guides(&lt;scale&gt; = FALSE)` is deprecated. Please use `guides(&lt;scale&gt; =
+&quot;none&quot;)` instead.</code></pre>
 <p><img src="figure/tcga.Rmd/unnamed-chunk-2-1.svg" width="1536" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-2-1">
@@ -950,8 +943,17 @@ Jovan Tanevski
 </table>
 </div>
 </div>
+<pre class="r"><code>fviz_silhouette(tcga.hclust) +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))</code></pre>
+<pre><code>  cluster size ave.sil.width
+1       1   72          0.05
+2       2   15          0.23
+3       3   29         -0.04
+4       4   68          0.25</code></pre>
+<p><img src="figure/tcga.Rmd/unnamed-chunk-2-2.svg" width="1536" style="display: block; margin: auto;" /></p>
 <p>Project to 2D with PCA and UMAP and plot</p>
-<pre class="r"><code>tcga.pca &lt;- prcomp(tcga %&gt;% select(-SampleID, -TumorType))
+<pre class="r"><code>tcga.pca &lt;- prcomp(tcga)
 summary(tcga.pca)</code></pre>
 <pre><code>Importance of components:
                           PC1    PC2    PC3     PC4     PC5     PC6     PC7
@@ -962,7 +964,8 @@ Cumulative Proportion  0.3831 0.5604 0.6742 0.75746 0.83014 0.88912 0.93829
 Standard deviation     0.31055 0.24392 0.2216 0.14622 0.10156
 Proportion of Variance 0.02514 0.01551 0.0128 0.00557 0.00269
 Cumulative Proportion  0.96343 0.97894 0.9917 0.99731 1.00000</code></pre>
-<pre class="r"><code>fviz_pca_biplot(tcga.pca, label = &quot;var&quot;, col.var = &quot;cos2&quot;) + theme_classic()</code></pre>
+<pre class="r"><code>fviz_pca_biplot(tcga.pca, label = &quot;var&quot;, col.ind = as.factor(tcga.hclust$cluster)) +
+  theme_classic()</code></pre>
 <p><img src="figure/tcga.Rmd/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-3-1">
@@ -988,6 +991,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/saezlab/MultispectralHCC/blob/1cb80afdb9452638c93851bbf8c384c02de3515b/docs/figure/tcga.Rmd/unnamed-chunk-3-1.png" target="_blank">1cb80af</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-07-28
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/saezlab/MultispectralHCC/blob/d73f586ab4bb6192cf734471da1a96a696a48a64/docs/figure/tcga.Rmd/unnamed-chunk-3-1.png" target="_blank">d73f586</a>
 </td>
 <td>
@@ -1001,15 +1015,53 @@ Jovan Tanevski
 </table>
 </div>
 </div>
-<pre class="r"><code>tcga.umap &lt;- umap(tcga %&gt;% select(-SampleID, -TumorType),
-  n_neighbors = 5, n_epochs = 1000
-)
-colnames(tcga.umap) &lt;- c(&quot;U1&quot;, &quot;U2&quot;)
-                   
-ggplot(tcga.umap %&gt;% as_tibble(), aes(x = U1, y = U2)) +
+<pre class="r"><code>tcga.umap &lt;- umap(tcga, n_neighbors = 5, n_epochs = 1000) %&gt;%
+  cbind(tcga.hclust$cluster) %&gt;%
+  `colnames&lt;-`(c(&quot;U1&quot;, &quot;U2&quot;, &quot;Cluster&quot;)) %&gt;%
+  as_tibble() %&gt;%
+  mutate_at(&quot;Cluster&quot;, as.factor)
+
+ggplot(tcga.umap, aes(x = U1, y = U2, color = Cluster, shape = Cluster)) +
   geom_point() +
   theme_classic()</code></pre>
 <p><img src="figure/tcga.Rmd/unnamed-chunk-3-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-3-2">
+Past versions of unnamed-chunk-3-2.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-3-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/saezlab/MultispectralHCC/blob/1cb80afdb9452638c93851bbf8c384c02de3515b/docs/figure/tcga.Rmd/unnamed-chunk-3-2.png" target="_blank">1cb80af</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-07-28
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -1042,25 +1094,26 @@ loaded via a namespace (and not attached):
  [1] fs_1.5.0          lubridate_1.7.10  bit64_4.0.5       httr_1.4.2       
  [5] rprojroot_2.0.2   repr_1.1.3        tools_4.1.0       backports_1.2.1  
  [9] bslib_0.2.5.1     utf8_1.2.2        R6_2.5.0          DBI_1.1.1        
-[13] colorspace_2.0-2  withr_2.4.2       tidyselect_1.1.1  bit_4.0.4        
-[17] curl_4.3.2        compiler_4.1.0    git2r_0.28.0      cli_3.0.1        
-[21] rvest_1.0.0       xml2_1.3.2        labeling_0.4.2    sass_0.4.0       
-[25] scales_1.1.1      digest_0.6.27     foreign_0.8-81    rmarkdown_2.9    
-[29] rio_0.5.27        base64enc_0.1-3   pkgconfig_2.0.3   htmltools_0.5.1.1
-[33] dbplyr_2.1.1      highr_0.9         rlang_0.4.11      readxl_1.3.1     
-[37] rstudioapi_0.13   FNN_1.1.3         farver_2.1.0      jquerylib_0.1.4  
-[41] generics_0.1.0    jsonlite_1.7.2    vroom_1.5.3       zip_2.2.0        
-[45] car_3.0-11        magrittr_2.0.1    Rcpp_1.0.7        munsell_0.5.0    
-[49] fansi_0.5.0       abind_1.4-5       lifecycle_1.0.0   stringi_1.7.3    
-[53] whisker_0.4       yaml_2.2.1        carData_3.0-4     grid_4.1.0       
-[57] parallel_4.1.0    promises_1.2.0.1  ggrepel_0.9.1     crayon_1.4.1     
-[61] lattice_0.20-44   haven_2.4.1       hms_1.1.0         knitr_1.33       
-[65] pillar_1.6.1      ggpubr_0.4.0      ggsignif_0.6.2    reprex_2.0.0     
-[69] glue_1.4.2        evaluate_0.14     data.table_1.14.0 modelr_0.1.8     
-[73] vctrs_0.3.8       tzdb_0.1.2        httpuv_1.6.1      cellranger_1.1.0 
-[77] gtable_0.3.0      assertthat_0.2.1  xfun_0.24         openxlsx_4.2.4   
-[81] broom_0.7.8       RSpectra_0.16-0   rstatix_0.7.0     later_1.2.0      
-[85] ellipsis_0.3.2   </code></pre>
+[13] colorspace_2.0-2  withr_2.4.2       tidyselect_1.1.1  gridExtra_2.3    
+[17] curl_4.3.2        bit_4.0.4         compiler_4.1.0    git2r_0.28.0     
+[21] cli_3.0.1         rvest_1.0.0       xml2_1.3.2        labeling_0.4.2   
+[25] sass_0.4.0        scales_1.1.1      digest_0.6.27     foreign_0.8-81   
+[29] rmarkdown_2.9     rio_0.5.27        base64enc_0.1-3   pkgconfig_2.0.3  
+[33] htmltools_0.5.1.1 dbplyr_2.1.1      highr_0.9         rlang_0.4.11     
+[37] readxl_1.3.1      rstudioapi_0.13   FNN_1.1.3         farver_2.1.0     
+[41] jquerylib_0.1.4   generics_0.1.0    jsonlite_1.7.2    vroom_1.5.3      
+[45] zip_2.2.0         dendextend_1.15.1 car_3.0-11        magrittr_2.0.1   
+[49] Rcpp_1.0.7        munsell_0.5.0     fansi_0.5.0       abind_1.4-5      
+[53] viridis_0.6.1     lifecycle_1.0.0   stringi_1.7.3     whisker_0.4      
+[57] yaml_2.2.1        carData_3.0-4     grid_4.1.0        parallel_4.1.0   
+[61] promises_1.2.0.1  ggrepel_0.9.1     crayon_1.4.1      lattice_0.20-44  
+[65] haven_2.4.1       hms_1.1.0         knitr_1.33        pillar_1.6.1     
+[69] ggpubr_0.4.0      ggsignif_0.6.2    reprex_2.0.0      glue_1.4.2       
+[73] evaluate_0.14     data.table_1.14.0 modelr_0.1.8      vctrs_0.3.8      
+[77] tzdb_0.1.2        httpuv_1.6.1      cellranger_1.1.0  gtable_0.3.0     
+[81] assertthat_0.2.1  openxlsx_4.2.4    xfun_0.24         broom_0.7.8      
+[85] RSpectra_0.16-0   rstatix_0.7.0     later_1.2.0       viridisLite_0.4.0
+[89] cluster_2.1.2     ellipsis_0.3.2   </code></pre>
 </div>
 </div>
 
