@@ -15,8 +15,7 @@ knitr::opts_chunk$set(dev = "svg")
 
 Load required libraries.
 
-```{r setup}
-
+```{r setup, message = FALSE}
 library(tidyverse)
 library(skimr)
 library(uwot)
