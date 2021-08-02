@@ -21,48 +21,69 @@ library(skimr)
 library(uwot)
 library(factoextra)
 library(cowplot)
+library(FNN)
+library(igraph)
+library(leiden)
+library(limma)
 ```
 
 Read filtered TCGA RRPA data and display summary statistics.
 
 ```{r}
-tcga <- read_csv("data/TCGA-RPPA-LIHC_selected.csv", col_types = cols()) %>%
+tcga.raw <- read_csv("data/TCGA-RPPA-LIHC_selected.csv", col_types = cols()) %>%
   select(-TumorType) %>%
   column_to_rownames("SampleID")
-skim(tcga)
+
+skim(tcga.raw)
+```
+
+Rank normalize as suggested in https://gdac.broadinstitute.org/runs/analyses__2016_01_28/reports/cancer/LIHC/RPPA_Clustering_CNMF/nozzle.html
+
+```{r}
+tcga <- mutate_all(tcga.raw, rank)
 ```
 
 
-## Unsupervised analysis
+## Dimensionality reduction
+
+```{r}
+tcga.pca <- prcomp(tcga)
+summary(tcga.pca)
+
+tcga.umap <- umap(tcga, n_neighbors = 5, n_epochs = 1000)
+```
+
+
+## Hierarchical clustering
 
 Perform hierarchical clustering of the data and plot the resulting dendrogram
 
 ```{r fig.width=16, fig.height=9}
-tcga.hclust <- eclust(tcga, "hclust", k = 4)
+tcga.hclust <- eclust(tcga, "hclust")
 
 fviz_dend(tcga.hclust, rect = TRUE)
+
+fviz_gap_stat(tcga.hclust$gap_stat)
 
 fviz_silhouette(tcga.hclust) +
   theme_classic() +
   theme(axis.text.x = element_text(angle = 90, hjust = 1))
 ```
 
-Project to 2D with PCA and UMAP and plot
+Plot in 2D PCA and UMAP
 
 ```{r}
-tcga.pca <- prcomp(tcga)
-summary(tcga.pca)
-
-fviz_pca_biplot(tcga.pca, label = "var", col.ind = as.factor(tcga.hclust$cluster)) +
+fviz_pca_ind(tcga.pca, geom = "point", col.ind = as.factor(tcga.hclust$cluster)) +
   theme_classic()
 
-tcga.umap <- umap(tcga, n_neighbors = 5, n_epochs = 1000) %>%
+tcga.umap.clus <-
+  tcga.umap %>%
   cbind(tcga.hclust$cluster) %>%
   `colnames<-`(c("U1", "U2", "Cluster")) %>%
   as_tibble() %>%
   mutate_at("Cluster", as.factor)
 
-ggplot(tcga.umap, aes(x = U1, y = U2, color = Cluster, shape = Cluster)) +
+ggplot(tcga.umap.clus, aes(x = U1, y = U2, color = Cluster)) +
   geom_point() +
   theme_classic()
 ```
@@ -70,11 +91,11 @@ ggplot(tcga.umap, aes(x = U1, y = U2, color = Cluster, shape = Cluster)) +
 Expression profiles per cluster 
 
 ```{r fig.width=10, fig.height=10}
-tcga.clustered <- tcga %>%
+tcga.clustered <- tcga.raw %>%
   mutate(Cluster = as.factor(tcga.hclust$cluster)) %>%
   pivot_longer(names_to = "Marker", values_to = "Z", -Cluster)
 
-profiles <- seq_len(4) %>% map(~
+profiles <- seq_len(tcga.hclust$nbclust) %>% map(~
 ggplot(
   tcga.clustered %>% filter(Cluster == .x),
   aes(x = Marker, y = Z, color = Marker)
@@ -84,5 +105,93 @@ ggplot(
   theme_classic() +
   theme(axis.text.x = element_text(angle = 90, hjust = 1)))
 
-plot_grid(plotlist = profiles, labels = paste("Cluster", seq_len(4)))
+plot_grid(plotlist = profiles, labels = paste("Cluster", seq_len(tcga.hclust$nbclust)))
+```
+
+
+Differential expression analysis
+
+```{r}
+design <- model.matrix(~0 + as.factor(tcga.hclust$cluster))
+colnames(design) <- paste0("Cluster", seq_len(tcga.hclust$nbclust))
+
+tcga.hclust.limma <- lmFit(t(tcga.raw), design = design)
+
+tcga.hclust.limma$coefficients
+
+tests.hclust <- decideTests(eBayes(tcga.hclust.limma))
+
+tests.hclust@.Data
+
+summary(tests.hclust)
+
+```
+
+
+## Similarity and graph based clustering
+
+Calculate leiden clustering based on weighted shared nearest neighbor graph
+```{r}
+tcga.knn <- knn.index(tcga, 10)
+jaccard.cuttoff <- 0.1
+
+snn <- seq_len(nrow(tcga.knn) - 1) %>% map_dfr(\(id){
+  to <- seq(id + 1, nrow(tcga.knn))
+  jaccard <- to %>%
+    map_dbl(~ length(intersect(tcga.knn[id, ], tcga.knn[.x, ])) /
+      length(union(tcga.knn[id, ], tcga.knn[.x, ])))
+  
+  tibble(from = id, to = to, weight = jaccard) %>% filter(jaccard >= jaccard.cuttoff)
+})
+
+leiden.clusters <- graph_from_data_frame(snn, directed = FALSE) %>% leiden()
+
+```
+
+Plot in 2D PCA and UMAP
+
+```{r}
+fviz_pca_ind(tcga.pca, geom = "point", col.ind = as.factor(leiden.clusters)) +
+  theme_classic()
+
+ggplot(tcga.umap.clus %>% mutate(Cluster = as.factor(leiden.clusters)), aes(x = U1, y = U2, color = Cluster, shape = Cluster)) +
+  geom_point() +
+  theme_classic()
+```
+
+Expression profiles per cluster 
+
+```{r fig.width=10, fig.height=10}
+tcga.clustered <- tcga.raw %>%
+  mutate(Cluster = as.factor(leiden.clusters)) %>%
+  pivot_longer(names_to = "Marker", values_to = "Z", -Cluster)
+
+profiles <- seq_len(max(leiden.clusters)) %>% map(~
+ggplot(
+  tcga.clustered %>% filter(Cluster == .x),
+  aes(x = Marker, y = Z, color = Marker)
+) +
+  stat_summary(fun.data = mean_sdl, show.legend = FALSE) +
+  ylim(-3, 3) +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)))
+
+plot_grid(plotlist = profiles, labels = paste("Cluster", seq_len(max(leiden.clusters))))
+```
+
+Differential expression analysis
+
+```{r}
+design <- model.matrix(~0 + as.factor(leiden.clusters))
+colnames(design) <- paste0("Cluster", seq_len(max(leiden.clusters)))
+
+tcga.leiden.limma <- lmFit(t(tcga.raw), design = design)
+
+tcga.leiden.limma$coefficients
+
+tests.leiden <- decideTests(eBayes(tcga.leiden.limma))
+
+tests.leiden@.Data
+
+summary(tests.leiden)
 ```
