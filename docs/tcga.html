@@ -468,16 +468,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomsaezlabMultispectralHCCtree21cf743fc9a0ef1af7058602056fc643ebc53765targetblank21cf743a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/saezlab/MultispectralHCC/tree/21cf743fc9a0ef1af7058602056fc643ebc53765" target="_blank">21cf743</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomsaezlabMultispectralHCCtreea1528625a3d9b6f995452e42f6dbff623de83935targetblanka152862a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/saezlab/MultispectralHCC/tree/a1528625a3d9b6f995452e42f6dbff623de83935" target="_blank">a152862</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomsaezlabMultispectralHCCtree21cf743fc9a0ef1af7058602056fc643ebc53765targetblank21cf743a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomsaezlabMultispectralHCCtreea1528625a3d9b6f995452e42f6dbff623de83935targetblanka152862a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/saezlab/MultispectralHCC/tree/21cf743fc9a0ef1af7058602056fc643ebc53765" target="_blank">21cf743</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/saezlab/MultispectralHCC/tree/a1528625a3d9b6f995452e42f6dbff623de83935" target="_blank">a152862</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -532,6 +532,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/saezlab/MultispectralHCC/blob/a1528625a3d9b6f995452e42f6dbff623de83935/analysis/tcga.Rmd" target="_blank">a152862</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-08-02
+</td>
+<td>
+add NMF based analysis
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/saezlab/MultispectralHCC/c25dccad29ec6af7091c9cafbb309d9dbe7368ee/docs/tcga.html" target="_blank">c25dcca</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-08-02
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -788,7 +822,8 @@ library(cowplot)
 library(FNN)
 library(igraph)
 library(leiden)
-library(limma)</code></pre>
+library(limma)
+library(NMF)</code></pre>
 <p>Read filtered TCGA RRPA data and display summary statistics.</p>
 <pre class="r"><code>tcga.raw &lt;- read_csv(&quot;data/TCGA-RPPA-LIHC_selected.csv&quot;, col_types = cols()) %&gt;%
   select(-TumorType) %&gt;%
@@ -1060,6 +1095,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/saezlab/MultispectralHCC/blob/c25dccad29ec6af7091c9cafbb309d9dbe7368ee/docs/figure/tcga.Rmd/unnamed-chunk-5-1.svg" target="_blank">c25dcca</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-08-02
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/saezlab/MultispectralHCC/blob/a386eaa14e7c58756ee273b578aaed60423ca78a/docs/figure/tcga.Rmd/unnamed-chunk-5-1.svg" target="_blank">a386eaa</a>
 </td>
 <td>
@@ -1075,6 +1121,43 @@ Jovan Tanevski
 </div>
 <pre class="r"><code>fviz_gap_stat(tcga.hclust$gap_stat)</code></pre>
 <p><img src="figure/tcga.Rmd/unnamed-chunk-5-2.svg" width="1536" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-5-2">
+Past versions of unnamed-chunk-5-2.svg
+</button>
+</p>
+<div id="fig-unnamed-chunk-5-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/saezlab/MultispectralHCC/blob/c25dccad29ec6af7091c9cafbb309d9dbe7368ee/docs/figure/tcga.Rmd/unnamed-chunk-5-2.svg" target="_blank">c25dcca</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-08-02
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>fviz_silhouette(tcga.hclust) +
   theme_classic() +
   theme(axis.text.x = element_text(angle = 90, hjust = 1))</code></pre>
@@ -1087,10 +1170,84 @@ Jovan Tanevski
 6       6   12          0.16
 7       7   14          0.01</code></pre>
 <p><img src="figure/tcga.Rmd/unnamed-chunk-5-3.svg" width="1536" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-5-3">
+Past versions of unnamed-chunk-5-3.svg
+</button>
+</p>
+<div id="fig-unnamed-chunk-5-3" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/saezlab/MultispectralHCC/blob/c25dccad29ec6af7091c9cafbb309d9dbe7368ee/docs/figure/tcga.Rmd/unnamed-chunk-5-3.svg" target="_blank">c25dcca</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-08-02
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>Plot in 2D PCA and UMAP</p>
 <pre class="r"><code>fviz_pca_ind(tcga.pca, geom = &quot;point&quot;, col.ind = as.factor(tcga.hclust$cluster)) +
   theme_classic()</code></pre>
 <p><img src="figure/tcga.Rmd/unnamed-chunk-6-1.svg" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-6-1">
+Past versions of unnamed-chunk-6-1.svg
+</button>
+</p>
+<div id="fig-unnamed-chunk-6-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/saezlab/MultispectralHCC/blob/c25dccad29ec6af7091c9cafbb309d9dbe7368ee/docs/figure/tcga.Rmd/unnamed-chunk-6-1.svg" target="_blank">c25dcca</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-08-02
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>tcga.umap.clus &lt;-
   tcga.umap %&gt;%
   cbind(tcga.hclust$cluster) %&gt;%
@@ -1102,6 +1259,43 @@ ggplot(tcga.umap.clus, aes(x = U1, y = U2, color = Cluster)) +
   geom_point() +
   theme_classic()</code></pre>
 <p><img src="figure/tcga.Rmd/unnamed-chunk-6-2.svg" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-6-2">
+Past versions of unnamed-chunk-6-2.svg
+</button>
+</p>
+<div id="fig-unnamed-chunk-6-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/saezlab/MultispectralHCC/blob/c25dccad29ec6af7091c9cafbb309d9dbe7368ee/docs/figure/tcga.Rmd/unnamed-chunk-6-2.svg" target="_blank">c25dcca</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-08-02
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>Expression profiles per cluster</p>
 <pre class="r"><code>tcga.clustered &lt;- tcga.raw %&gt;%
   mutate(Cluster = as.factor(tcga.hclust$cluster)) %&gt;%
@@ -1128,6 +1322,43 @@ plot_grid(plotlist = profiles, labels = paste(&quot;Cluster&quot;, seq_len(tcga.
 <pre><code>Warning: Removed 4 rows containing non-finite values (stat_summary).</code></pre>
 <pre><code>Warning: Removed 1 rows containing missing values (geom_segment).</code></pre>
 <p><img src="figure/tcga.Rmd/unnamed-chunk-7-1.svg" width="960" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-7-1">
+Past versions of unnamed-chunk-7-1.svg
+</button>
+</p>
+<div id="fig-unnamed-chunk-7-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/saezlab/MultispectralHCC/blob/c25dccad29ec6af7091c9cafbb309d9dbe7368ee/docs/figure/tcga.Rmd/unnamed-chunk-7-1.svg" target="_blank">c25dcca</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-08-02
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>Differential expression analysis</p>
 <pre class="r"><code>design &lt;- model.matrix(~0 + as.factor(tcga.hclust$cluster))
 colnames(design) &lt;- paste0(&quot;Cluster&quot;, seq_len(tcga.hclust$nbclust))
@@ -1203,10 +1434,84 @@ leiden.clusters &lt;- graph_from_data_frame(snn, directed = FALSE) %&gt;% leiden
 <pre class="r"><code>fviz_pca_ind(tcga.pca, geom = &quot;point&quot;, col.ind = as.factor(leiden.clusters)) +
   theme_classic()</code></pre>
 <p><img src="figure/tcga.Rmd/unnamed-chunk-10-1.svg" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-10-1">
+Past versions of unnamed-chunk-10-1.svg
+</button>
+</p>
+<div id="fig-unnamed-chunk-10-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/saezlab/MultispectralHCC/blob/c25dccad29ec6af7091c9cafbb309d9dbe7368ee/docs/figure/tcga.Rmd/unnamed-chunk-10-1.svg" target="_blank">c25dcca</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-08-02
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>ggplot(tcga.umap.clus %&gt;% mutate(Cluster = as.factor(leiden.clusters)), aes(x = U1, y = U2, color = Cluster, shape = Cluster)) +
   geom_point() +
   theme_classic()</code></pre>
 <p><img src="figure/tcga.Rmd/unnamed-chunk-10-2.svg" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-10-2">
+Past versions of unnamed-chunk-10-2.svg
+</button>
+</p>
+<div id="fig-unnamed-chunk-10-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/saezlab/MultispectralHCC/blob/c25dccad29ec6af7091c9cafbb309d9dbe7368ee/docs/figure/tcga.Rmd/unnamed-chunk-10-2.svg" target="_blank">c25dcca</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-08-02
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>Expression profiles per cluster</p>
 <pre class="r"><code>tcga.clustered &lt;- tcga.raw %&gt;%
   mutate(Cluster = as.factor(leiden.clusters)) %&gt;%
@@ -1223,13 +1528,51 @@ ggplot(
   theme(axis.text.x = element_text(angle = 90, hjust = 1)))
 
 plot_grid(plotlist = profiles, labels = paste(&quot;Cluster&quot;, seq_len(max(leiden.clusters))))</code></pre>
-<pre><code>Warning: Removed 3 rows containing non-finite values (stat_summary).</code></pre>
-<pre><code>Warning: Removed 2 rows containing non-finite values (stat_summary).</code></pre>
+<pre><code>Warning: Removed 1 rows containing non-finite values (stat_summary).</code></pre>
 <pre><code>Warning: Removed 10 rows containing non-finite values (stat_summary).</code></pre>
 <pre><code>Warning: Removed 2 rows containing missing values (geom_segment).</code></pre>
-<pre><code>Warning: Removed 18 rows containing non-finite values (stat_summary).</code></pre>
+<pre><code>Warning: Removed 2 rows containing non-finite values (stat_summary).</code></pre>
+<pre><code>Warning: Removed 19 rows containing non-finite values (stat_summary).</code></pre>
 <pre><code>Warning: Removed 3 rows containing missing values (geom_segment).</code></pre>
+<pre><code>Warning: Removed 1 rows containing non-finite values (stat_summary).</code></pre>
 <p><img src="figure/tcga.Rmd/unnamed-chunk-11-1.svg" width="960" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-11-1">
+Past versions of unnamed-chunk-11-1.svg
+</button>
+</p>
+<div id="fig-unnamed-chunk-11-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/saezlab/MultispectralHCC/blob/c25dccad29ec6af7091c9cafbb309d9dbe7368ee/docs/figure/tcga.Rmd/unnamed-chunk-11-1.svg" target="_blank">c25dcca</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-08-02
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>Differential expression analysis</p>
 <pre class="r"><code>design &lt;- model.matrix(~0 + as.factor(leiden.clusters))
 colnames(design) &lt;- paste0(&quot;Cluster&quot;, seq_len(max(leiden.clusters)))
@@ -1237,40 +1580,139 @@ colnames(design) &lt;- paste0(&quot;Cluster&quot;, seq_len(max(leiden.clusters))
 tcga.leiden.limma &lt;- lmFit(t(tcga.raw), design = design)
 
 tcga.leiden.limma$coefficients</code></pre>
-<pre><code>                    Cluster1   Cluster2    Cluster3    Cluster4
-P53              -0.75029544 -0.9870122 -1.51672869 -1.62658045
-AKT_pS473        -0.16113005 -0.3533200 -1.27991420 -1.12989679
-AKT_pT308         0.19555468  0.2035062 -0.17671548 -0.04212712
-BETACATENIN       1.18510360  1.8235010  1.27757923  2.07126819
-JNK_pT183Y185    -0.02300696 -0.2064076 -0.31307523 -0.50129870
-MEK1_pS217S221   -0.17440446 -0.3051275  0.07343255 -0.31277561
-P38_pT180Y182     0.67619204  0.5538698  0.41787648  0.03821177
-P70S6K_pT389     -0.60420227 -1.0167173 -1.84214467 -1.94981438
-PDK1_pS241        0.21483799  0.3921259  0.55399490  0.59887501
-S6_pS235S236     -0.42410533 -0.6770533 -0.78767121 -1.38208606
-YAP_pS127         2.03851712  2.0264491  2.26452586  2.81978691
-TRANSGLUTAMINASE -0.51918229 -0.5005272 -0.19971501 -0.42541501</code></pre>
+<pre><code>                   Cluster1    Cluster2    Cluster3    Cluster4     Cluster5
+P53              -0.9673433 -1.53283086 -0.75756942 -1.61767917 -0.749373251
+AKT_pS473        -0.3200889 -1.28276689 -0.16000561 -1.15973070 -0.194008436
+AKT_pT308         0.2124778 -0.18171392  0.21593973 -0.04769457  0.153441990
+BETACATENIN       1.7912135  1.25643693  1.03564301  2.09187795  1.416551169
+JNK_pT183Y185    -0.1965589 -0.32069886 -0.03275702 -0.49164891 -0.009853884
+MEK1_pS217S221   -0.2999638  0.05567082 -0.15493844 -0.26691280 -0.206574355
+P38_pT180Y182     0.5421273  0.49421905  0.77606040 -0.01780252  0.514742787
+P70S6K_pT389     -0.9958935 -1.84333252 -0.60204473 -1.95723563 -0.625471023
+PDK1_pS241        0.3879572  0.56800614  0.21918573  0.58110009  0.209576601
+S6_pS235S236     -0.6349137 -0.82814538 -0.47055819 -1.33662344 -0.368775477
+YAP_pS127         2.0322800  2.23326298  2.06163471  2.82246037  1.999431332
+TRANSGLUTAMINASE -0.4973532 -0.24179636 -0.80334063 -0.36399467 -0.082472412</code></pre>
 <pre class="r"><code>tests.leiden &lt;- decideTests(eBayes(tcga.leiden.limma))
 
 tests.leiden@.Data</code></pre>
-<pre><code>                 Cluster1 Cluster2 Cluster3 Cluster4
-P53                    -1       -1       -1       -1
-AKT_pS473              -1       -1       -1       -1
-AKT_pT308               1        1       -1        0
-BETACATENIN             1        1        1        1
-JNK_pT183Y185           0       -1       -1       -1
-MEK1_pS217S221         -1       -1        0       -1
-P38_pT180Y182           1        1        1        0
-P70S6K_pT389           -1       -1       -1       -1
-PDK1_pS241              1        1        1        1
-S6_pS235S236           -1       -1       -1       -1
-YAP_pS127               1        1        1        1
-TRANSGLUTAMINASE       -1       -1       -1       -1</code></pre>
+<pre><code>                 Cluster1 Cluster2 Cluster3 Cluster4 Cluster5
+P53                    -1       -1       -1       -1       -1
+AKT_pS473              -1       -1        0       -1        0
+AKT_pT308               1       -1        1        0        0
+BETACATENIN             1        1        1        1        1
+JNK_pT183Y185          -1       -1        0       -1        0
+MEK1_pS217S221         -1        0       -1       -1       -1
+P38_pT180Y182           1        1        1        0        1
+P70S6K_pT389           -1       -1       -1       -1       -1
+PDK1_pS241              1        1        1        1        1
+S6_pS235S236           -1       -1       -1       -1       -1
+YAP_pS127               1        1        1        1        1
+TRANSGLUTAMINASE       -1       -1       -1       -1        0</code></pre>
 <pre class="r"><code>summary(tests.leiden)</code></pre>
-<pre><code>       Cluster1 Cluster2 Cluster3 Cluster4
-Down          6        7        7        7
-NotSig        1        0        1        2
-Up            5        5        4        3</code></pre>
+<pre><code>       Cluster1 Cluster2 Cluster3 Cluster4 Cluster5
+Down          7        7        5        7        4
+NotSig        0        1        2        2        4
+Up            5        4        5        3        4</code></pre>
+</div>
+<div id="consensus-nmf" class="section level2">
+<h2>Consensus NMF</h2>
+<pre class="r"><code>tcga.nmf.rank &lt;- nmfEstimateRank(as.matrix(t(tcga)), seq(2,12), nrun = 10)
+
+plot(tcga.nmf.rank)</code></pre>
+<pre><code>Warning: Removed 1 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/tcga.Rmd/unnamed-chunk-13-1.svg" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>tcga.nmf &lt;- nmf(as.matrix(t(tcga)), 9, nrun = 10)</code></pre>
+<p>Extract basis of NMF (signature of cluster)</p>
+<pre class="r"><code>basismap(tcga.nmf)</code></pre>
+<p><img src="figure/tcga.Rmd/unnamed-chunk-14-1.svg" width="672" style="display: block; margin: auto;" /></p>
+<p>Extract coefficients of NMF (soft clustering of samples)</p>
+<pre class="r"><code>coefmap(tcga.nmf)</code></pre>
+<p><img src="figure/tcga.Rmd/unnamed-chunk-15-1.svg" width="672" style="display: block; margin: auto;" /></p>
+<p>Check for signs of overfitting</p>
+<pre class="r"><code>consensusmap(tcga.nmf)</code></pre>
+<p><img src="figure/tcga.Rmd/unnamed-chunk-16-1.svg" width="672" style="display: block; margin: auto;" /></p>
+<p>Assign clusters</p>
+<pre class="r"><code>nmf.clusters &lt;- apply(tcga.nmf@fit@H, 2, which.max)</code></pre>
+<p>Plot in 2D PCA and UMAP</p>
+<pre class="r"><code>fviz_pca_ind(tcga.pca, geom = &quot;point&quot;, col.ind = as.factor(nmf.clusters)) +
+  theme_classic()</code></pre>
+<p><img src="figure/tcga.Rmd/unnamed-chunk-18-1.svg" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggplot(tcga.umap.clus %&gt;% mutate(Cluster = as.factor(nmf.clusters)), aes(x = U1, y = U2, color = Cluster)) +
+  geom_point() +
+  theme_classic()</code></pre>
+<p><img src="figure/tcga.Rmd/unnamed-chunk-18-2.svg" width="672" style="display: block; margin: auto;" /></p>
+<p>Differential expression analysis</p>
+<pre class="r"><code>design &lt;- model.matrix(~0 + as.factor(nmf.clusters))
+colnames(design) &lt;- paste0(&quot;Cluster&quot;, seq_len(max(nmf.clusters)))
+
+tcga.nmf.limma &lt;- lmFit(t(tcga.raw), design = design)
+
+tcga.nmf.limma$coefficients</code></pre>
+<pre><code>                    Cluster1    Cluster2   Cluster3    Cluster4     Cluster5
+P53              -1.10694961 -1.47281717 -1.4390930 -1.31952436 -1.408395531
+AKT_pS473        -0.57406575 -1.03079810 -1.1267523 -0.98040237 -1.435032358
+AKT_pT308         0.05333472 -0.06691784 -0.1742176 -0.39565713 -0.124579611
+BETACATENIN       2.47820655  1.69944114  1.6562291  1.50041542  1.094901251
+JNK_pT183Y185    -0.32673969 -0.40956008 -0.5157945 -0.43549726  0.001981008
+MEK1_pS217S221   -0.30372607 -0.19884053 -0.2561024 -0.31368660  0.452610710
+P38_pT180Y182     0.24978589  0.23245516  1.1584952  0.06678912  0.447332278
+P70S6K_pT389     -1.24207931 -1.73111606 -1.6578623 -1.50621120 -1.555388810
+PDK1_pS241        0.52947256  0.53284938  0.4288817  0.67767127  0.556231887
+S6_pS235S236     -1.08064394 -0.95305470 -1.2276411 -1.35723076 -0.860677320
+YAP_pS127         1.94124952  2.93622011  1.9401463  1.56874728  2.056839337
+TRANSGLUTAMINASE -0.70096178 -0.36776500 -0.6494818 -0.37180974 -0.139566359
+                    Cluster6    Cluster7    Cluster8   Cluster9
+P53              -0.75792378 -1.16642743 -1.44794565 -1.7343508
+AKT_pS473        -0.17752958 -0.80854698 -1.35388746  0.6065127
+AKT_pT308         0.16494551 -0.07193855 -0.35792865  1.5088877
+BETACATENIN       1.39488420  1.45777476  1.23146467  1.5788436
+JNK_pT183Y185    -0.05473442 -0.39775043 -0.68698203 -0.4520198
+MEK1_pS217S221   -0.25505234 -0.38203065 -0.43545558 -0.2443669
+P38_pT180Y182     0.58923331  0.36995499  0.31986997  0.8981164
+P70S6K_pT389     -0.66793673 -1.23538317 -1.74264302 -2.1618971
+PDK1_pS241        0.23571112  0.37396033  0.44641453  0.6912316
+S6_pS235S236     -0.47921236 -0.58950486 -0.09480915 -0.5763633
+YAP_pS127         1.95673778  1.88453913  1.43437318  1.9099130
+TRANSGLUTAMINASE -0.52400250  0.33394102 -0.41896611 -0.3269469</code></pre>
+<pre class="r"><code>tests.nmf &lt;- decideTests(eBayes(tcga.nmf.limma))
+
+tests.nmf@.Data</code></pre>
+<pre><code>                 Cluster1 Cluster2 Cluster3 Cluster4 Cluster5 Cluster6 Cluster7
+P53                    -1       -1       -1       -1       -1       -1       -1
+AKT_pS473              -1       -1       -1       -1       -1       -1       -1
+AKT_pT308               0        0        0       -1        0        1        0
+BETACATENIN             1        1        1        1        1        1        1
+JNK_pT183Y185          -1       -1       -1       -1        0       -1       -1
+MEK1_pS217S221         -1       -1       -1        0        1       -1       -1
+P38_pT180Y182           0        1        1        0        1        1        0
+P70S6K_pT389           -1       -1       -1       -1       -1       -1       -1
+PDK1_pS241              1        1        1        1        1        1        1
+S6_pS235S236           -1       -1       -1       -1       -1       -1        0
+YAP_pS127               1        1        1        1        1        1        1
+TRANSGLUTAMINASE       -1       -1       -1        0        0       -1        0
+                 Cluster8 Cluster9
+P53                    -1       -1
+AKT_pS473              -1        1
+AKT_pT308               0        1
+BETACATENIN             1        1
+JNK_pT183Y185          -1       -1
+MEK1_pS217S221         -1       -1
+P38_pT180Y182           0        1
+P70S6K_pT389           -1       -1
+PDK1_pS241              1        1
+S6_pS235S236            0        0
+YAP_pS127               1        1
+TRANSGLUTAMINASE        0        0</code></pre>
+<pre class="r"><code>summary(tests.nmf)</code></pre>
+<pre><code>       Cluster1 Cluster2 Cluster3 Cluster4 Cluster5 Cluster6 Cluster7 Cluster8
+Down          7        7        7        6        4        7        5        5
+NotSig        2        1        1        3        3        0        4        4
+Up            3        4        4        3        5        5        3        3
+       Cluster9
+Down          4
+NotSig        2
+Up            6</code></pre>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -1291,51 +1733,57 @@ locale:
 [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
 
 attached base packages:
-[1] stats     graphics  grDevices utils     datasets  methods   base     
+[1] parallel  stats     graphics  grDevices utils     datasets  methods  
+[8] base     
 
 other attached packages:
- [1] limma_3.48.1     leiden_0.3.9     igraph_1.2.6     FNN_1.1.3       
- [5] cowplot_1.1.1    factoextra_1.0.7 uwot_0.1.10      Matrix_1.3-4    
- [9] skimr_2.1.3      forcats_0.5.1    stringr_1.4.0    dplyr_1.0.7     
-[13] purrr_0.3.4      readr_2.0.0      tidyr_1.1.3      tibble_3.1.3    
-[17] ggplot2_3.3.5    tidyverse_1.3.1  workflowr_1.6.2 
+ [1] RColorBrewer_1.1-2  doParallel_1.0.16   iterators_1.0.13   
+ [4] foreach_1.5.1       NMF_0.23.0          Biobase_2.52.0     
+ [7] BiocGenerics_0.38.0 cluster_2.1.2       rngtools_1.5       
+[10] pkgmaker_0.32.2     registry_0.5-1      limma_3.48.1       
+[13] leiden_0.3.9        igraph_1.2.6        FNN_1.1.3          
+[16] cowplot_1.1.1       factoextra_1.0.7    uwot_0.1.10        
+[19] Matrix_1.3-4        skimr_2.1.3         forcats_0.5.1      
+[22] stringr_1.4.0       dplyr_1.0.7         purrr_0.3.4        
+[25] readr_2.0.0         tidyr_1.1.3         tibble_3.1.3       
+[28] ggplot2_3.3.5       tidyverse_1.3.1     workflowr_1.6.2    
 
 loaded via a namespace (and not attached):
-  [1] colorspace_2.0-2    ggsignif_0.6.2      ellipsis_0.3.2     
-  [4] rio_0.5.27          rprojroot_2.0.2     htmlTable_2.2.1    
-  [7] base64enc_0.1-3     fs_1.5.0            rstudioapi_0.13    
- [10] ggpubr_0.4.0        farver_2.1.0        ggrepel_0.9.1      
- [13] bit64_4.0.5         RSpectra_0.16-0     fansi_0.5.0        
- [16] lubridate_1.7.10    xml2_1.3.2          splines_4.1.0      
- [19] knitr_1.33          Formula_1.2-4       jsonlite_1.7.2     
- [22] broom_0.7.9         cluster_2.1.2       dbplyr_2.1.1       
- [25] png_0.1-7           compiler_4.1.0      httr_1.4.2         
- [28] backports_1.2.1     assertthat_0.2.1    cli_3.0.1          
- [31] later_1.2.0         htmltools_0.5.1.1   tools_4.1.0        
- [34] gtable_0.3.0        glue_1.4.2          Rcpp_1.0.7         
- [37] carData_3.0-4       cellranger_1.1.0    jquerylib_0.1.4    
- [40] vctrs_0.3.8         xfun_0.24           openxlsx_4.2.4     
- [43] rvest_1.0.1         lifecycle_1.0.0     rstatix_0.7.0      
- [46] dendextend_1.15.1   scales_1.1.1        vroom_1.5.3        
- [49] hms_1.1.0           promises_1.2.0.1    parallel_4.1.0     
- [52] RColorBrewer_1.1-2  yaml_2.2.1          curl_4.3.2         
- [55] reticulate_1.20     gridExtra_2.3       sass_0.4.0         
- [58] rpart_4.1-15        latticeExtra_0.6-29 stringi_1.7.3      
- [61] highr_0.9           checkmate_2.0.0     zip_2.2.0          
- [64] repr_1.1.3          rlang_0.4.11        pkgconfig_2.0.3    
- [67] evaluate_0.14       lattice_0.20-44     htmlwidgets_1.5.3  
- [70] labeling_0.4.2      bit_4.0.4           tidyselect_1.1.1   
- [73] magrittr_2.0.1      R6_2.5.0            generics_0.1.0     
- [76] Hmisc_4.5-0         DBI_1.1.1           pillar_1.6.2       
- [79] haven_2.4.1         whisker_0.4         foreign_0.8-81     
- [82] withr_2.4.2         nnet_7.3-16         survival_3.2-11    
- [85] abind_1.4-5         modelr_0.1.8        crayon_1.4.1       
- [88] car_3.0-11          utf8_1.2.2          tzdb_0.1.2         
- [91] rmarkdown_2.9       jpeg_0.1-9          viridis_0.6.1      
- [94] grid_4.1.0          readxl_1.3.1        data.table_1.14.0  
- [97] git2r_0.28.0        reprex_2.0.0        digest_0.6.27      
-[100] httpuv_1.6.1        munsell_0.5.0       viridisLite_0.4.0  
-[103] bslib_0.2.5.1      </code></pre>
+  [1] readxl_1.3.1        backports_1.2.1     Hmisc_4.5-0        
+  [4] plyr_1.8.6          repr_1.1.3          splines_4.1.0      
+  [7] gridBase_0.4-7      digest_0.6.27       htmltools_0.5.1.1  
+ [10] viridis_0.6.1       fansi_0.5.0         checkmate_2.0.0    
+ [13] magrittr_2.0.1      tzdb_0.1.2          openxlsx_4.2.4     
+ [16] modelr_0.1.8        vroom_1.5.3         jpeg_0.1-9         
+ [19] colorspace_2.0-2    rvest_1.0.1         ggrepel_0.9.1      
+ [22] haven_2.4.1         xfun_0.24           crayon_1.4.1       
+ [25] jsonlite_1.7.2      survival_3.2-11     glue_1.4.2         
+ [28] gtable_0.3.0        car_3.0-11          abind_1.4-5        
+ [31] scales_1.1.1        DBI_1.1.1           rstatix_0.7.0      
+ [34] Rcpp_1.0.7          htmlTable_2.2.1     viridisLite_0.4.0  
+ [37] xtable_1.8-4        reticulate_1.20     foreign_0.8-81     
+ [40] bit_4.0.4           Formula_1.2-4       htmlwidgets_1.5.3  
+ [43] httr_1.4.2          ellipsis_0.3.2      pkgconfig_2.0.3    
+ [46] farver_2.1.0        nnet_7.3-16         sass_0.4.0         
+ [49] dbplyr_2.1.1        utf8_1.2.2          tidyselect_1.1.1   
+ [52] labeling_0.4.2      rlang_0.4.11        reshape2_1.4.4     
+ [55] later_1.2.0         munsell_0.5.0       cellranger_1.1.0   
+ [58] tools_4.1.0         cli_3.0.1           generics_0.1.0     
+ [61] broom_0.7.9         evaluate_0.14       yaml_2.2.1         
+ [64] knitr_1.33          bit64_4.0.5         fs_1.5.0           
+ [67] zip_2.2.0           dendextend_1.15.1   whisker_0.4        
+ [70] xml2_1.3.2          compiler_4.1.0      rstudioapi_0.13    
+ [73] curl_4.3.2          png_0.1-7           ggsignif_0.6.2     
+ [76] reprex_2.0.0        bslib_0.2.5.1       stringi_1.7.3      
+ [79] highr_0.9           RSpectra_0.16-0     lattice_0.20-44    
+ [82] vctrs_0.3.8         pillar_1.6.2        lifecycle_1.0.0    
+ [85] jquerylib_0.1.4     data.table_1.14.0   httpuv_1.6.1       
+ [88] R6_2.5.0            latticeExtra_0.6-29 promises_1.2.0.1   
+ [91] gridExtra_2.3       rio_0.5.27          codetools_0.2-18   
+ [94] assertthat_0.2.1    rprojroot_2.0.2     withr_2.4.2        
+ [97] hms_1.1.0           grid_4.1.0          rpart_4.1-15       
+[100] rmarkdown_2.9       carData_3.0-4       git2r_0.28.0       
+[103] ggpubr_0.4.0        lubridate_1.7.10    base64enc_0.1-3    </code></pre>
 </div>
 </div>
 
