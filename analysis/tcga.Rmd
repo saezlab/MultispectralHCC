@@ -25,6 +25,7 @@ library(FNN)
 library(igraph)
 library(leiden)
 library(limma)
+library(NMF)
 ```
 
 Read filtered TCGA RRPA data and display summary statistics.
@@ -194,4 +195,70 @@ tests.leiden <- decideTests(eBayes(tcga.leiden.limma))
 tests.leiden@.Data
 
 summary(tests.leiden)
+```
+
+
+## Consensus NMF
+
+```{r}
+
+tcga.nmf.rank <- nmfEstimateRank(as.matrix(t(tcga)), seq(2,12), nrun = 10)
+
+plot(tcga.nmf.rank)
+
+tcga.nmf <- nmf(as.matrix(t(tcga)), 9, nrun = 10)
+
+```
+
+Extract basis of NMF (signature of cluster)
+
+```{r}
+basismap(tcga.nmf)
+```
+
+Extract coefficients of NMF (soft clustering of samples)
+
+```{r}
+coefmap(tcga.nmf)
+```
+
+Check for signs of overfitting
+
+```{r}
+consensusmap(tcga.nmf)
+```
+
+
+Assign clusters
+```{r}
+nmf.clusters <- apply(tcga.nmf@fit@H, 2, which.max)
+```
+
+Plot in 2D PCA and UMAP
+
+```{r}
+fviz_pca_ind(tcga.pca, geom = "point", col.ind = as.factor(nmf.clusters)) +
+  theme_classic()
+
+ggplot(tcga.umap.clus %>% mutate(Cluster = as.factor(nmf.clusters)), aes(x = U1, y = U2, color = Cluster)) +
+  geom_point() +
+  theme_classic()
+```
+
+
+Differential expression analysis
+
+```{r}
+design <- model.matrix(~0 + as.factor(nmf.clusters))
+colnames(design) <- paste0("Cluster", seq_len(max(nmf.clusters)))
+
+tcga.nmf.limma <- lmFit(t(tcga.raw), design = design)
+
+tcga.nmf.limma$coefficients
+
+tests.nmf <- decideTests(eBayes(tcga.nmf.limma))
+
+tests.nmf@.Data
+
+summary(tests.nmf)
 ```
