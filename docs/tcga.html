@@ -11,7 +11,7 @@
 
 <meta name="author" content="Jovan Tanevski" />
 
-<meta name="date" content="2021-08-02" />
+<meta name="date" content="2021-08-03" />
 
 <title>Analysis of TCGA RPPA LIHC samples</title>
 
@@ -352,7 +352,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Analysis of TCGA RPPA LIHC samples</h1>
 <h4 class="author">Jovan Tanevski</h4>
-<h4 class="date">2021-08-02</h4>
+<h4 class="date">2021-08-03</h4>
 
 </div>
 
@@ -377,7 +377,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2021-08-02
+<strong>Last updated:</strong> 2021-08-03
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -468,16 +468,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomsaezlabMultispectralHCCtreea1528625a3d9b6f995452e42f6dbff623de83935targetblanka152862a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/saezlab/MultispectralHCC/tree/a1528625a3d9b6f995452e42f6dbff623de83935" target="_blank">a152862</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomsaezlabMultispectralHCCtree7d62e48d658ff34dfb7c2e63af09799c782f06e4targetblank7d62e48a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/saezlab/MultispectralHCC/tree/7d62e48d658ff34dfb7c2e63af09799c782f06e4" target="_blank">7d62e48</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomsaezlabMultispectralHCCtreea1528625a3d9b6f995452e42f6dbff623de83935targetblanka152862a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomsaezlabMultispectralHCCtree7d62e48d658ff34dfb7c2e63af09799c782f06e4targetblank7d62e48a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/saezlab/MultispectralHCC/tree/a1528625a3d9b6f995452e42f6dbff623de83935" target="_blank">a152862</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/saezlab/MultispectralHCC/tree/7d62e48d658ff34dfb7c2e63af09799c782f06e4" target="_blank">7d62e48</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -487,12 +487,15 @@ Ignored files:
     Ignored:    .DS_Store
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
+    Ignored:    analysis/.DS_Store
+    Ignored:    analysis/figure/
     Ignored:    code/
     Ignored:    data/
     Ignored:    old/
     Ignored:    output/
 
 Untracked files:
+    Untracked:  Rplots.pdf
     Untracked:  analysis/cores.Rmd
 
 </code></pre>
@@ -532,6 +535,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/saezlab/MultispectralHCC/blob/7d62e48d658ff34dfb7c2e63af09799c782f06e4/analysis/tcga.Rmd" target="_blank">7d62e48</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-08-03
+</td>
+<td>
+hclust and leiden on quantile normalized data
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/saezlab/MultispectralHCC/55fb7fc66f0fbcdc350de52c04d43a14779784e5/docs/tcga.html" target="_blank">55fb7fc</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-08-02
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1043,28 +1080,246 @@ skim(tcga.raw)</code></pre>
 </tr>
 </tbody>
 </table>
-<p>Rank normalize as suggested in <a href="https://gdac.broadinstitute.org/runs/analyses__2016_01_28/reports/cancer/LIHC/RPPA_Clustering_CNMF/nozzle.html" class="uri">https://gdac.broadinstitute.org/runs/analyses__2016_01_28/reports/cancer/LIHC/RPPA_Clustering_CNMF/nozzle.html</a></p>
-<pre class="r"><code>tcga &lt;- mutate_all(tcga.raw, rank)</code></pre>
+<p>Quantile normalization and rank normalization for NMF as suggested in <a href="https://gdac.broadinstitute.org/runs/analyses__2016_01_28/reports/cancer/LIHC/RPPA_Clustering_CNMF/nozzle.html" class="uri">https://gdac.broadinstitute.org/runs/analyses__2016_01_28/reports/cancer/LIHC/RPPA_Clustering_CNMF/nozzle.html</a></p>
+<pre class="r"><code>sorted.means &lt;- apply(tcga.raw, 1, sort) %&gt;% colMeans()
+names(sorted.means) &lt;- rank(sorted.means)
+tcga.norm &lt;- mutate_all(tcga.raw, ~ sorted.means[as.character(rank(.))])
+
+skim(tcga.norm)</code></pre>
+<table>
+<caption>Data summary</caption>
+<tbody>
+<tr class="odd">
+<td align="left">Name</td>
+<td align="left">tcga.norm</td>
+</tr>
+<tr class="even">
+<td align="left">Number of rows</td>
+<td align="left">184</td>
+</tr>
+<tr class="odd">
+<td align="left">Number of columns</td>
+<td align="left">12</td>
+</tr>
+<tr class="even">
+<td align="left">_______________________</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Column type frequency:</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">numeric</td>
+<td align="left">12</td>
+</tr>
+<tr class="odd">
+<td align="left">________________________</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Group variables</td>
+<td align="left">None</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: numeric</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">skim_variable</th>
+<th align="right">n_missing</th>
+<th align="right">complete_rate</th>
+<th align="right">mean</th>
+<th align="right">sd</th>
+<th align="right">p0</th>
+<th align="right">p25</th>
+<th align="right">p50</th>
+<th align="right">p75</th>
+<th align="right">p100</th>
+<th align="left">hist</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">P53</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0.01</td>
+<td align="right">0.2</td>
+<td align="right">-0.68</td>
+<td align="right">-0.1</td>
+<td align="right">0.06</td>
+<td align="right">0.13</td>
+<td align="right">0.63</td>
+<td align="left">▁▃▇▆▁</td>
+</tr>
+<tr class="even">
+<td align="left">AKT_pS473</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0.01</td>
+<td align="right">0.2</td>
+<td align="right">-0.68</td>
+<td align="right">-0.1</td>
+<td align="right">0.06</td>
+<td align="right">0.13</td>
+<td align="right">0.63</td>
+<td align="left">▁▃▇▆▁</td>
+</tr>
+<tr class="odd">
+<td align="left">AKT_pT308</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0.01</td>
+<td align="right">0.2</td>
+<td align="right">-0.68</td>
+<td align="right">-0.1</td>
+<td align="right">0.06</td>
+<td align="right">0.13</td>
+<td align="right">0.63</td>
+<td align="left">▁▃▇▆▁</td>
+</tr>
+<tr class="even">
+<td align="left">BETACATENIN</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0.01</td>
+<td align="right">0.2</td>
+<td align="right">-0.68</td>
+<td align="right">-0.1</td>
+<td align="right">0.06</td>
+<td align="right">0.13</td>
+<td align="right">0.63</td>
+<td align="left">▁▃▇▆▁</td>
+</tr>
+<tr class="odd">
+<td align="left">JNK_pT183Y185</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0.01</td>
+<td align="right">0.2</td>
+<td align="right">-0.68</td>
+<td align="right">-0.1</td>
+<td align="right">0.06</td>
+<td align="right">0.13</td>
+<td align="right">0.63</td>
+<td align="left">▁▃▇▆▁</td>
+</tr>
+<tr class="even">
+<td align="left">MEK1_pS217S221</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0.01</td>
+<td align="right">0.2</td>
+<td align="right">-0.68</td>
+<td align="right">-0.1</td>
+<td align="right">0.06</td>
+<td align="right">0.13</td>
+<td align="right">0.63</td>
+<td align="left">▁▃▇▆▁</td>
+</tr>
+<tr class="odd">
+<td align="left">P38_pT180Y182</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0.01</td>
+<td align="right">0.2</td>
+<td align="right">-0.68</td>
+<td align="right">-0.1</td>
+<td align="right">0.06</td>
+<td align="right">0.13</td>
+<td align="right">0.63</td>
+<td align="left">▁▃▇▆▁</td>
+</tr>
+<tr class="even">
+<td align="left">P70S6K_pT389</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0.01</td>
+<td align="right">0.2</td>
+<td align="right">-0.68</td>
+<td align="right">-0.1</td>
+<td align="right">0.06</td>
+<td align="right">0.13</td>
+<td align="right">0.63</td>
+<td align="left">▁▃▇▆▁</td>
+</tr>
+<tr class="odd">
+<td align="left">PDK1_pS241</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0.01</td>
+<td align="right">0.2</td>
+<td align="right">-0.68</td>
+<td align="right">-0.1</td>
+<td align="right">0.06</td>
+<td align="right">0.13</td>
+<td align="right">0.63</td>
+<td align="left">▁▃▇▆▁</td>
+</tr>
+<tr class="even">
+<td align="left">S6_pS235S236</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0.01</td>
+<td align="right">0.2</td>
+<td align="right">-0.68</td>
+<td align="right">-0.1</td>
+<td align="right">0.06</td>
+<td align="right">0.13</td>
+<td align="right">0.63</td>
+<td align="left">▁▃▇▆▁</td>
+</tr>
+<tr class="odd">
+<td align="left">YAP_pS127</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0.01</td>
+<td align="right">0.2</td>
+<td align="right">-0.68</td>
+<td align="right">-0.1</td>
+<td align="right">0.06</td>
+<td align="right">0.13</td>
+<td align="right">0.63</td>
+<td align="left">▁▃▇▆▁</td>
+</tr>
+<tr class="even">
+<td align="left">TRANSGLUTAMINASE</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0.01</td>
+<td align="right">0.2</td>
+<td align="right">-0.68</td>
+<td align="right">-0.1</td>
+<td align="right">0.06</td>
+<td align="right">0.13</td>
+<td align="right">0.63</td>
+<td align="left">▁▃▇▆▁</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>tcga.rank &lt;- mutate_all(tcga.raw, rank)</code></pre>
 </div>
 <div id="dimensionality-reduction" class="section level2">
 <h2>Dimensionality reduction</h2>
-<pre class="r"><code>tcga.pca &lt;- prcomp(tcga)
+<pre class="r"><code>tcga.pca &lt;- prcomp(tcga.norm)
 summary(tcga.pca)</code></pre>
 <pre><code>Importance of components:
-                            PC1     PC2      PC3      PC4      PC5      PC6
-Standard deviation     112.2545 66.8808 57.91412 54.79530 52.30290 45.98226
-Proportion of Variance   0.3702  0.1314  0.09853  0.08821  0.08036  0.06211
-Cumulative Proportion    0.3702  0.5016  0.60012  0.68833  0.76869  0.83081
-                           PC7      PC8      PC9     PC10     PC11    PC12
-Standard deviation     41.5038 35.65454 34.96764 28.14257 23.00992 14.8757
-Proportion of Variance  0.0506  0.03735  0.03592  0.02327  0.01555  0.0065
-Cumulative Proportion   0.8814  0.91876  0.95468  0.97795  0.99350  1.0000</code></pre>
-<pre class="r"><code>tcga.umap &lt;- umap(tcga, n_neighbors = 5, n_epochs = 1000)</code></pre>
+                          PC1    PC2    PC3     PC4     PC5     PC6     PC7
+Standard deviation     0.4038 0.2522 0.2157 0.19762 0.19025 0.16939 0.15692
+Proportion of Variance 0.3550 0.1385 0.1013 0.08504 0.07882 0.06248 0.05362
+Cumulative Proportion  0.3550 0.4935 0.5948 0.67980 0.75862 0.82110 0.87472
+                           PC8     PC9    PC10    PC11    PC12
+Standard deviation     0.13833 0.13333 0.09990 0.08501 0.05844
+Proportion of Variance 0.04166 0.03871 0.02173 0.01574 0.00744
+Cumulative Proportion  0.91638 0.95509 0.97683 0.99256 1.00000</code></pre>
+<pre class="r"><code>tcga.umap &lt;- umap(tcga.norm, n_neighbors = 10, n_epochs = 1000)</code></pre>
 </div>
 <div id="hierarchical-clustering" class="section level2">
 <h2>Hierarchical clustering</h2>
 <p>Perform hierarchical clustering of the data and plot the resulting dendrogram</p>
-<pre class="r"><code>tcga.hclust &lt;- eclust(tcga, &quot;hclust&quot;)</code></pre>
+<pre class="r"><code>tcga.hclust &lt;- eclust(tcga.norm, &quot;hclust&quot;, k = 6)</code></pre>
 <pre><code>Warning: `guides(&lt;scale&gt; = FALSE)` is deprecated. Please use `guides(&lt;scale&gt; =
 &quot;none&quot;)` instead.</code></pre>
 <pre class="r"><code>fviz_dend(tcga.hclust, rect = TRUE)</code></pre>
@@ -1119,7 +1374,18 @@ Jovan Tanevski
 </table>
 </div>
 </div>
-<pre class="r"><code>fviz_gap_stat(tcga.hclust$gap_stat)</code></pre>
+<pre class="r"><code>#fviz_gap_stat(tcga.hclust$gap_stat)
+
+fviz_silhouette(tcga.hclust) +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))</code></pre>
+<pre><code>  cluster size ave.sil.width
+1       1   82          0.18
+2       2   21          0.00
+3       3   20          0.12
+4       4   21          0.14
+5       5   33          0.00
+6       6    7         -0.01</code></pre>
 <p><img src="figure/tcga.Rmd/unnamed-chunk-5-2.svg" width="1536" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-5-2">
@@ -1146,55 +1412,6 @@ Date
 <tr>
 <td>
 <a href="https://github.com/saezlab/MultispectralHCC/blob/c25dccad29ec6af7091c9cafbb309d9dbe7368ee/docs/figure/tcga.Rmd/unnamed-chunk-5-2.svg" target="_blank">c25dcca</a>
-</td>
-<td>
-Jovan Tanevski
-</td>
-<td>
-2021-08-02
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<pre class="r"><code>fviz_silhouette(tcga.hclust) +
-  theme_classic() +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1))</code></pre>
-<pre><code>  cluster size ave.sil.width
-1       1   43          0.05
-2       2   23          0.25
-3       3   17          0.34
-4       4   40          0.03
-5       5   35          0.02
-6       6   12          0.16
-7       7   14          0.01</code></pre>
-<p><img src="figure/tcga.Rmd/unnamed-chunk-5-3.svg" width="1536" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-5-3">
-Past versions of unnamed-chunk-5-3.svg
-</button>
-</p>
-<div id="fig-unnamed-chunk-5-3" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/saezlab/MultispectralHCC/blob/c25dccad29ec6af7091c9cafbb309d9dbe7368ee/docs/figure/tcga.Rmd/unnamed-chunk-5-3.svg" target="_blank">c25dcca</a>
 </td>
 <td>
 Jovan Tanevski
@@ -1312,15 +1529,16 @@ ggplot(
   theme(axis.text.x = element_text(angle = 90, hjust = 1)))
 
 plot_grid(plotlist = profiles, labels = paste(&quot;Cluster&quot;, seq_len(tcga.hclust$nbclust)))</code></pre>
-<pre><code>Warning: Removed 17 rows containing non-finite values (stat_summary).</code></pre>
-<pre><code>Warning: Removed 2 rows containing missing values (geom_segment).</code></pre>
 <pre><code>Warning: Removed 2 rows containing non-finite values (stat_summary).</code></pre>
-<pre><code>Warning: Removed 6 rows containing non-finite values (stat_summary).</code></pre>
+<pre><code>Warning: Removed 23 rows containing non-finite values (stat_summary).</code></pre>
+<pre><code>Warning: Removed 4 rows containing missing values (geom_segment).</code></pre>
+<pre><code>Warning: Removed 3 rows containing non-finite values (stat_summary).</code></pre>
 <pre><code>Warning: Removed 2 rows containing missing values (geom_segment).</code></pre>
-<pre><code>Warning: Removed 4 rows containing non-finite values (stat_summary).</code></pre>
+<pre><code>Warning: Removed 1 rows containing non-finite values (stat_summary).</code></pre>
+<pre><code>Warning: Removed 2 rows containing non-finite values (stat_summary).</code></pre>
 <pre><code>Warning: Removed 1 rows containing missing values (geom_segment).</code></pre>
-<pre><code>Warning: Removed 4 rows containing non-finite values (stat_summary).</code></pre>
-<pre><code>Warning: Removed 1 rows containing missing values (geom_segment).</code></pre>
+<pre><code>Warning: Removed 2 rows containing non-finite values (stat_summary).</code></pre>
+<pre><code>Warning: Removed 3 rows containing missing values (geom_segment).</code></pre>
 <p><img src="figure/tcga.Rmd/unnamed-chunk-7-1.svg" width="960" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-7-1">
@@ -1359,65 +1577,63 @@ Jovan Tanevski
 </table>
 </div>
 </div>
-<p>Differential expression analysis</p>
+<p>Differential expression analysis with limma.</p>
 <pre class="r"><code>design &lt;- model.matrix(~0 + as.factor(tcga.hclust$cluster))
 colnames(design) &lt;- paste0(&quot;Cluster&quot;, seq_len(tcga.hclust$nbclust))
 
 tcga.hclust.limma &lt;- lmFit(t(tcga.raw), design = design)
 
-tcga.hclust.limma$coefficients</code></pre>
-<pre><code>                    Cluster1    Cluster2     Cluster3    Cluster4    Cluster5
-P53              -0.83287575 -1.63930495 -0.686920525 -0.77840188 -1.45188350
-AKT_pS473        -0.30863644 -1.33879677 -0.006580675 -0.21834276 -1.32477306
-AKT_pT308         0.08732521 -0.27177766  0.218564880  0.18469631 -0.29203272
-BETACATENIN       1.57155636  2.31044844  1.039230839  1.56262878  1.21849982
-JNK_pT183Y185    -0.11316242 -0.53603513 -0.020171999 -0.06052635 -0.32400742
-MEK1_pS217S221   -0.24976273 -0.31018141 -0.253137701 -0.23604609  0.05052373
-P38_pT180Y182     0.51223883  0.02056018  0.769874692  0.58845685  0.63984603
-P70S6K_pT389     -0.77571779 -1.94795561 -0.534009436 -0.69535853 -1.62072380
-PDK1_pS241        0.38756470  0.59045467  0.116197084  0.16495428  0.63423716
-S6_pS235S236     -0.67758055 -1.43636690 -0.361153007 -0.40006282 -0.97855764
-YAP_pS127         2.03602902  3.00731625  1.850386691  2.08600134  2.04093606
-TRANSGLUTAMINASE -0.74859832 -0.22338223 -0.911213400 -0.13653922 -0.45593106
-                    Cluster6    Cluster7
-P53              -1.59199405 -1.55125427
-AKT_pS473        -1.36858380 -0.01857768
-AKT_pT308         0.16397916  0.89903051
-BETACATENIN       0.69812217  1.74893447
-JNK_pT183Y185    -0.18383498 -0.40070734
-MEK1_pS217S221    0.26605581 -0.29766097
-P38_pT180Y182    -0.02873231  0.58069604
-P70S6K_pT389     -2.07460770 -1.91867762
-PDK1_pS241        0.31715543  0.63407898
-S6_pS235S236     -0.18619595 -0.86118068
-YAP_pS127         2.57126673  2.33398982
-TRANSGLUTAMINASE  0.18560297 -0.40427359</code></pre>
-<pre class="r"><code>tests.hclust &lt;- decideTests(eBayes(tcga.hclust.limma))
+tcga.hclust.eb &lt;- eBayes(tcga.hclust.limma)
+
+topTable(tcga.hclust.eb)</code></pre>
+<pre><code>                 Cluster1   Cluster2    Cluster3    Cluster4    Cluster5
+P53           -0.81853456 -1.9728291 -1.34957363 -0.74815702 -1.35906356
+YAP_pS127      2.02647828  3.0339519  2.09697253  1.93563539  2.41272242
+P70S6K_pT389  -0.76752424 -2.4629435 -1.57688878 -0.55839403 -1.53985816
+BETACATENIN    1.52521648  1.9768320  1.95573186  0.99194015  1.17977279
+AKT_pS473     -0.27169830 -1.8269418 -1.02160833 -0.17498966 -1.05301660
+PDK1_pS241     0.27956272  0.6802625  0.61401976  0.19940906  0.47342995
+S6_pS235S236  -0.49873009 -1.6585656 -1.28105258 -0.34080340 -0.63892664
+JNK_pT183Y185 -0.08655255 -0.6563026 -0.34991835 -0.05875654 -0.19999888
+AKT_pT308      0.14372226 -0.4067163 -0.13355154  0.19638602 -0.04363602
+P38_pT180Y182  0.57219116  0.1158460  0.01588039  0.88070826  0.47681020
+                Cluster6     AveExpr         F       P.Value     adj.P.Val
+P53           -1.6953849 -1.13026525 942.06423 3.292798e-134 3.951358e-133
+YAP_pS127      2.0694465  2.20966288 571.85237 2.802263e-115 1.681358e-114
+P70S6K_pT389  -2.1136125 -1.21485575 317.89567  1.172629e-93  4.690517e-93
+BETACATENIN    1.5628928  1.50217041 171.13854  4.393233e-72  1.317970e-71
+AKT_pS473      0.5060157 -0.63021426 142.44966  4.903972e-66  1.176953e-65
+PDK1_pS241     0.6285290  0.40054637  83.80991  9.596449e-50  1.919290e-49
+S6_pS235S236  -0.4666669 -0.72203758  55.91764  8.970505e-39  1.537801e-38
+JNK_pT183Y185 -0.4861532 -0.21258126  52.37781  3.885665e-37  5.828498e-37
+AKT_pT308      1.3833306  0.07032927  43.95006  6.024275e-33  8.032366e-33
+P38_pT180Y182  0.7721723  0.48535253  35.13690  4.890317e-28  5.868380e-28</code></pre>
+<pre class="r"><code>tests.hclust &lt;- decideTests(tcga.hclust.eb)
 
 tests.hclust@.Data</code></pre>
-<pre><code>                 Cluster1 Cluster2 Cluster3 Cluster4 Cluster5 Cluster6 Cluster7
-P53                    -1       -1       -1       -1       -1       -1       -1
-AKT_pS473              -1       -1        0       -1       -1       -1        0
-AKT_pT308               1       -1        1        1       -1        0        1
-BETACATENIN             1        1        1        1        1        1        1
-JNK_pT183Y185          -1       -1        0        0       -1       -1       -1
-MEK1_pS217S221         -1       -1       -1       -1        0        1       -1
-P38_pT180Y182           1        0        1        1        1        0        1
-P70S6K_pT389           -1       -1       -1       -1       -1       -1       -1
-PDK1_pS241              1        1        0        1        1        1        1
-S6_pS235S236           -1       -1       -1       -1       -1        0       -1
-YAP_pS127               1        1        1        1        1        1        1
-TRANSGLUTAMINASE       -1       -1       -1        0       -1        0       -1</code></pre>
+<pre><code>                 Cluster1 Cluster2 Cluster3 Cluster4 Cluster5 Cluster6
+P53                    -1       -1       -1       -1       -1       -1
+AKT_pS473              -1       -1       -1        0       -1        1
+AKT_pT308               1       -1       -1        1        0        1
+BETACATENIN             1        1        1        1        1        1
+JNK_pT183Y185          -1       -1       -1        0       -1       -1
+MEK1_pS217S221         -1        0       -1        0        0       -1
+P38_pT180Y182           1        0        0        1        1        1
+P70S6K_pT389           -1       -1       -1       -1       -1       -1
+PDK1_pS241              1        1        1        1        1        1
+S6_pS235S236           -1       -1       -1       -1       -1        0
+YAP_pS127               1        1        1        1        1        1
+TRANSGLUTAMINASE       -1       -1       -1       -1        0        0</code></pre>
 <pre class="r"><code>summary(tests.hclust)</code></pre>
-<pre><code>       Cluster1 Cluster2 Cluster3 Cluster4 Cluster5 Cluster6 Cluster7
-Down          7        8        5        5        7        4        6
-NotSig        0        1        3        2        1        4        1
-Up            5        3        4        5        4        4        5</code></pre>
+<pre><code>       Cluster1 Cluster2 Cluster3 Cluster4 Cluster5 Cluster6
+Down          7        7        8        4        5        4
+NotSig        0        2        1        3        3        2
+Up            5        3        3        5        4        6</code></pre>
 </div>
 <div id="similarity-and-graph-based-clustering" class="section level2">
 <h2>Similarity and graph based clustering</h2>
 <p>Calculate leiden clustering based on weighted shared nearest neighbor graph</p>
-<pre class="r"><code>tcga.knn &lt;- knn.index(tcga, 10)
+<pre class="r"><code>tcga.knn &lt;- knn.index(tcga.norm, 10)
 jaccard.cuttoff &lt;- 0.1
 
 snn &lt;- seq_len(nrow(tcga.knn) - 1) %&gt;% map_dfr(\(id){
@@ -1456,6 +1672,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/saezlab/MultispectralHCC/blob/55fb7fc66f0fbcdc350de52c04d43a14779784e5/docs/figure/tcga.Rmd/unnamed-chunk-10-1.svg" target="_blank">55fb7fc</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-08-02
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/saezlab/MultispectralHCC/blob/c25dccad29ec6af7091c9cafbb309d9dbe7368ee/docs/figure/tcga.Rmd/unnamed-chunk-10-1.svg" target="_blank">c25dcca</a>
@@ -1499,6 +1726,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/saezlab/MultispectralHCC/blob/55fb7fc66f0fbcdc350de52c04d43a14779784e5/docs/figure/tcga.Rmd/unnamed-chunk-10-2.svg" target="_blank">55fb7fc</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-08-02
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/saezlab/MultispectralHCC/blob/c25dccad29ec6af7091c9cafbb309d9dbe7368ee/docs/figure/tcga.Rmd/unnamed-chunk-10-2.svg" target="_blank">c25dcca</a>
 </td>
 <td>
@@ -1528,12 +1766,10 @@ ggplot(
   theme(axis.text.x = element_text(angle = 90, hjust = 1)))
 
 plot_grid(plotlist = profiles, labels = paste(&quot;Cluster&quot;, seq_len(max(leiden.clusters))))</code></pre>
-<pre><code>Warning: Removed 1 rows containing non-finite values (stat_summary).</code></pre>
-<pre><code>Warning: Removed 10 rows containing non-finite values (stat_summary).</code></pre>
-<pre><code>Warning: Removed 2 rows containing missing values (geom_segment).</code></pre>
-<pre><code>Warning: Removed 2 rows containing non-finite values (stat_summary).</code></pre>
-<pre><code>Warning: Removed 19 rows containing non-finite values (stat_summary).</code></pre>
+<pre><code>Warning: Removed 27 rows containing non-finite values (stat_summary).</code></pre>
 <pre><code>Warning: Removed 3 rows containing missing values (geom_segment).</code></pre>
+<pre><code>Warning: Removed 3 rows containing non-finite values (stat_summary).</code></pre>
+<pre><code>Warning: Removed 2 rows containing non-finite values (stat_summary).</code></pre>
 <pre><code>Warning: Removed 1 rows containing non-finite values (stat_summary).</code></pre>
 <p><img src="figure/tcga.Rmd/unnamed-chunk-11-1.svg" width="960" style="display: block; margin: auto;" /></p>
 <p>
@@ -1560,6 +1796,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/saezlab/MultispectralHCC/blob/55fb7fc66f0fbcdc350de52c04d43a14779784e5/docs/figure/tcga.Rmd/unnamed-chunk-11-1.svg" target="_blank">55fb7fc</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-08-02
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/saezlab/MultispectralHCC/blob/c25dccad29ec6af7091c9cafbb309d9dbe7368ee/docs/figure/tcga.Rmd/unnamed-chunk-11-1.svg" target="_blank">c25dcca</a>
 </td>
 <td>
@@ -1579,140 +1826,354 @@ colnames(design) &lt;- paste0(&quot;Cluster&quot;, seq_len(max(leiden.clusters))
 
 tcga.leiden.limma &lt;- lmFit(t(tcga.raw), design = design)
 
-tcga.leiden.limma$coefficients</code></pre>
-<pre><code>                   Cluster1    Cluster2    Cluster3    Cluster4     Cluster5
-P53              -0.9673433 -1.53283086 -0.75756942 -1.61767917 -0.749373251
-AKT_pS473        -0.3200889 -1.28276689 -0.16000561 -1.15973070 -0.194008436
-AKT_pT308         0.2124778 -0.18171392  0.21593973 -0.04769457  0.153441990
-BETACATENIN       1.7912135  1.25643693  1.03564301  2.09187795  1.416551169
-JNK_pT183Y185    -0.1965589 -0.32069886 -0.03275702 -0.49164891 -0.009853884
-MEK1_pS217S221   -0.2999638  0.05567082 -0.15493844 -0.26691280 -0.206574355
-P38_pT180Y182     0.5421273  0.49421905  0.77606040 -0.01780252  0.514742787
-P70S6K_pT389     -0.9958935 -1.84333252 -0.60204473 -1.95723563 -0.625471023
-PDK1_pS241        0.3879572  0.56800614  0.21918573  0.58110009  0.209576601
-S6_pS235S236     -0.6349137 -0.82814538 -0.47055819 -1.33662344 -0.368775477
-YAP_pS127         2.0322800  2.23326298  2.06163471  2.82246037  1.999431332
-TRANSGLUTAMINASE -0.4973532 -0.24179636 -0.80334063 -0.36399467 -0.082472412</code></pre>
-<pre class="r"><code>tests.leiden &lt;- decideTests(eBayes(tcga.leiden.limma))
+tcga.leiden.eb &lt;- eBayes(tcga.leiden.limma)
+
+topTable(tcga.hclust.eb)</code></pre>
+<pre><code>                 Cluster1   Cluster2    Cluster3    Cluster4    Cluster5
+P53           -0.81853456 -1.9728291 -1.34957363 -0.74815702 -1.35906356
+YAP_pS127      2.02647828  3.0339519  2.09697253  1.93563539  2.41272242
+P70S6K_pT389  -0.76752424 -2.4629435 -1.57688878 -0.55839403 -1.53985816
+BETACATENIN    1.52521648  1.9768320  1.95573186  0.99194015  1.17977279
+AKT_pS473     -0.27169830 -1.8269418 -1.02160833 -0.17498966 -1.05301660
+PDK1_pS241     0.27956272  0.6802625  0.61401976  0.19940906  0.47342995
+S6_pS235S236  -0.49873009 -1.6585656 -1.28105258 -0.34080340 -0.63892664
+JNK_pT183Y185 -0.08655255 -0.6563026 -0.34991835 -0.05875654 -0.19999888
+AKT_pT308      0.14372226 -0.4067163 -0.13355154  0.19638602 -0.04363602
+P38_pT180Y182  0.57219116  0.1158460  0.01588039  0.88070826  0.47681020
+                Cluster6     AveExpr         F       P.Value     adj.P.Val
+P53           -1.6953849 -1.13026525 942.06423 3.292798e-134 3.951358e-133
+YAP_pS127      2.0694465  2.20966288 571.85237 2.802263e-115 1.681358e-114
+P70S6K_pT389  -2.1136125 -1.21485575 317.89567  1.172629e-93  4.690517e-93
+BETACATENIN    1.5628928  1.50217041 171.13854  4.393233e-72  1.317970e-71
+AKT_pS473      0.5060157 -0.63021426 142.44966  4.903972e-66  1.176953e-65
+PDK1_pS241     0.6285290  0.40054637  83.80991  9.596449e-50  1.919290e-49
+S6_pS235S236  -0.4666669 -0.72203758  55.91764  8.970505e-39  1.537801e-38
+JNK_pT183Y185 -0.4861532 -0.21258126  52.37781  3.885665e-37  5.828498e-37
+AKT_pT308      1.3833306  0.07032927  43.95006  6.024275e-33  8.032366e-33
+P38_pT180Y182  0.7721723  0.48535253  35.13690  4.890317e-28  5.868380e-28</code></pre>
+<pre class="r"><code>tests.leiden &lt;- decideTests(tcga.leiden.eb)
 
 tests.leiden@.Data</code></pre>
-<pre><code>                 Cluster1 Cluster2 Cluster3 Cluster4 Cluster5
-P53                    -1       -1       -1       -1       -1
-AKT_pS473              -1       -1        0       -1        0
-AKT_pT308               1       -1        1        0        0
-BETACATENIN             1        1        1        1        1
-JNK_pT183Y185          -1       -1        0       -1        0
-MEK1_pS217S221         -1        0       -1       -1       -1
-P38_pT180Y182           1        1        1        0        1
-P70S6K_pT389           -1       -1       -1       -1       -1
-PDK1_pS241              1        1        1        1        1
-S6_pS235S236           -1       -1       -1       -1       -1
-YAP_pS127               1        1        1        1        1
-TRANSGLUTAMINASE       -1       -1       -1       -1        0</code></pre>
+<pre><code>                 Cluster1 Cluster2 Cluster3 Cluster4
+P53                    -1       -1       -1       -1
+AKT_pS473              -1       -1       -1       -1
+AKT_pT308              -1        1        0        1
+BETACATENIN             1        1        1        1
+JNK_pT183Y185          -1       -1       -1        0
+MEK1_pS217S221         -1       -1       -1        0
+P38_pT180Y182           1        1        1        1
+P70S6K_pT389           -1       -1       -1       -1
+PDK1_pS241              1        1        1        1
+S6_pS235S236           -1       -1       -1       -1
+YAP_pS127               1        1        1        1
+TRANSGLUTAMINASE       -1       -1       -1       -1</code></pre>
 <pre class="r"><code>summary(tests.leiden)</code></pre>
-<pre><code>       Cluster1 Cluster2 Cluster3 Cluster4 Cluster5
-Down          7        7        5        7        4
-NotSig        0        1        2        2        4
-Up            5        4        5        3        4</code></pre>
+<pre><code>       Cluster1 Cluster2 Cluster3 Cluster4
+Down          8        7        7        5
+NotSig        0        0        1        2
+Up            4        5        4        5</code></pre>
 </div>
 <div id="consensus-nmf" class="section level2">
 <h2>Consensus NMF</h2>
-<pre class="r"><code>tcga.nmf.rank &lt;- nmfEstimateRank(as.matrix(t(tcga)), seq(2,12), nrun = 10)
+<pre class="r"><code>tcga.nmf.rank &lt;- nmfEstimateRank(as.matrix(t(tcga.rank)), seq(2,12), nrun = 10)
 
 plot(tcga.nmf.rank)</code></pre>
 <pre><code>Warning: Removed 1 rows containing missing values (geom_point).</code></pre>
 <p><img src="figure/tcga.Rmd/unnamed-chunk-13-1.svg" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>tcga.nmf &lt;- nmf(as.matrix(t(tcga)), 9, nrun = 10)</code></pre>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-13-1">
+Past versions of unnamed-chunk-13-1.svg
+</button>
+</p>
+<div id="fig-unnamed-chunk-13-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/saezlab/MultispectralHCC/blob/55fb7fc66f0fbcdc350de52c04d43a14779784e5/docs/figure/tcga.Rmd/unnamed-chunk-13-1.svg" target="_blank">55fb7fc</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-08-02
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<pre class="r"><code>tcga.nmf &lt;- nmf(as.matrix(t(tcga.rank)), 6, nrun = 10)</code></pre>
 <p>Extract basis of NMF (signature of cluster)</p>
 <pre class="r"><code>basismap(tcga.nmf)</code></pre>
 <p><img src="figure/tcga.Rmd/unnamed-chunk-14-1.svg" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-14-1">
+Past versions of unnamed-chunk-14-1.svg
+</button>
+</p>
+<div id="fig-unnamed-chunk-14-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/saezlab/MultispectralHCC/blob/55fb7fc66f0fbcdc350de52c04d43a14779784e5/docs/figure/tcga.Rmd/unnamed-chunk-14-1.svg" target="_blank">55fb7fc</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-08-02
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>Extract coefficients of NMF (soft clustering of samples)</p>
 <pre class="r"><code>coefmap(tcga.nmf)</code></pre>
 <p><img src="figure/tcga.Rmd/unnamed-chunk-15-1.svg" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-15-1">
+Past versions of unnamed-chunk-15-1.svg
+</button>
+</p>
+<div id="fig-unnamed-chunk-15-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/saezlab/MultispectralHCC/blob/55fb7fc66f0fbcdc350de52c04d43a14779784e5/docs/figure/tcga.Rmd/unnamed-chunk-15-1.svg" target="_blank">55fb7fc</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-08-02
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>Check for signs of overfitting</p>
 <pre class="r"><code>consensusmap(tcga.nmf)</code></pre>
 <p><img src="figure/tcga.Rmd/unnamed-chunk-16-1.svg" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-16-1">
+Past versions of unnamed-chunk-16-1.svg
+</button>
+</p>
+<div id="fig-unnamed-chunk-16-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/saezlab/MultispectralHCC/blob/55fb7fc66f0fbcdc350de52c04d43a14779784e5/docs/figure/tcga.Rmd/unnamed-chunk-16-1.svg" target="_blank">55fb7fc</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-08-02
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>Assign clusters</p>
 <pre class="r"><code>nmf.clusters &lt;- apply(tcga.nmf@fit@H, 2, which.max)</code></pre>
 <p>Plot in 2D PCA and UMAP</p>
 <pre class="r"><code>fviz_pca_ind(tcga.pca, geom = &quot;point&quot;, col.ind = as.factor(nmf.clusters)) +
   theme_classic()</code></pre>
 <p><img src="figure/tcga.Rmd/unnamed-chunk-18-1.svg" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-18-1">
+Past versions of unnamed-chunk-18-1.svg
+</button>
+</p>
+<div id="fig-unnamed-chunk-18-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/saezlab/MultispectralHCC/blob/55fb7fc66f0fbcdc350de52c04d43a14779784e5/docs/figure/tcga.Rmd/unnamed-chunk-18-1.svg" target="_blank">55fb7fc</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-08-02
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>ggplot(tcga.umap.clus %&gt;% mutate(Cluster = as.factor(nmf.clusters)), aes(x = U1, y = U2, color = Cluster)) +
   geom_point() +
   theme_classic()</code></pre>
 <p><img src="figure/tcga.Rmd/unnamed-chunk-18-2.svg" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-18-2">
+Past versions of unnamed-chunk-18-2.svg
+</button>
+</p>
+<div id="fig-unnamed-chunk-18-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/saezlab/MultispectralHCC/blob/55fb7fc66f0fbcdc350de52c04d43a14779784e5/docs/figure/tcga.Rmd/unnamed-chunk-18-2.svg" target="_blank">55fb7fc</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-08-02
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>Differential expression analysis</p>
 <pre class="r"><code>design &lt;- model.matrix(~0 + as.factor(nmf.clusters))
 colnames(design) &lt;- paste0(&quot;Cluster&quot;, seq_len(max(nmf.clusters)))
 
 tcga.nmf.limma &lt;- lmFit(t(tcga.raw), design = design)
 
-tcga.nmf.limma$coefficients</code></pre>
-<pre><code>                    Cluster1    Cluster2   Cluster3    Cluster4     Cluster5
-P53              -1.10694961 -1.47281717 -1.4390930 -1.31952436 -1.408395531
-AKT_pS473        -0.57406575 -1.03079810 -1.1267523 -0.98040237 -1.435032358
-AKT_pT308         0.05333472 -0.06691784 -0.1742176 -0.39565713 -0.124579611
-BETACATENIN       2.47820655  1.69944114  1.6562291  1.50041542  1.094901251
-JNK_pT183Y185    -0.32673969 -0.40956008 -0.5157945 -0.43549726  0.001981008
-MEK1_pS217S221   -0.30372607 -0.19884053 -0.2561024 -0.31368660  0.452610710
-P38_pT180Y182     0.24978589  0.23245516  1.1584952  0.06678912  0.447332278
-P70S6K_pT389     -1.24207931 -1.73111606 -1.6578623 -1.50621120 -1.555388810
-PDK1_pS241        0.52947256  0.53284938  0.4288817  0.67767127  0.556231887
-S6_pS235S236     -1.08064394 -0.95305470 -1.2276411 -1.35723076 -0.860677320
-YAP_pS127         1.94124952  2.93622011  1.9401463  1.56874728  2.056839337
-TRANSGLUTAMINASE -0.70096178 -0.36776500 -0.6494818 -0.37180974 -0.139566359
-                    Cluster6    Cluster7    Cluster8   Cluster9
-P53              -0.75792378 -1.16642743 -1.44794565 -1.7343508
-AKT_pS473        -0.17752958 -0.80854698 -1.35388746  0.6065127
-AKT_pT308         0.16494551 -0.07193855 -0.35792865  1.5088877
-BETACATENIN       1.39488420  1.45777476  1.23146467  1.5788436
-JNK_pT183Y185    -0.05473442 -0.39775043 -0.68698203 -0.4520198
-MEK1_pS217S221   -0.25505234 -0.38203065 -0.43545558 -0.2443669
-P38_pT180Y182     0.58923331  0.36995499  0.31986997  0.8981164
-P70S6K_pT389     -0.66793673 -1.23538317 -1.74264302 -2.1618971
-PDK1_pS241        0.23571112  0.37396033  0.44641453  0.6912316
-S6_pS235S236     -0.47921236 -0.58950486 -0.09480915 -0.5763633
-YAP_pS127         1.95673778  1.88453913  1.43437318  1.9099130
-TRANSGLUTAMINASE -0.52400250  0.33394102 -0.41896611 -0.3269469</code></pre>
-<pre class="r"><code>tests.nmf &lt;- decideTests(eBayes(tcga.nmf.limma))
+tcga.nmf.eb &lt;- eBayes(tcga.nmf.limma)
+
+topTable(tcga.nmf.eb)</code></pre>
+<pre><code>                   Cluster1   Cluster2    Cluster3    Cluster4   Cluster5
+YAP_pS127         2.1669466  2.6346838  1.97932489  2.50812401  1.8835078
+P53              -1.4304623 -1.5385675 -0.76462047 -1.42192857 -1.2592257
+BETACATENIN       1.0289145  1.6266837  1.39191141  2.21519980  0.8743556
+P70S6K_pT389     -1.7313384 -1.9147869 -0.67579019 -1.66431017 -1.4321143
+PDK1_pS241        0.2869675  0.6233431  0.22696575  0.61545120  0.4634347
+AKT_pS473        -1.0510982 -0.2240496 -0.16760173 -1.14207558 -1.1754947
+S6_pS235S236      0.3211474 -1.0115932 -0.47211361 -1.33119424 -0.9696062
+P38_pT180Y182     0.1560010  0.4185472  0.62130407  0.04148853  0.1819230
+JNK_pT183Y185    -0.2805842 -0.4033670 -0.05755174 -0.40469993  0.0600595
+TRANSGLUTAMINASE  0.2117830 -0.2387284 -0.54528210 -0.41489845 -0.1489069
+                   Cluster6    AveExpr         F       P.Value     adj.P.Val
+YAP_pS127         2.3801914  2.2096629 484.08011 1.575811e-109 1.890974e-108
+P53              -1.4474868 -1.1302653 408.09012 3.513724e-103 2.108234e-102
+BETACATENIN       1.0729739  1.5021704 222.63071  2.327240e-81  9.308961e-81
+P70S6K_pT389     -1.5678306 -1.2148558 168.63789  7.569716e-72  2.270915e-71
+PDK1_pS241        0.5326748  0.4005464  87.42230  4.067236e-51  9.761367e-51
+AKT_pS473        -1.0879843 -0.6302143  67.80680  6.084641e-44  1.216928e-43
+S6_pS235S236     -0.8043381 -0.7220376  59.92689  1.183764e-40  2.029309e-40
+P38_pT180Y182     1.0238573  0.4853525  48.26332  3.152630e-35  4.728945e-35
+JNK_pT183Y185    -0.3560675 -0.2125813  38.41788  5.351536e-30  7.135381e-30
+TRANSGLUTAMINASE -0.4989314 -0.4221190  23.90494  8.492965e-21  1.019156e-20</code></pre>
+<pre class="r"><code>tests.nmf &lt;- decideTests(tcga.nmf.eb)
 
 tests.nmf@.Data</code></pre>
-<pre><code>                 Cluster1 Cluster2 Cluster3 Cluster4 Cluster5 Cluster6 Cluster7
-P53                    -1       -1       -1       -1       -1       -1       -1
-AKT_pS473              -1       -1       -1       -1       -1       -1       -1
-AKT_pT308               0        0        0       -1        0        1        0
-BETACATENIN             1        1        1        1        1        1        1
-JNK_pT183Y185          -1       -1       -1       -1        0       -1       -1
-MEK1_pS217S221         -1       -1       -1        0        1       -1       -1
-P38_pT180Y182           0        1        1        0        1        1        0
-P70S6K_pT389           -1       -1       -1       -1       -1       -1       -1
-PDK1_pS241              1        1        1        1        1        1        1
-S6_pS235S236           -1       -1       -1       -1       -1       -1        0
-YAP_pS127               1        1        1        1        1        1        1
-TRANSGLUTAMINASE       -1       -1       -1        0        0       -1        0
-                 Cluster8 Cluster9
-P53                    -1       -1
-AKT_pS473              -1        1
-AKT_pT308               0        1
-BETACATENIN             1        1
-JNK_pT183Y185          -1       -1
-MEK1_pS217S221         -1       -1
-P38_pT180Y182           0        1
-P70S6K_pT389           -1       -1
-PDK1_pS241              1        1
-S6_pS235S236            0        0
-YAP_pS127               1        1
-TRANSGLUTAMINASE        0        0</code></pre>
+<pre><code>                 Cluster1 Cluster2 Cluster3 Cluster4 Cluster5 Cluster6
+P53                    -1       -1       -1       -1       -1       -1
+AKT_pS473              -1        0       -1       -1       -1       -1
+AKT_pT308               0        1        1       -1        0        0
+BETACATENIN             1        1        1        1        1        1
+JNK_pT183Y185          -1       -1       -1       -1        0       -1
+MEK1_pS217S221          0       -1       -1       -1        1        0
+P38_pT180Y182           0        1        1        0        0        1
+P70S6K_pT389           -1       -1       -1       -1       -1       -1
+PDK1_pS241              1        1        1        1        1        1
+S6_pS235S236            0       -1       -1       -1       -1       -1
+YAP_pS127               1        1        1        1        1        1
+TRANSGLUTAMINASE        0        0       -1       -1        0       -1</code></pre>
 <pre class="r"><code>summary(tests.nmf)</code></pre>
-<pre><code>       Cluster1 Cluster2 Cluster3 Cluster4 Cluster5 Cluster6 Cluster7 Cluster8
-Down          7        7        7        6        4        7        5        5
-NotSig        2        1        1        3        3        0        4        4
-Up            3        4        4        3        5        5        3        3
-       Cluster9
-Down          4
-NotSig        2
-Up            6</code></pre>
+<pre><code>       Cluster1 Cluster2 Cluster3 Cluster4 Cluster5 Cluster6
+Down          4        5        7        8        4        6
+NotSig        5        2        0        1        4        2
+Up            3        5        5        3        4        4</code></pre>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
