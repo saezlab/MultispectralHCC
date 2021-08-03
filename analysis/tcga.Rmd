@@ -57,6 +57,7 @@ tcga.rank <- mutate_all(tcga.raw, rank)
 tcga.pca <- prcomp(tcga.norm)
 summary(tcga.pca)
 
+set.seed(42)
 tcga.umap <- umap(tcga.norm, n_neighbors = 10, n_epochs = 1000)
 ```
 
@@ -212,11 +213,11 @@ summary(tests.leiden)
 
 ```{r}
 
-tcga.nmf.rank <- nmfEstimateRank(as.matrix(t(tcga.rank)), seq(2,12), nrun = 10)
+tcga.nmf.rank <- nmfEstimateRank(as.matrix(t(tcga.rank)), seq(2,10), nrun = 20, seed = 42)
 
 plot(tcga.nmf.rank)
 
-tcga.nmf <- nmf(as.matrix(t(tcga.rank)), 6, nrun = 10)
+tcga.nmf <- nmf(as.matrix(t(tcga.rank)), 9, nrun = 20, seed = 42)
 
 ```
 
