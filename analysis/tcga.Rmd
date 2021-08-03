@@ -38,20 +38,26 @@ tcga.raw <- read_csv("data/TCGA-RPPA-LIHC_selected.csv", col_types = cols()) %>%
 skim(tcga.raw)
 ```
 
-Rank normalize as suggested in https://gdac.broadinstitute.org/runs/analyses__2016_01_28/reports/cancer/LIHC/RPPA_Clustering_CNMF/nozzle.html
+Quantile normalization and rank normalization for NMF as suggested in https://gdac.broadinstitute.org/runs/analyses__2016_01_28/reports/cancer/LIHC/RPPA_Clustering_CNMF/nozzle.html
 
 ```{r}
-tcga <- mutate_all(tcga.raw, rank)
+sorted.means <- apply(tcga.raw, 1, sort) %>% colMeans()
+names(sorted.means) <- rank(sorted.means)
+tcga.norm <- mutate_all(tcga.raw, ~ sorted.means[as.character(rank(.))])
+
+skim(tcga.norm)
+
+tcga.rank <- mutate_all(tcga.raw, rank)
 ```
 
 
 ## Dimensionality reduction
 
 ```{r}
-tcga.pca <- prcomp(tcga)
+tcga.pca <- prcomp(tcga.norm)
 summary(tcga.pca)
 
-tcga.umap <- umap(tcga, n_neighbors = 5, n_epochs = 1000)
+tcga.umap <- umap(tcga.norm, n_neighbors = 10, n_epochs = 1000)
 ```
 
 
@@ -60,11 +66,11 @@ tcga.umap <- umap(tcga, n_neighbors = 5, n_epochs = 1000)
 Perform hierarchical clustering of the data and plot the resulting dendrogram
 
 ```{r fig.width=16, fig.height=9}
-tcga.hclust <- eclust(tcga, "hclust")
+tcga.hclust <- eclust(tcga.norm, "hclust", k = 6)
 
 fviz_dend(tcga.hclust, rect = TRUE)
 
-fviz_gap_stat(tcga.hclust$gap_stat)
+#fviz_gap_stat(tcga.hclust$gap_stat)
 
 fviz_silhouette(tcga.hclust) +
   theme_classic() +
@@ -110,7 +116,7 @@ plot_grid(plotlist = profiles, labels = paste("Cluster", seq_len(tcga.hclust$nbc
 ```
 
 
-Differential expression analysis
+Differential expression analysis with limma.
 
 ```{r}
 design <- model.matrix(~0 + as.factor(tcga.hclust$cluster))
@@ -118,9 +124,11 @@ colnames(design) <- paste0("Cluster", seq_len(tcga.hclust$nbclust))
 
 tcga.hclust.limma <- lmFit(t(tcga.raw), design = design)
 
-tcga.hclust.limma$coefficients
+tcga.hclust.eb <- eBayes(tcga.hclust.limma)
 
-tests.hclust <- decideTests(eBayes(tcga.hclust.limma))
+topTable(tcga.hclust.eb)
+
+tests.hclust <- decideTests(tcga.hclust.eb)
 
 tests.hclust@.Data
 
@@ -133,7 +141,7 @@ summary(tests.hclust)
 
 Calculate leiden clustering based on weighted shared nearest neighbor graph
 ```{r}
-tcga.knn <- knn.index(tcga, 10)
+tcga.knn <- knn.index(tcga.norm, 10)
 jaccard.cuttoff <- 0.1
 
 snn <- seq_len(nrow(tcga.knn) - 1) %>% map_dfr(\(id){
@@ -188,9 +196,11 @@ colnames(design) <- paste0("Cluster", seq_len(max(leiden.clusters)))
 
 tcga.leiden.limma <- lmFit(t(tcga.raw), design = design)
 
-tcga.leiden.limma$coefficients
+tcga.leiden.eb <- eBayes(tcga.leiden.limma)
 
-tests.leiden <- decideTests(eBayes(tcga.leiden.limma))
+topTable(tcga.hclust.eb)
+
+tests.leiden <- decideTests(tcga.leiden.eb)
 
 tests.leiden@.Data
 
@@ -202,11 +212,11 @@ summary(tests.leiden)
 
 ```{r}
 
-tcga.nmf.rank <- nmfEstimateRank(as.matrix(t(tcga)), seq(2,12), nrun = 10)
+tcga.nmf.rank <- nmfEstimateRank(as.matrix(t(tcga.rank)), seq(2,12), nrun = 10)
 
 plot(tcga.nmf.rank)
 
-tcga.nmf <- nmf(as.matrix(t(tcga)), 9, nrun = 10)
+tcga.nmf <- nmf(as.matrix(t(tcga.rank)), 6, nrun = 10)
 
 ```
 
@@ -254,9 +264,11 @@ colnames(design) <- paste0("Cluster", seq_len(max(nmf.clusters)))
 
 tcga.nmf.limma <- lmFit(t(tcga.raw), design = design)
 
-tcga.nmf.limma$coefficients
+tcga.nmf.eb <- eBayes(tcga.nmf.limma)
 
-tests.nmf <- decideTests(eBayes(tcga.nmf.limma))
+topTable(tcga.nmf.eb)
+
+tests.nmf <- decideTests(tcga.nmf.eb)
 
 tests.nmf@.Data
 
