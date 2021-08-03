@@ -13,6 +13,10 @@ navbar:
   - icon: fa-github
     text: Source code
     href: https://github.com/saezlab/MultispectralHCC
+  - icon: fa-twitter
+    href: https://twitter.com/saezlab
+  - icon: fa-university
+    href: http://www.saezlab.org
 output:
   workflowr::wflow_html:
     toc: yes
