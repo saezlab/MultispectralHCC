@@ -1,0 +1,18 @@
+---
+title: "cores"
+author: "Jovan Tanevski"
+date: "`r Sys.Date()`"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+```{r include = FALSE}
+knitr::opts_chunk$set(dev = "svg")
+```
+
+## Introduction
+
+```{r}
+
+```
+
