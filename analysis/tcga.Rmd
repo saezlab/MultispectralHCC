@@ -65,14 +65,13 @@ tcga.umap <- umap(tcga.norm, n_neighbors = 10, n_epochs = 1000)
 
 ## Hierarchical clustering
 
-Perform hierarchical clustering of the data and plot the resulting dendrogram
+Perform hierarchical clustering of the data and plot the resulting dendrogram. Number of clusters to use (3) is based on gap statistic.
 
 ```{r fig.width=16, fig.height=9}
-tcga.hclust <- eclust(tcga.norm, "hclust", k = 6)
+tcga.hclust <- eclust(tcga.norm, "hclust", 3)
+#fviz_gap_stat(tcga.hclust$gap_stat)
 
 fviz_dend(tcga.hclust, rect = TRUE)
-
-#fviz_gap_stat(tcga.hclust$gap_stat)
 
 fviz_silhouette(tcga.hclust) +
   theme_classic() +
