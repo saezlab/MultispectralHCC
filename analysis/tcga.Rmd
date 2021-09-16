@@ -153,12 +153,12 @@ unique(tcga.core.samples$Cluster) %>% map_dfr(\(c){
   tcga.core.samples %>% 
     summarize(across(-Cluster, ~t.test(.x ~ (Cluster==c))$p.value)) %>%
     pivot_longer(names_to = "Marker", values_to = "p", everything()) %>% 
-    mutate(Cluster = c, Difference = -tcga.core.samples %>% 
+    mutate(Cluster = c, Difference = tcga.core.samples %>% 
              group_by(Cluster == c) %>% 
              select(-Cluster) %>% 
              group_split(.keep = FALSE) %>% map(colMeans) %>% reduce(`-`))
  }) %>% 
-  mutate(q = p.adjust(p, method = "fdr")) %>% 
+  mutate(q = p.adjust(p, method = "fdr"), Difference = -Difference) %>% 
   filter(q <= 0.05) %>% arrange(q)
 ```
 
@@ -256,12 +256,12 @@ unique(tcga.core.samples$Cluster) %>% map_dfr(\(c){
   tcga.core.samples %>% 
     summarize(across(-Cluster, ~t.test(.x ~ (Cluster==c))$p.value)) %>%
     pivot_longer(names_to = "Marker", values_to = "p", everything()) %>% 
-    mutate(Cluster = c, Difference = -tcga.core.samples %>% 
+    mutate(Cluster = c, Difference = tcga.core.samples %>% 
              group_by(Cluster == c) %>% 
              select(-Cluster) %>% 
              group_split(.keep = FALSE) %>% map(colMeans) %>% reduce(`-`))
  }) %>% 
-  mutate(q = p.adjust(p, method = "fdr")) %>% 
+  mutate(q = p.adjust(p, method = "fdr"), Difference = -Difference) %>% 
   filter(q <= 0.05) %>% arrange(q)
 ```
 
@@ -378,12 +378,12 @@ unique(tcga.core.samples$Cluster) %>% map_dfr(\(c){
   tcga.core.samples %>% 
     summarize(across(-Cluster, ~t.test(.x ~ (Cluster==c))$p.value)) %>%
     pivot_longer(names_to = "Marker", values_to = "p", everything()) %>% 
-    mutate(Cluster = c, Difference = -tcga.core.samples %>% 
+    mutate(Cluster = c, Difference = tcga.core.samples %>% 
              group_by(Cluster == c) %>% 
              select(-Cluster) %>% 
              group_split(.keep = FALSE) %>% map(colMeans) %>% reduce(`-`))
  }) %>% 
-  mutate(q = p.adjust(p, method = "fdr")) %>% 
+  mutate(q = p.adjust(p, method = "fdr"), Difference = -Difference) %>% 
   filter(q <= 0.05) %>% arrange(q)
 ```
 
@@ -492,11 +492,11 @@ unique(tcga.core.samples$Cluster) %>% map_dfr(\(c){
   tcga.core.samples %>% 
     summarize(across(-Cluster, ~t.test(.x ~ (Cluster==c))$p.value)) %>%
     pivot_longer(names_to = "Marker", values_to = "p", everything()) %>% 
-    mutate(Cluster = c, Difference = -tcga.core.samples %>% 
+    mutate(Cluster = c, Difference = tcga.core.samples %>% 
              group_by(Cluster == c) %>% 
              select(-Cluster) %>% 
              group_split(.keep = FALSE) %>% map(colMeans) %>% reduce(`-`))
  }) %>% 
-  mutate(q = p.adjust(p, method = "fdr")) %>% 
+  mutate(q = p.adjust(p, method = "fdr"), Difference = -Difference) %>% 
   filter(q <= 0.05) %>% arrange(q)
 ```
