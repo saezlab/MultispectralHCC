@@ -2,7 +2,9 @@
 title: "Analysis of TCGA RPPA LIHC samples"
 author: "Jovan Tanevski"
 date: "`r Sys.Date()`"
-output: workflowr::wflow_html
+output: 
+  workflowr::wflow_html:
+    df_print: kable
 editor_options:
   chunk_output_type: console
 ---
@@ -41,9 +43,8 @@ skim(tcga.raw)
 Quantile normalization and rank normalization for NMF as suggested in https://gdac.broadinstitute.org/runs/analyses__2016_01_28/reports/cancer/LIHC/RPPA_Clustering_CNMF/nozzle.html
 
 ```{r}
-sorted.means <- apply(tcga.raw, 1, sort) %>% colMeans()
-names(sorted.means) <- rank(sorted.means)
-tcga.norm <- mutate_all(tcga.raw, ~ sorted.means[as.character(rank(.))])
+
+tcga.norm <- normalizeQuantiles(tcga.raw)
 
 skim(tcga.norm)
 
@@ -117,7 +118,7 @@ plot_grid(plotlist = profiles, labels = paste("Cluster", seq_len(tcga.hclust$nbc
 ```
 
 
-Differential expression analysis with limma.
+Differential expression analysis (limma)
 
 ```{r}
 design <- model.matrix(~0 + as.factor(tcga.hclust$cluster))
@@ -135,6 +136,31 @@ tests.hclust@.Data
 
 summary(tests.hclust)
 
+```
+
+Differential expression analysis (silhouette)
+
+Select only the samples with positive silohuette scores as "core samples"
+```{r}
+core.samples <- which(tcga.hclust$silinfo$widths[,3] > 0)
+tcga.core.samples <- tcga.raw %>% add_column(Cluster = tcga.hclust$cluster) %>% 
+  slice(core.samples)
+```
+
+Calculate difference in means (mean(cluster) - mean()), one-vs-all t-test per marker and correct for FDR. Filter q <= 0.5
+
+```{r}
+unique(tcga.core.samples$Cluster) %>% map_dfr(\(c){
+  tcga.core.samples %>% 
+    summarize(across(-Cluster, ~t.test(.x ~ (Cluster==c))$p.value)) %>%
+    pivot_longer(names_to = "Marker", values_to = "p", everything()) %>% 
+    mutate(Cluster = c, Difference = -tcga.core.samples %>% 
+             group_by(Cluster == c) %>% 
+             select(-Cluster) %>% 
+             group_split(.keep = FALSE) %>% map(colMeans) %>% reduce(`-`))
+ }) %>% 
+  mutate(q = p.adjust(p, method = "fdr")) %>% 
+  filter(q <= 0.05) %>% arrange(q)
 ```
 
 
@@ -189,7 +215,7 @@ ggplot(
 plot_grid(plotlist = profiles, labels = paste("Cluster", seq_len(max(leiden.clusters))))
 ```
 
-Differential expression analysis
+Differential expression analysis (limma)
 
 ```{r}
 design <- model.matrix(~0 + as.factor(leiden.clusters))
@@ -209,7 +235,38 @@ summary(tests.leiden)
 ```
 
 
-## Consensus NMF
+Differential expression analysis (silhouette)
+
+Calculate the similarity of samples using the expression and the silhouette scores based on the assigned clusters.
+```{r}
+silhouette.leiden <- silhouette(leiden.clusters, dist(tcga.raw))
+fviz_silhouette(silhouette.leiden)
+```
+
+Select only the samples with positive silhouette scores as "core samples"
+```{r}
+core.samples <- which(silhouette.leiden[,3] > 0)
+tcga.core.samples <- tcga.raw %>% add_column(Cluster = leiden.clusters) %>% 
+  slice(core.samples)
+```
+
+Calculate difference in means (mean(cluster) - mean()), one-vs-all t-test per marker and correct for FDR. Filter q <= 0.5
+
+```{r}
+unique(tcga.core.samples$Cluster) %>% map_dfr(\(c){
+  tcga.core.samples %>% 
+    summarize(across(-Cluster, ~t.test(.x ~ (Cluster==c))$p.value)) %>%
+    pivot_longer(names_to = "Marker", values_to = "p", everything()) %>% 
+    mutate(Cluster = c, Difference = -tcga.core.samples %>% 
+             group_by(Cluster == c) %>% 
+             select(-Cluster) %>% 
+             group_split(.keep = FALSE) %>% map(colMeans) %>% reduce(`-`))
+ }) %>% 
+  mutate(q = p.adjust(p, method = "fdr")) %>% 
+  filter(q <= 0.05) %>% arrange(q)
+```
+
+## Consensus NMF (9 clusters)
 
 ```{r}
 
@@ -219,6 +276,125 @@ plot(tcga.nmf.rank)
 
 tcga.nmf <- nmf(as.matrix(t(tcga.rank)), 9, nrun = 20, seed = 42)
 
+```
+
+
+For this analysis 9 clusters were selected based on consensus cophenetic correlation coefficient The analysis can also be repeated with 3 clusters as the cophenetic correlation coefficient for 3 clusters is higher (in continuation).
+
+
+
+Extract basis of NMF (signature of cluster)
+
+```{r}
+basismap(tcga.nmf)
+```
+
+Extract coefficients of NMF (soft clustering of samples)
+
+```{r}
+coefmap(tcga.nmf)
+```
+
+Check for signs of overfitting
+
+```{r}
+consensusmap(tcga.nmf)
+```
+
+
+Assign clusters
+```{r}
+nmf.clusters <- apply(tcga.nmf@fit@H, 2, which.max)
+```
+
+Plot in 2D PCA and UMAP
+
+```{r}
+fviz_pca_ind(tcga.pca, geom = "point", col.ind = as.factor(nmf.clusters)) +
+  theme_classic()
+
+ggplot(tcga.umap.clus %>% mutate(Cluster = as.factor(nmf.clusters)), aes(x = U1, y = U2, color = Cluster)) +
+  geom_point() +
+  theme_classic()
+```
+
+Expression profiles per cluster 
+
+```{r fig.width=10, fig.height=10}
+tcga.clustered.nmf <- tcga.raw %>%
+  mutate(Cluster = as.factor(nmf.clusters)) %>%
+  pivot_longer(names_to = "Marker", values_to = "Z", -Cluster)
+
+profiles <- seq_len(max(nmf.clusters)) %>% map(~
+ggplot(
+  tcga.clustered.nmf %>% filter(Cluster == .x),
+  aes(x = Marker, y = Z, color = Marker)
+) +
+  stat_summary(fun.data = mean_sdl, show.legend = FALSE) +
+  ylim(-3, 3) +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)))
+
+plot_grid(plotlist = profiles, labels = paste("Cluster", seq_len(max(nmf.clusters))))
+```
+
+Differential expression analysis (limma)
+
+```{r}
+design <- model.matrix(~0 + as.factor(nmf.clusters))
+colnames(design) <- paste0("Cluster", seq_len(max(nmf.clusters)))
+
+tcga.nmf.limma <- lmFit(t(tcga.raw), design = design)
+
+tcga.nmf.eb <- eBayes(tcga.nmf.limma)
+
+topTable(tcga.nmf.eb)
+
+tests.nmf <- decideTests(tcga.nmf.eb)
+
+tests.nmf@.Data
+
+summary(tests.nmf)
+```
+
+Differential expression analysis (silhouette)
+
+Calculate the similarity of samples using the expression and the silhuette scores based on the assigned clusters.
+```{r}
+silhouette.nmf <- silhouette(nmf.clusters, dist(tcga.raw))
+fviz_silhouette(silhouette.nmf)
+```
+
+Select only the samples with positive silohuette scores as "core samples"
+```{r}
+core.samples <- which(silhouette.nmf[,3] > 0)
+tcga.core.samples <- tcga.raw %>% add_column(Cluster = nmf.clusters) %>% 
+  slice(core.samples)
+```
+
+Calculate difference in means (mean(cluster) - mean()), one-vs-all t-test per marker and correct for FDR. Filter q <= 0.5
+
+```{r}
+unique(tcga.core.samples$Cluster) %>% map_dfr(\(c){
+  tcga.core.samples %>% 
+    summarize(across(-Cluster, ~t.test(.x ~ (Cluster==c))$p.value)) %>%
+    pivot_longer(names_to = "Marker", values_to = "p", everything()) %>% 
+    mutate(Cluster = c, Difference = -tcga.core.samples %>% 
+             group_by(Cluster == c) %>% 
+             select(-Cluster) %>% 
+             group_split(.keep = FALSE) %>% map(colMeans) %>% reduce(`-`))
+ }) %>% 
+  mutate(q = p.adjust(p, method = "fdr")) %>% 
+  filter(q <= 0.05) %>% arrange(q)
+```
+
+
+## Consensus NMF (3 clusters)
+
+Repeat the analysis, but using 3 clusters.
+
+```{r}
+tcga.nmf <- nmf(as.matrix(t(tcga.rank)), 3, nrun = 20, seed = 42)
 ```
 
 Extract basis of NMF (signature of cluster)
@@ -256,8 +432,27 @@ ggplot(tcga.umap.clus %>% mutate(Cluster = as.factor(nmf.clusters)), aes(x = U1,
   theme_classic()
 ```
 
+Expression profiles per cluster 
 
-Differential expression analysis
+```{r fig.width=10, fig.height=10}
+tcga.clustered.nmf <- tcga.raw %>%
+  mutate(Cluster = as.factor(nmf.clusters)) %>%
+  pivot_longer(names_to = "Marker", values_to = "Z", -Cluster)
+
+profiles <- seq_len(max(nmf.clusters)) %>% map(~
+ggplot(
+  tcga.clustered.nmf %>% filter(Cluster == .x),
+  aes(x = Marker, y = Z, color = Marker)
+) +
+  stat_summary(fun.data = mean_sdl, show.legend = FALSE) +
+  ylim(-3, 3) +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)))
+
+plot_grid(plotlist = profiles, labels = paste("Cluster", seq_len(max(nmf.clusters))))
+```
+
+Differential expression analysis (limma)
 
 ```{r}
 design <- model.matrix(~0 + as.factor(nmf.clusters))
@@ -274,4 +469,35 @@ tests.nmf <- decideTests(tcga.nmf.eb)
 tests.nmf@.Data
 
 summary(tests.nmf)
+```
+
+Differential expression analysis (silhouette)
+
+Calculate the similarity of samples using the expression and the silhuette scores based on the assigned clusters.
+```{r}
+silhouette.nmf <- silhouette(nmf.clusters, dist(tcga.raw))
+fviz_silhouette(silhouette.nmf)
+```
+
+Select only the samples with positive silohuette scores as "core samples"
+```{r}
+core.samples <- which(silhouette.nmf[,3] > 0)
+tcga.core.samples <- tcga.raw %>% add_column(Cluster = nmf.clusters) %>% 
+  slice(core.samples)
+```
+
+Calculate difference in means (mean(cluster) - mean()), one-vs-all t-test per marker and correct for FDR. Filter q <= 0.5
+
+```{r}
+unique(tcga.core.samples$Cluster) %>% map_dfr(\(c){
+  tcga.core.samples %>% 
+    summarize(across(-Cluster, ~t.test(.x ~ (Cluster==c))$p.value)) %>%
+    pivot_longer(names_to = "Marker", values_to = "p", everything()) %>% 
+    mutate(Cluster = c, Difference = -tcga.core.samples %>% 
+             group_by(Cluster == c) %>% 
+             select(-Cluster) %>% 
+             group_split(.keep = FALSE) %>% map(colMeans) %>% reduce(`-`))
+ }) %>% 
+  mutate(q = p.adjust(p, method = "fdr")) %>% 
+  filter(q <= 0.05) %>% arrange(q)
 ```
