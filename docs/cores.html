@@ -488,16 +488,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomsaezlabMultispectralHCCtree825c1f28ee89cfa41980b4e33f64495221fed146targetblank825c1f2a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/saezlab/MultispectralHCC/tree/825c1f28ee89cfa41980b4e33f64495221fed146" target="_blank">825c1f2</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomsaezlabMultispectralHCCtree201876fda5ea43d8343ff1bc0135740272ead037targetblank201876fa"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/saezlab/MultispectralHCC/tree/201876fda5ea43d8343ff1bc0135740272ead037" target="_blank">201876f</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomsaezlabMultispectralHCCtree825c1f28ee89cfa41980b4e33f64495221fed146targetblank825c1f2a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomsaezlabMultispectralHCCtree201876fda5ea43d8343ff1bc0135740272ead037targetblank201876fa" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/saezlab/MultispectralHCC/tree/825c1f28ee89cfa41980b4e33f64495221fed146" target="_blank">825c1f2</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/saezlab/MultispectralHCC/tree/201876fda5ea43d8343ff1bc0135740272ead037" target="_blank">201876f</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -507,12 +507,11 @@ Ignored files:
     Ignored:    .DS_Store
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
-    Ignored:    NMF_4439195520b/
     Ignored:    analysis/.DS_Store
+    Ignored:    analysis/figure/
     Ignored:    code/
     Ignored:    data/
     Ignored:    old/
-    Ignored:    omnipathr-log/
     Ignored:    output/
 
 </code></pre>
@@ -552,6 +551,57 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/saezlab/MultispectralHCC/blob/201876fda5ea43d8343ff1bc0135740272ead037/analysis/cores.Rmd" target="_blank">201876f</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-09-17
+</td>
+<td>
+work with normalized data for profiles and de
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/saezlab/MultispectralHCC/blob/b67241db4218ba189f6c61652edfcc3fd594bab8/analysis/cores.Rmd" target="_blank">b67241d</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-09-17
+</td>
+<td>
+switch to snmf/r and lower rank
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/saezlab/MultispectralHCC/c85e3e66a5f983c244956e1d591ff8af48d0444c/docs/cores.html" target="_blank">c85e3e6</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-09-17
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1029,32 +1079,140 @@ Cumulative Proportion  0.2819 0.5033 0.7048 0.8604 1.0000</code></pre>
 </div>
 <div id="consensus-nmf" class="section level2">
 <h2>Consensus NMF</h2>
-<p>We use an efficient implementation of alternating non negative least-squares with regularized to favor sparse basis matrices snmf/l.</p>
+<p>We use an efficient implementation of alternating non negative least-squares with regularized to favor sparse coefficient matrices snmf/r. In this way we aim for cleaner clustering.</p>
 <pre class="r"><code>tumor.hc.nmf.rank &lt;- nmfEstimateRank(as.matrix(t(tumor.hc.rank[subsamp,])), 
-                                     range = seq(2,6), method = &quot;snmf/l&quot;,
+                                     range = seq(2,6), method = &quot;snmf/r&quot;,
                                      nrun = 10, seed = 42)
 
 plot(tumor.hc.nmf.rank)</code></pre>
-<pre><code>Warning: Removed 1 row(s) containing missing values (geom_path).</code></pre>
-<pre><code>Warning: Removed 3 rows containing missing values (geom_point).</code></pre>
+<pre><code>Warning: Removed 2 rows containing missing values (geom_point).</code></pre>
 <p><img src="figure/cores.Rmd/unnamed-chunk-6-1.svg" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>tumor.hc.nmf &lt;- nmf(as.matrix(t(tumor.hc.rank[subsamp,])), 5,
-                method = &quot;snmf/l&quot;, nrun = 10, seed = 42)</code></pre>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-6-1">
+Past versions of unnamed-chunk-6-1.svg
+</button>
+</p>
+<div id="fig-unnamed-chunk-6-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/saezlab/MultispectralHCC/blob/c85e3e66a5f983c244956e1d591ff8af48d0444c/docs/figure/cores.Rmd/unnamed-chunk-6-1.svg" target="_blank">c85e3e6</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-09-17
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<pre class="r"><code>tumor.hc.nmf &lt;- nmf(as.matrix(t(tumor.hc.rank[subsamp,])), 
+                rank = 3, method = &quot;snmf/r&quot;, 
+                nrun = 10, seed = 42)</code></pre>
 <p>Extract basis of NMF (signature of cluster)</p>
 <pre class="r"><code>basismap(tumor.hc.nmf)</code></pre>
 <p><img src="figure/cores.Rmd/unnamed-chunk-7-1.svg" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-7-1">
+Past versions of unnamed-chunk-7-1.svg
+</button>
+</p>
+<div id="fig-unnamed-chunk-7-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/saezlab/MultispectralHCC/blob/c85e3e66a5f983c244956e1d591ff8af48d0444c/docs/figure/cores.Rmd/unnamed-chunk-7-1.svg" target="_blank">c85e3e6</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-09-17
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>Extract coefficients of NMF (soft clustering of samples)</p>
 <pre class="r"><code>coefmap(tumor.hc.nmf)</code></pre>
 <p><img src="figure/cores.Rmd/unnamed-chunk-8-1.svg" width="672" style="display: block; margin: auto;" /></p>
-<p>Check for signs of overfitting</p>
-<pre class="r"><code>consensusmap(tumor.hc.nmf)</code></pre>
-<p><img src="figure/cores.Rmd/unnamed-chunk-9-1.svg" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-8-1">
+Past versions of unnamed-chunk-8-1.svg
+</button>
+</p>
+<div id="fig-unnamed-chunk-8-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/saezlab/MultispectralHCC/blob/c85e3e66a5f983c244956e1d591ff8af48d0444c/docs/figure/cores.Rmd/unnamed-chunk-8-1.svg" target="_blank">c85e3e6</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-09-17
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>Assign clusters</p>
 <pre class="r"><code>nmf.clusters &lt;- apply(tumor.hc.nmf@fit@H, 2, which.max)</code></pre>
 <p>Plot in 2D PCA and UMAP</p>
 <pre class="r"><code>fviz_pca_ind(tumor.hc.pca, geom = &quot;point&quot;, col.ind = as.factor(nmf.clusters)) +
   theme_classic()</code></pre>
-<p><img src="figure/cores.Rmd/unnamed-chunk-11-1.svg" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/cores.Rmd/unnamed-chunk-10-1.svg" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>tumor.hc.umap.clus &lt;-
   tumor.hc.umap %&gt;%
   cbind(nmf.clusters) %&gt;%
@@ -1065,16 +1223,16 @@ plot(tumor.hc.nmf.rank)</code></pre>
 ggplot(tumor.hc.umap.clus, aes(x = U1, y = U2, color = Cluster)) +
   geom_point() +
   theme_classic()</code></pre>
-<p><img src="figure/cores.Rmd/unnamed-chunk-11-2.svg" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/cores.Rmd/unnamed-chunk-10-2.svg" width="672" style="display: block; margin: auto;" /></p>
 <p>Expression profiles per cluster</p>
-<pre class="r"><code>tumor.hc.clustered.nmf &lt;- tumor.hc.winsorized[subsamp, ] %&gt;%
+<pre class="r"><code>tumor.hc.clustered.nmf &lt;- tumor.hc.norm[subsamp, ] %&gt;%
   mutate(Cluster = as.factor(nmf.clusters)) %&gt;%
-  pivot_longer(names_to = &quot;Marker&quot;, values_to = &quot;Value&quot;, -Cluster)
+  pivot_longer(names_to = &quot;Marker&quot;, values_to = &quot;Norm.value&quot;, -Cluster)
 
 profiles &lt;- seq_len(max(nmf.clusters)) %&gt;% map(~
 ggplot(
   tumor.hc.clustered.nmf %&gt;% filter(Cluster == .x),
-  aes(x = Marker, y = Value, color = Marker)
+  aes(x = Marker, y = Norm.value, color = Marker)
 ) +
   stat_summary(fun.data = mean_sdl, show.legend = FALSE) +
   ylim(-3, 3) +
@@ -1082,26 +1240,93 @@ ggplot(
   theme(axis.text.x = element_text(angle = 90, hjust = 1)))
 
 plot_grid(plotlist = profiles, labels = paste(&quot;Cluster&quot;, seq_len(max(nmf.clusters))))</code></pre>
-<pre><code>Warning: Removed 62 rows containing non-finite values (stat_summary).</code></pre>
-<pre><code>Warning: Removed 30 rows containing non-finite values (stat_summary).</code></pre>
-<pre><code>Warning: Removed 32 rows containing non-finite values (stat_summary).</code></pre>
-<pre><code>Warning: Removed 237 rows containing non-finite values (stat_summary).</code></pre>
-<pre><code>Warning: Removed 73 rows containing non-finite values (stat_summary).</code></pre>
-<p><img src="figure/cores.Rmd/unnamed-chunk-12-1.svg" width="960" style="display: block; margin: auto;" /></p>
+<p><img src="figure/cores.Rmd/unnamed-chunk-11-1.svg" width="960" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-11-1">
+Past versions of unnamed-chunk-11-1.svg
+</button>
+</p>
+<div id="fig-unnamed-chunk-11-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/saezlab/MultispectralHCC/blob/c85e3e66a5f983c244956e1d591ff8af48d0444c/docs/figure/cores.Rmd/unnamed-chunk-11-1.svg" target="_blank">c85e3e6</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-09-17
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>Differential expression analysis (silhouette)</p>
 <p>Calculate the similarity of samples using the expression and the silhouette scores based on the assigned clusters.</p>
-<pre class="r"><code>silhouette.nmf &lt;- silhouette(nmf.clusters, dist(tumor.hc.winsorized[subsamp,]))
+<pre class="r"><code>silhouette.nmf &lt;- silhouette(nmf.clusters, dist(tumor.hc.norm[subsamp,]))
 fviz_silhouette(silhouette.nmf)</code></pre>
 <pre><code>  cluster size ave.sil.width
-1       1  277         -0.39
-2       2  503          0.10
-3       3  487         -0.04
-4       4  466         -0.06
-5       5  505         -0.04</code></pre>
-<p><img src="figure/cores.Rmd/unnamed-chunk-13-1.svg" width="672" style="display: block; margin: auto;" /></p>
+1       1  834          0.21
+2       2  276          0.21
+3       3 1128          0.10</code></pre>
+<p><img src="figure/cores.Rmd/unnamed-chunk-12-1.svg" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-12-1">
+Past versions of unnamed-chunk-12-1.svg
+</button>
+</p>
+<div id="fig-unnamed-chunk-12-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/saezlab/MultispectralHCC/blob/c85e3e66a5f983c244956e1d591ff8af48d0444c/docs/figure/cores.Rmd/unnamed-chunk-12-1.svg" target="_blank">c85e3e6</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-09-17
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>Select only the samples with positive silhouette scores as “core samples”</p>
 <pre class="r"><code>core.samples &lt;- which(silhouette.nmf[,3] &gt; 0)
-tumor.hc.core.samples &lt;- tumor.hc.winsorized[subsamp,] %&gt;% add_column(Cluster = nmf.clusters) %&gt;% 
+tumor.hc.core.samples &lt;- tumor.hc.norm[subsamp,] %&gt;% add_column(Cluster = nmf.clusters) %&gt;% 
   slice(core.samples)</code></pre>
 <p>Calculate difference in means (mean(cluster) - mean(other)), one-vs-all t-test per marker and correct for FDR. Filter q &lt;= 0.05</p>
 <pre class="r"><code>unique(tumor.hc.core.samples$Cluster) %&gt;% map_dfr(\(c){
@@ -1128,102 +1353,81 @@ tumor.hc.core.samples &lt;- tumor.hc.winsorized[subsamp,] %&gt;% add_column(Clus
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">CRP</td>
-<td align="right">0.00e+00</td>
-<td align="right">4</td>
-<td align="right">4.4163508</td>
-<td align="right">0.0000000</td>
+<td align="left">beta.cat.</td>
+<td align="right">0</td>
+<td align="right">2</td>
+<td align="right">1.5812421</td>
+<td align="right">0</td>
 </tr>
 <tr class="even">
-<td align="left">p.S6</td>
-<td align="right">0.00e+00</td>
-<td align="right">5</td>
-<td align="right">1.3652870</td>
-<td align="right">0.0000000</td>
-</tr>
-<tr class="odd">
 <td align="left">BerEP4</td>
-<td align="right">0.00e+00</td>
-<td align="right">2</td>
-<td align="right">0.3112322</td>
-<td align="right">0.0000000</td>
-</tr>
-<tr class="even">
-<td align="left">p.S6</td>
-<td align="right">0.00e+00</td>
-<td align="right">2</td>
-<td align="right">-0.8367138</td>
-<td align="right">0.0000000</td>
-</tr>
-<tr class="odd">
-<td align="left">CRP</td>
-<td align="right">0.00e+00</td>
-<td align="right">2</td>
-<td align="right">-2.0375480</td>
-<td align="right">0.0000000</td>
-</tr>
-<tr class="even">
-<td align="left">AGS</td>
-<td align="right">0.00e+00</td>
+<td align="right">0</td>
 <td align="right">3</td>
-<td align="right">0.1953533</td>
-<td align="right">0.0000000</td>
-</tr>
-<tr class="odd">
-<td align="left">AGS</td>
-<td align="right">0.00e+00</td>
-<td align="right">2</td>
-<td align="right">-0.0755940</td>
-<td align="right">0.0000000</td>
-</tr>
-<tr class="even">
-<td align="left">BerEP4</td>
-<td align="right">0.00e+00</td>
-<td align="right">4</td>
-<td align="right">-0.1704839</td>
-<td align="right">0.0000000</td>
-</tr>
-<tr class="odd">
-<td align="left">CRP</td>
-<td align="right">0.00e+00</td>
-<td align="right">5</td>
-<td align="right">-1.2078233</td>
-<td align="right">0.0000000</td>
-</tr>
-<tr class="even">
-<td align="left">BerEP4</td>
-<td align="right">0.00e+00</td>
-<td align="right">3</td>
-<td align="right">-0.1800419</td>
-<td align="right">0.0000000</td>
-</tr>
-<tr class="odd">
-<td align="left">BerEP4</td>
-<td align="right">0.00e+00</td>
-<td align="right">5</td>
-<td align="right">-0.1434237</td>
-<td align="right">0.0000000</td>
-</tr>
-<tr class="even">
-<td align="left">CRP</td>
-<td align="right">0.00e+00</td>
-<td align="right">3</td>
-<td align="right">-0.8872620</td>
-<td align="right">0.0000000</td>
+<td align="right">-0.6642024</td>
+<td align="right">0</td>
 </tr>
 <tr class="odd">
 <td align="left">p.S6</td>
-<td align="right">1.00e-07</td>
-<td align="right">3</td>
-<td align="right">-0.2237142</td>
-<td align="right">0.0000001</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">-0.5883269</td>
+<td align="right">0</td>
 </tr>
 <tr class="even">
-<td align="left">AGS</td>
-<td align="right">2.74e-04</td>
-<td align="right">5</td>
-<td align="right">-0.0232253</td>
-<td align="right">0.0003132</td>
+<td align="left">p.S6</td>
+<td align="right">0</td>
+<td align="right">3</td>
+<td align="right">0.6729983</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">CRP</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">-0.4360204</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">CRP</td>
+<td align="right">0</td>
+<td align="right">3</td>
+<td align="right">0.4639126</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">BerEP4</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0.4870888</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">beta.cat.</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">-0.3628184</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">beta.cat.</td>
+<td align="right">0</td>
+<td align="right">3</td>
+<td align="right">-0.3783264</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">BerEP4</td>
+<td align="right">0</td>
+<td align="right">2</td>
+<td align="right">0.3956980</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">p.S6</td>
+<td align="right">0</td>
+<td align="right">2</td>
+<td align="right">-0.2002105</td>
+<td align="right">0</td>
 </tr>
 </tbody>
 </table>
