@@ -81,17 +81,18 @@ tumor.hc.umap <- umap(tumor.hc.norm[subsamp, ], n_threads = 7)
 
 ## Consensus NMF
 
-We use an efficient implementation of alternating non negative least-squares with regularized to favor sparse basis matrices snmf/l.
+We use an efficient implementation of alternating non negative least-squares with regularized to favor sparse coefficient matrices snmf/r. In this way we aim for cleaner clustering.
 
 ```{r}
 tumor.hc.nmf.rank <- nmfEstimateRank(as.matrix(t(tumor.hc.rank[subsamp,])), 
-                                     range = seq(2,6), method = "snmf/l",
+                                     range = seq(2,6), method = "snmf/r",
                                      nrun = 10, seed = 42)
 
 plot(tumor.hc.nmf.rank)
 
-tumor.hc.nmf <- nmf(as.matrix(t(tumor.hc.rank[subsamp,])), 5,
-                method = "snmf/l", nrun = 10, seed = 42)
+tumor.hc.nmf <- nmf(as.matrix(t(tumor.hc.rank[subsamp,])), 
+                rank = 3, method = "snmf/r", 
+                nrun = 10, seed = 42)
 
 ```
 
@@ -106,13 +107,6 @@ Extract coefficients of NMF (soft clustering of samples)
 ```{r}
 coefmap(tumor.hc.nmf)
 ```
-
-Check for signs of overfitting
-
-```{r}
-consensusmap(tumor.hc.nmf)
-```
-
 
 Assign clusters
 ```{r}
