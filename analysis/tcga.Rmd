@@ -274,7 +274,7 @@ tcga.nmf.rank <- nmfEstimateRank(as.matrix(t(tcga.rank)), seq(2,10), nrun = 20, 
 
 plot(tcga.nmf.rank)
 
-tcga.nmf <- nmf(as.matrix(t(tcga.rank)), 9, nrun = 20, seed = 42)
+tcga.nmf <- tcga.nmf.rank$fit[["9"]]
 
 ```
 
@@ -394,7 +394,7 @@ names(which((tcga.core.samples$Cluster %>% table)>1)) %>% map_dfr(\(c){
 Repeat the analysis, but using 3 clusters.
 
 ```{r}
-tcga.nmf <- nmf(as.matrix(t(tcga.rank)), 3, nrun = 20, seed = 42)
+tcga.nmf <- tcga.nmf <- tcga.nmf.rank$fit[["3"]]
 ```
 
 Extract basis of NMF (signature of cluster)
