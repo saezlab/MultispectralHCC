@@ -189,7 +189,8 @@ Plot in 2D PCA and UMAP
 fviz_pca_ind(tcga.pca, geom = "point", col.ind = as.factor(leiden.clusters)) +
   theme_classic()
 
-ggplot(tcga.umap.clus %>% mutate(Cluster = as.factor(leiden.clusters)), aes(x = U1, y = U2, color = Cluster, shape = Cluster)) +
+ggplot(tcga.umap.clus %>% mutate(Cluster = as.factor(leiden.clusters)), 
+       aes(x = U1, y = U2, color = Cluster, shape = Cluster)) +
   geom_point() +
   theme_classic()
 ```
@@ -374,7 +375,7 @@ tcga.core.samples <- tcga.norm %>% add_column(Cluster = nmf.clusters) %>%
 Calculate difference in means (mean(cluster) - mean(other)), one-vs-all t-test per marker and correct for FDR. Filter q <= 0.05
 
 ```{r}
-unique(tcga.core.samples$Cluster) %>% map_dfr(\(c){
+names(which((tcga.core.samples$Cluster %>% table)>1)) %>% map_dfr(\(c){
   tcga.core.samples %>% 
     summarize(across(-Cluster, ~t.test(.x ~ (Cluster==c))$p.value)) %>%
     pivot_longer(names_to = "Marker", values_to = "p", everything()) %>% 
