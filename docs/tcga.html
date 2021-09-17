@@ -11,7 +11,7 @@
 
 <meta name="author" content="Jovan Tanevski" />
 
-<meta name="date" content="2021-09-16" />
+<meta name="date" content="2021-09-17" />
 
 <title>Analysis of TCGA RPPA LIHC samples</title>
 
@@ -372,7 +372,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Analysis of TCGA RPPA LIHC samples</h1>
 <h4 class="author">Jovan Tanevski</h4>
-<h4 class="date">2021-09-16</h4>
+<h4 class="date">2021-09-17</h4>
 
 </div>
 
@@ -397,7 +397,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2021-09-16
+<strong>Last updated:</strong> 2021-09-17
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -488,16 +488,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomsaezlabMultispectralHCCtree9c11427340177e2bff94ffda147bc0ac9bcdb611targetblank9c11427a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/saezlab/MultispectralHCC/tree/9c11427340177e2bff94ffda147bc0ac9bcdb611" target="_blank">9c11427</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomsaezlabMultispectralHCCtree825c1f28ee89cfa41980b4e33f64495221fed146targetblank825c1f2a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/saezlab/MultispectralHCC/tree/825c1f28ee89cfa41980b4e33f64495221fed146" target="_blank">825c1f2</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomsaezlabMultispectralHCCtree9c11427340177e2bff94ffda147bc0ac9bcdb611targetblank9c11427a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomsaezlabMultispectralHCCtree825c1f28ee89cfa41980b4e33f64495221fed146targetblank825c1f2a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/saezlab/MultispectralHCC/tree/9c11427340177e2bff94ffda147bc0ac9bcdb611" target="_blank">9c11427</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/saezlab/MultispectralHCC/tree/825c1f28ee89cfa41980b4e33f64495221fed146" target="_blank">825c1f2</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -512,13 +512,8 @@ Ignored files:
     Ignored:    code/
     Ignored:    data/
     Ignored:    old/
+    Ignored:    omnipathr-log/
     Ignored:    output/
-
-Untracked files:
-    Untracked:  omnipathr-log/
-
-Unstaged changes:
-    Modified:   analysis/cores.Rmd
 
 </code></pre>
 <p>
@@ -557,6 +552,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/saezlab/MultispectralHCC/blob/b8745a899c6bd133e4e08c1ab06b5d0978084b0e/analysis/tcga.Rmd" target="_blank">b8745a8</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-09-17
+</td>
+<td>
+fix typos
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/saezlab/MultispectralHCC/ae61865ec6bf0a8488ad093a31341b14d82c9f3b/docs/tcga.html" target="_blank">ae61865</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-09-16
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1997,11 +2026,11 @@ Down          8        7        4
 NotSig        0        0        4
 Up            4        5        4</code></pre>
 <p>Differential expression analysis (silhouette)</p>
-<p>Select only the samples with positive silohuette scores as “core samples”</p>
+<p>Select only the samples with positive silhouette scores as “core samples”</p>
 <pre class="r"><code>core.samples &lt;- which(tcga.hclust$silinfo$widths[,3] &gt; 0)
 tcga.core.samples &lt;- tcga.raw %&gt;% add_column(Cluster = tcga.hclust$cluster) %&gt;% 
   slice(core.samples)</code></pre>
-<p>Calculate difference in means (mean(cluster) - mean()), one-vs-all t-test per marker and correct for FDR. Filter q &lt;= 0.5</p>
+<p>Calculate difference in means (mean(cluster) - mean(other)), one-vs-all t-test per marker and correct for FDR. Filter q &lt;= 0.05</p>
 <pre class="r"><code>unique(tcga.core.samples$Cluster) %&gt;% map_dfr(\(c){
   tcga.core.samples %&gt;% 
     summarize(across(-Cluster, ~t.test(.x ~ (Cluster==c))$p.value)) %&gt;%
@@ -2262,6 +2291,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/saezlab/MultispectralHCC/blob/ae61865ec6bf0a8488ad093a31341b14d82c9f3b/docs/figure/tcga.Rmd/unnamed-chunk-12-1.svg" target="_blank">ae61865</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-09-16
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/saezlab/MultispectralHCC/blob/9a18eda5afc5ff52002d9bfaaf9b82f4f9a56258/docs/figure/tcga.Rmd/unnamed-chunk-12-1.svg" target="_blank">9a18eda</a>
 </td>
 <td>
@@ -2301,6 +2341,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/saezlab/MultispectralHCC/blob/ae61865ec6bf0a8488ad093a31341b14d82c9f3b/docs/figure/tcga.Rmd/unnamed-chunk-12-2.svg" target="_blank">ae61865</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-09-16
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/saezlab/MultispectralHCC/blob/9a18eda5afc5ff52002d9bfaaf9b82f4f9a56258/docs/figure/tcga.Rmd/unnamed-chunk-12-2.svg" target="_blank">9a18eda</a>
@@ -2359,6 +2410,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/saezlab/MultispectralHCC/blob/ae61865ec6bf0a8488ad093a31341b14d82c9f3b/docs/figure/tcga.Rmd/unnamed-chunk-13-1.svg" target="_blank">ae61865</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-09-16
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/saezlab/MultispectralHCC/blob/9a18eda5afc5ff52002d9bfaaf9b82f4f9a56258/docs/figure/tcga.Rmd/unnamed-chunk-13-1.svg" target="_blank">9a18eda</a>
@@ -2588,6 +2650,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/saezlab/MultispectralHCC/blob/ae61865ec6bf0a8488ad093a31341b14d82c9f3b/docs/figure/tcga.Rmd/unnamed-chunk-15-1.svg" target="_blank">ae61865</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-09-16
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/saezlab/MultispectralHCC/blob/9a18eda5afc5ff52002d9bfaaf9b82f4f9a56258/docs/figure/tcga.Rmd/unnamed-chunk-15-1.svg" target="_blank">9a18eda</a>
 </td>
 <td>
@@ -2638,7 +2711,7 @@ Jovan Tanevski
 <pre class="r"><code>core.samples &lt;- which(silhouette.leiden[,3] &gt; 0)
 tcga.core.samples &lt;- tcga.raw %&gt;% add_column(Cluster = leiden.clusters) %&gt;% 
   slice(core.samples)</code></pre>
-<p>Calculate difference in means (mean(cluster) - mean()), one-vs-all t-test per marker and correct for FDR. Filter q &lt;= 0.5</p>
+<p>Calculate difference in means (mean(cluster) - mean(other)), one-vs-all t-test per marker and correct for FDR. Filter q &lt;= 0.05</p>
 <pre class="r"><code>unique(tcga.core.samples$Cluster) %&gt;% map_dfr(\(c){
   tcga.core.samples %&gt;% 
     summarize(across(-Cluster, ~t.test(.x ~ (Cluster==c))$p.value)) %&gt;%
@@ -3455,7 +3528,7 @@ Down          7
 NotSig        0
 Up            5</code></pre>
 <p>Differential expression analysis (silhouette)</p>
-<p>Calculate the similarity of samples using the expression and the silhuette scores based on the assigned clusters.</p>
+<p>Calculate the similarity of samples using the expression and the silhouette scores based on the assigned clusters.</p>
 <pre class="r"><code>silhouette.nmf &lt;- silhouette(nmf.clusters, dist(tcga.raw))
 fviz_silhouette(silhouette.nmf)</code></pre>
 <pre><code>  cluster size ave.sil.width
@@ -3506,11 +3579,11 @@ Jovan Tanevski
 </table>
 </div>
 </div>
-<p>Select only the samples with positive silohuette scores as “core samples”</p>
+<p>Select only the samples with positive silhouette scores as “core samples”</p>
 <pre class="r"><code>core.samples &lt;- which(silhouette.nmf[,3] &gt; 0)
 tcga.core.samples &lt;- tcga.raw %&gt;% add_column(Cluster = nmf.clusters) %&gt;% 
   slice(core.samples)</code></pre>
-<p>Calculate difference in means (mean(cluster) - mean()), one-vs-all t-test per marker and correct for FDR. Filter q &lt;= 0.5</p>
+<p>Calculate difference in means (mean(cluster) - mean(other)), one-vs-all t-test per marker and correct for FDR. Filter q &lt;= 0.05</p>
 <pre class="r"><code>unique(tcga.core.samples$Cluster) %&gt;% map_dfr(\(c){
   tcga.core.samples %&gt;% 
     summarize(across(-Cluster, ~t.test(.x ~ (Cluster==c))$p.value)) %&gt;%
@@ -4122,7 +4195,7 @@ Down          6        7        7
 NotSig        1        2        0
 Up            5        3        5</code></pre>
 <p>Differential expression analysis (silhouette)</p>
-<p>Calculate the similarity of samples using the expression and the silhuette scores based on the assigned clusters.</p>
+<p>Calculate the similarity of samples using the expression and the silhouette scores based on the assigned clusters.</p>
 <pre class="r"><code>silhouette.nmf &lt;- silhouette(nmf.clusters, dist(tcga.raw))
 fviz_silhouette(silhouette.nmf)</code></pre>
 <pre><code>  cluster size ave.sil.width
@@ -4167,11 +4240,11 @@ Jovan Tanevski
 </table>
 </div>
 </div>
-<p>Select only the samples with positive silohuette scores as “core samples”</p>
+<p>Select only the samples with positive silhouette scores as “core samples”</p>
 <pre class="r"><code>core.samples &lt;- which(silhouette.nmf[,3] &gt; 0)
 tcga.core.samples &lt;- tcga.raw %&gt;% add_column(Cluster = nmf.clusters) %&gt;% 
   slice(core.samples)</code></pre>
-<p>Calculate difference in means (mean(cluster) - mean()), one-vs-all t-test per marker and correct for FDR. Filter q &lt;= 0.5</p>
+<p>Calculate difference in means (mean(cluster) - mean(other)), one-vs-all t-test per marker and correct for FDR. Filter q &lt;= 0.05</p>
 <pre class="r"><code>unique(tcga.core.samples$Cluster) %&gt;% map_dfr(\(c){
   tcga.core.samples %&gt;% 
     summarize(across(-Cluster, ~t.test(.x ~ (Cluster==c))$p.value)) %&gt;%
