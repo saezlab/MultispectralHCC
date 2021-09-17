@@ -11,3 +11,5 @@ editor_options:
 ## Analyses
 
 [Basic exploratory analysis of the TCGA data](tcga.html)
+
+[Pilot analysis of data from hepatocytes from tumor cores](cores.html)

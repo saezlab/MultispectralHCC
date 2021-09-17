@@ -2,7 +2,9 @@
 title: "cores"
 author: "Jovan Tanevski"
 date: "`r Sys.Date()`"
-output: workflowr::wflow_html
+output: 
+  workflowr::wflow_html:
+    df_print: kable
 editor_options:
   chunk_output_type: console
 ---
@@ -10,9 +12,181 @@ editor_options:
 knitr::opts_chunk$set(dev = "svg")
 ```
 
-## Introduction
+## Setup
+
+```{r setup, message = FALSE}
+library(tidyverse)
+library(skimr)
+library(uwot)
+library(limma)
+library(NMF)
+library(factoextra)
+library(cowplot)
+```
 
 ```{r}
+tumor.hc <- read_csv("data/tumor_hepatocytes.csv", col_types = cols()) %>%
+  select(
+    `Cytoplasm AGS (Opal 690) Mean (Normalized Counts, Total Weighting)`,
+    `Cytoplasm BerEP4 (Opal 650) Mean (Normalized Counts, Total Weighting)`,
+    `Cytoplasm CRP (Opal 540) Mean (Normalized Counts, Total Weighting)`,
+    `Nucleus p-S6 (Opal 570) Mean (Normalized Counts, Total Weighting)`,
+    `Nucleus beta-cat. (Opal 520) Mean (Normalized Counts, Total Weighting)`
+  ) %>% `colnames<-`(str_split(colnames(.)," ") %>% map_chr(~.x[2]) %>% make.names)
+
+skim(tumor.hc)
+```
+
+Detect outliers based on Tukey's interquartile approach and winsorize. Follow by quantile normalization and ranking to get rid of the effect of abundance
+
+```{r}
+quartiles <-apply(tumor.hc, 2, \(x) quantile(x, c(.25,.75))) 
+lower <- quartiles[1,] - 1.5*(quartiles[2,] - quartiles[1,])
+upper <- quartiles[2,] + 1.5*(quartiles[2,] - quartiles[1,])
+
+
+tumor.hc.winsorized <- tumor.hc %>% imap_dfc(\(x,y){
+  x[x<lower[y]] <- x[which.min(x - lower[y])]
+  x[x>upper[y]] <- x[which.min(x - upper[y])]
+  x
+})
+
+skim(tumor.hc.winsorized)
+
+tumor.hc.norm <- normalizeQuantiles(data.frame(tumor.hc.winsorized))
+
+skim(tumor.hc.norm)
+
+tumor.hc.rank <- mutate_all(tumor.hc.winsorized, ~rank(., ties.method = "min"))
 
 ```
+
+Pilot run. Subsample 1% of the original data.
+
+```{r}
+set.seed(42)
+subsamp <- sample(nrow(tumor.hc.rank), 0.01*nrow(tumor.hc.rank))
+```
+
+
+## Dimensionality reduction
+
+```{r}
+tumor.hc.pca <- prcomp(tumor.hc.norm[subsamp,])
+summary(tumor.hc.pca)
+
+tumor.hc.umap <- umap(tumor.hc.norm[subsamp, ], n_threads = 7)
+```
+
+
+## Consensus NMF
+
+We use an efficient implementation of alternating non negative least-squares with regularized to favor sparse basis matrices snmf/l.
+
+```{r}
+tumor.hc.nmf.rank <- nmfEstimateRank(as.matrix(t(tumor.hc.rank[subsamp,])), 
+                                     range = seq(2,6), method = "snmf/l",
+                                     nrun = 10, seed = 42)
+
+plot(tumor.hc.nmf.rank)
+
+tumor.hc.nmf <- nmf(as.matrix(t(tumor.hc.rank[subsamp,])), 5,
+                method = "snmf/l", nrun = 10, seed = 42)
+
+```
+
+Extract basis of NMF (signature of cluster)
+
+```{r}
+basismap(tumor.hc.nmf)
+```
+
+Extract coefficients of NMF (soft clustering of samples)
+
+```{r}
+coefmap(tumor.hc.nmf)
+```
+
+Check for signs of overfitting
+
+```{r}
+consensusmap(tumor.hc.nmf)
+```
+
+
+Assign clusters
+```{r}
+nmf.clusters <- apply(tumor.hc.nmf@fit@H, 2, which.max)
+```
+
+Plot in 2D PCA and UMAP
+
+```{r}
+fviz_pca_ind(tumor.hc.pca, geom = "point", col.ind = as.factor(nmf.clusters)) +
+  theme_classic()
+
+tumor.hc.umap.clus <-
+  tumor.hc.umap %>%
+  cbind(nmf.clusters) %>%
+  `colnames<-`(c("U1", "U2", "Cluster")) %>%
+  as_tibble() %>%
+  mutate_at("Cluster", as.factor)
+
+ggplot(tumor.hc.umap.clus, aes(x = U1, y = U2, color = Cluster)) +
+  geom_point() +
+  theme_classic()
+```
+
+Expression profiles per cluster 
+
+```{r fig.width=10, fig.height=10}
+tumor.hc.clustered.nmf <- tumor.hc.winsorized[subsamp, ] %>%
+  mutate(Cluster = as.factor(nmf.clusters)) %>%
+  pivot_longer(names_to = "Marker", values_to = "Value", -Cluster)
+
+profiles <- seq_len(max(nmf.clusters)) %>% map(~
+ggplot(
+  tumor.hc.clustered.nmf %>% filter(Cluster == .x),
+  aes(x = Marker, y = Value, color = Marker)
+) +
+  stat_summary(fun.data = mean_sdl, show.legend = FALSE) +
+  ylim(-3, 3) +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)))
+
+plot_grid(plotlist = profiles, labels = paste("Cluster", seq_len(max(nmf.clusters))))
+```
+
+
+Differential expression analysis (silhouette)
+
+Calculate the similarity of samples using the expression and the silhouette scores based on the assigned clusters.
+```{r}
+silhouette.nmf <- silhouette(nmf.clusters, dist(tumor.hc.winsorized[subsamp,]))
+fviz_silhouette(silhouette.nmf)
+```
+
+Select only the samples with positive silhouette scores as "core samples"
+```{r}
+core.samples <- which(silhouette.nmf[,3] > 0)
+tumor.hc.core.samples <- tumor.hc.winsorized[subsamp,] %>% add_column(Cluster = nmf.clusters) %>% 
+  slice(core.samples)
+```
+
+Calculate difference in means (mean(cluster) - mean(other)), one-vs-all t-test per marker and correct for FDR. Filter q <= 0.05
+
+```{r}
+unique(tumor.hc.core.samples$Cluster) %>% map_dfr(\(c){
+  tumor.hc.core.samples %>% 
+    summarize(across(-Cluster, ~t.test(.x ~ (Cluster==c))$p.value)) %>%
+    pivot_longer(names_to = "Marker", values_to = "p", everything()) %>% 
+    mutate(Cluster = c, Difference = tumor.hc.core.samples %>% 
+             group_by(Cluster == c) %>% 
+             select(-Cluster) %>% 
+             group_split(.keep = FALSE) %>% map(colMeans) %>% reduce(`-`))
+ }) %>% 
+  mutate(q = p.adjust(p, method = "fdr"), Difference = -Difference) %>% 
+  filter(q <= 0.05) %>% arrange(q)
+```
+
 
