@@ -99,14 +99,14 @@ ggplot(tcga.umap.clus, aes(x = U1, y = U2, color = Cluster)) +
 Expression profiles per cluster 
 
 ```{r fig.width=10, fig.height=10}
-tcga.clustered <- tcga.raw %>%
+tcga.clustered <- tcga.norm %>%
   mutate(Cluster = as.factor(tcga.hclust$cluster)) %>%
-  pivot_longer(names_to = "Marker", values_to = "Z", -Cluster)
+  pivot_longer(names_to = "Marker", values_to = "Norm.value", -Cluster)
 
 profiles <- seq_len(tcga.hclust$nbclust) %>% map(~
 ggplot(
   tcga.clustered %>% filter(Cluster == .x),
-  aes(x = Marker, y = Z, color = Marker)
+  aes(x = Marker, y = Norm.value, color = Marker)
 ) +
   stat_summary(fun.data = mean_sdl, show.legend = FALSE) +
   ylim(-3, 3) +
@@ -123,7 +123,7 @@ Differential expression analysis (limma)
 design <- model.matrix(~0 + as.factor(tcga.hclust$cluster))
 colnames(design) <- paste0("Cluster", seq_len(tcga.hclust$nbclust))
 
-tcga.hclust.limma <- lmFit(t(tcga.raw), design = design)
+tcga.hclust.limma <- lmFit(t(tcga.norm), design = design)
 
 tcga.hclust.eb <- eBayes(tcga.hclust.limma)
 
@@ -142,7 +142,7 @@ Differential expression analysis (silhouette)
 Select only the samples with positive silhouette scores as "core samples"
 ```{r}
 core.samples <- which(tcga.hclust$silinfo$widths[,3] > 0)
-tcga.core.samples <- tcga.raw %>% add_column(Cluster = tcga.hclust$cluster) %>% 
+tcga.core.samples <- tcga.norm %>% add_column(Cluster = tcga.hclust$cluster) %>% 
   slice(core.samples)
 ```
 
@@ -197,14 +197,14 @@ ggplot(tcga.umap.clus %>% mutate(Cluster = as.factor(leiden.clusters)), aes(x = 
 Expression profiles per cluster 
 
 ```{r fig.width=10, fig.height=10}
-tcga.clustered <- tcga.raw %>%
+tcga.clustered <- tcga.norm %>%
   mutate(Cluster = as.factor(leiden.clusters)) %>%
-  pivot_longer(names_to = "Marker", values_to = "Z", -Cluster)
+  pivot_longer(names_to = "Marker", values_to = "Norm.value", -Cluster)
 
 profiles <- seq_len(max(leiden.clusters)) %>% map(~
 ggplot(
   tcga.clustered %>% filter(Cluster == .x),
-  aes(x = Marker, y = Z, color = Marker)
+  aes(x = Marker, y = Norm.value, color = Marker)
 ) +
   stat_summary(fun.data = mean_sdl, show.legend = FALSE) +
   ylim(-3, 3) +
@@ -220,7 +220,7 @@ Differential expression analysis (limma)
 design <- model.matrix(~0 + as.factor(leiden.clusters))
 colnames(design) <- paste0("Cluster", seq_len(max(leiden.clusters)))
 
-tcga.leiden.limma <- lmFit(t(tcga.raw), design = design)
+tcga.leiden.limma <- lmFit(t(tcga.norm), design = design)
 
 tcga.leiden.eb <- eBayes(tcga.leiden.limma)
 
@@ -238,14 +238,14 @@ Differential expression analysis (silhouette)
 
 Calculate the similarity of samples using the expression and the silhouette scores based on the assigned clusters.
 ```{r}
-silhouette.leiden <- silhouette(leiden.clusters, dist(tcga.raw))
+silhouette.leiden <- silhouette(leiden.clusters, dist(tcga.norm))
 fviz_silhouette(silhouette.leiden)
 ```
 
 Select only the samples with positive silhouette scores as "core samples"
 ```{r}
 core.samples <- which(silhouette.leiden[,3] > 0)
-tcga.core.samples <- tcga.raw %>% add_column(Cluster = leiden.clusters) %>% 
+tcga.core.samples <- tcga.norm %>% add_column(Cluster = leiden.clusters) %>% 
   slice(core.samples)
 ```
 
@@ -320,14 +320,14 @@ ggplot(tcga.umap.clus %>% mutate(Cluster = as.factor(nmf.clusters)), aes(x = U1,
 Expression profiles per cluster 
 
 ```{r fig.width=10, fig.height=10}
-tcga.clustered.nmf <- tcga.raw %>%
+tcga.clustered.nmf <- tcga.norm %>%
   mutate(Cluster = as.factor(nmf.clusters)) %>%
-  pivot_longer(names_to = "Marker", values_to = "Z", -Cluster)
+  pivot_longer(names_to = "Marker", values_to = "Norm.value", -Cluster)
 
 profiles <- seq_len(max(nmf.clusters)) %>% map(~
 ggplot(
   tcga.clustered.nmf %>% filter(Cluster == .x),
-  aes(x = Marker, y = Z, color = Marker)
+  aes(x = Marker, y = Norm.value, color = Marker)
 ) +
   stat_summary(fun.data = mean_sdl, show.legend = FALSE) +
   ylim(-3, 3) +
@@ -343,7 +343,7 @@ Differential expression analysis (limma)
 design <- model.matrix(~0 + as.factor(nmf.clusters))
 colnames(design) <- paste0("Cluster", seq_len(max(nmf.clusters)))
 
-tcga.nmf.limma <- lmFit(t(tcga.raw), design = design)
+tcga.nmf.limma <- lmFit(t(tcga.norm), design = design)
 
 tcga.nmf.eb <- eBayes(tcga.nmf.limma)
 
@@ -360,14 +360,14 @@ Differential expression analysis (silhouette)
 
 Calculate the similarity of samples using the expression and the silhouette scores based on the assigned clusters.
 ```{r}
-silhouette.nmf <- silhouette(nmf.clusters, dist(tcga.raw))
+silhouette.nmf <- silhouette(nmf.clusters, dist(tcga.norm))
 fviz_silhouette(silhouette.nmf)
 ```
 
 Select only the samples with positive silhouette scores as "core samples"
 ```{r}
 core.samples <- which(silhouette.nmf[,3] > 0)
-tcga.core.samples <- tcga.raw %>% add_column(Cluster = nmf.clusters) %>% 
+tcga.core.samples <- tcga.norm %>% add_column(Cluster = nmf.clusters) %>% 
   slice(core.samples)
 ```
 
@@ -434,14 +434,14 @@ ggplot(tcga.umap.clus %>% mutate(Cluster = as.factor(nmf.clusters)), aes(x = U1,
 Expression profiles per cluster 
 
 ```{r fig.width=10, fig.height=10}
-tcga.clustered.nmf <- tcga.raw %>%
+tcga.clustered.nmf <- tcga.norm %>%
   mutate(Cluster = as.factor(nmf.clusters)) %>%
-  pivot_longer(names_to = "Marker", values_to = "Z", -Cluster)
+  pivot_longer(names_to = "Marker", values_to = "Norm.value", -Cluster)
 
 profiles <- seq_len(max(nmf.clusters)) %>% map(~
 ggplot(
   tcga.clustered.nmf %>% filter(Cluster == .x),
-  aes(x = Marker, y = Z, color = Marker)
+  aes(x = Marker, y = Norm.value, color = Marker)
 ) +
   stat_summary(fun.data = mean_sdl, show.legend = FALSE) +
   ylim(-3, 3) +
@@ -457,7 +457,7 @@ Differential expression analysis (limma)
 design <- model.matrix(~0 + as.factor(nmf.clusters))
 colnames(design) <- paste0("Cluster", seq_len(max(nmf.clusters)))
 
-tcga.nmf.limma <- lmFit(t(tcga.raw), design = design)
+tcga.nmf.limma <- lmFit(t(tcga.norm), design = design)
 
 tcga.nmf.eb <- eBayes(tcga.nmf.limma)
 
@@ -474,14 +474,14 @@ Differential expression analysis (silhouette)
 
 Calculate the similarity of samples using the expression and the silhouette scores based on the assigned clusters.
 ```{r}
-silhouette.nmf <- silhouette(nmf.clusters, dist(tcga.raw))
+silhouette.nmf <- silhouette(nmf.clusters, dist(tcga.norm))
 fviz_silhouette(silhouette.nmf)
 ```
 
 Select only the samples with positive silhouette scores as "core samples"
 ```{r}
 core.samples <- which(silhouette.nmf[,3] > 0)
-tcga.core.samples <- tcga.raw %>% add_column(Cluster = nmf.clusters) %>% 
+tcga.core.samples <- tcga.norm %>% add_column(Cluster = nmf.clusters) %>% 
   slice(core.samples)
 ```
 

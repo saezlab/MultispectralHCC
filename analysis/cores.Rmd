@@ -134,14 +134,14 @@ ggplot(tumor.hc.umap.clus, aes(x = U1, y = U2, color = Cluster)) +
 Expression profiles per cluster 
 
 ```{r fig.width=10, fig.height=10}
-tumor.hc.clustered.nmf <- tumor.hc.winsorized[subsamp, ] %>%
+tumor.hc.clustered.nmf <- tumor.hc.norm[subsamp, ] %>%
   mutate(Cluster = as.factor(nmf.clusters)) %>%
-  pivot_longer(names_to = "Marker", values_to = "Value", -Cluster)
+  pivot_longer(names_to = "Marker", values_to = "Norm.value", -Cluster)
 
 profiles <- seq_len(max(nmf.clusters)) %>% map(~
 ggplot(
   tumor.hc.clustered.nmf %>% filter(Cluster == .x),
-  aes(x = Marker, y = Value, color = Marker)
+  aes(x = Marker, y = Norm.value, color = Marker)
 ) +
   stat_summary(fun.data = mean_sdl, show.legend = FALSE) +
   ylim(-3, 3) +
@@ -156,14 +156,14 @@ Differential expression analysis (silhouette)
 
 Calculate the similarity of samples using the expression and the silhouette scores based on the assigned clusters.
 ```{r}
-silhouette.nmf <- silhouette(nmf.clusters, dist(tumor.hc.winsorized[subsamp,]))
+silhouette.nmf <- silhouette(nmf.clusters, dist(tumor.hc.norm[subsamp,]))
 fviz_silhouette(silhouette.nmf)
 ```
 
 Select only the samples with positive silhouette scores as "core samples"
 ```{r}
 core.samples <- which(silhouette.nmf[,3] > 0)
-tumor.hc.core.samples <- tumor.hc.winsorized[subsamp,] %>% add_column(Cluster = nmf.clusters) %>% 
+tumor.hc.core.samples <- tumor.hc.norm[subsamp,] %>% add_column(Cluster = nmf.clusters) %>% 
   slice(core.samples)
 ```
 
