@@ -8,9 +8,6 @@ output:
 editor_options:
   chunk_output_type: console
 ---
-```{r include = FALSE}
-knitr::opts_chunk$set(dev = "svg")
-```
 
 ## Setup
 
@@ -73,10 +70,30 @@ subsamp <- sample(nrow(tumor.hc.rank), (1 / percent) * nrow(tumor.hc.rank))
 ## Dimensionality reduction
 
 ```{r}
-tumor.hc.pca <- prcomp(tumor.hc.norm[subsamp, ])
-summary(tumor.hc.pca)
+tumor.hc.umap <- umap(tumor.hc.norm, n_threads = 5)
+```
 
-tumor.hc.umap <- umap(tumor.hc.norm[subsamp, ], n_threads = 5)
+Check if sample is representative in UMAP space
+
+```{r}
+tumor.hc.umap.sample <-
+  tumor.hc.umap %>%
+  `colnames<-`(c("U1", "U2")) %>%
+  as_tibble()
+
+all <- ggplot(tumor.hc.umap.sample, aes(x = U1, y = U2)) +
+  geom_point() +
+  theme_classic()
+
+sampled <- ggplot(tumor.hc.umap.sample %>% slice(subsamp), aes(x = U1, y = U2)) +
+  geom_point(color = "darkgreen") +
+  theme_classic()
+
+unsampled <- ggplot(tumor.hc.umap.sample %>% slice(-subsamp), aes(x = U1, y = U2)) +
+  geom_point(color = "darkred") +
+  theme_classic()
+
+plot_grid(all, sampled, unsampled)
 ```
 
 
@@ -113,7 +130,7 @@ basismap(tumor.hc.nmf)
 Extract coefficients of NMF (soft clustering of samples) if a reasonable amount of cells is subselected.
 
 ```{r}
-if(percent <= 5) coefmap(tumor.hc.nmf)
+if (percent <= 2) coefmap(tumor.hc.nmf)
 ```
 
 Assign clusters
@@ -124,15 +141,10 @@ nmf.clusters <- apply(tumor.hc.nmf@fit@H, 2, which.max)
 Plot in 2D PCA and UMAP
 
 ```{r}
-fviz_pca_ind(tumor.hc.pca, geom = "point", col.ind = as.factor(nmf.clusters)) +
-  theme_classic()
-
 tumor.hc.umap.clus <-
-  tumor.hc.umap %>%
-  cbind(nmf.clusters) %>%
-  `colnames<-`(c("U1", "U2", "Cluster")) %>%
-  as_tibble() %>%
-  mutate_at("Cluster", as.factor)
+  tumor.hc.umap.sample %>%
+  slice(subsamp) %>%
+  mutate(Cluster = as.factor(nmf.clusters))
 
 ggplot(tumor.hc.umap.clus, aes(x = U1, y = U2, color = Cluster)) +
   geom_point() +
