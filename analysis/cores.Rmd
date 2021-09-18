@@ -63,14 +63,20 @@ Pilot run. Subsample 10% of the original data.
 ```{r}
 set.seed(42)
 percent <- 10
-subsamp <- sample(nrow(tumor.hc.rank), (1 / percent) * nrow(tumor.hc.rank))
+subsamp <- sample(nrow(tumor.hc.rank), (percent / 100) * nrow(tumor.hc.rank))
 ```
 
 
 ## Dimensionality reduction
 
 ```{r}
-tumor.hc.umap <- umap(tumor.hc.norm, n_threads = 5)
+cache <- "output/tumor.hc.umap.rds"
+if(file.exists(cache)){ 
+  tumor.hc.umap <- read_rds(cache)
+} else {
+  tumor.hc.umap <- umap(tumor.hc.norm, n_threads = 5)
+  write_rds(tumor.hc.umap, cache, "gz")
+}
 ```
 
 Check if sample is representative in UMAP space
@@ -102,7 +108,7 @@ plot_grid(all, sampled, unsampled)
 We use an efficient implementation of alternating non negative least-squares with regularized to favor sparse coefficient matrices snmf/r. In this way we aim for cleaner clustering.
 
 ```{r}
-cache <- paste0("output/nmf.rank.", percent, ".rds")
+cache <- paste0("output/tumor.hc.nmf.rank.", percent, ".rds")
 
 if (file.exists(cache)) {
   tumor.hc.nmf.rank <- read_rds(cache)
@@ -112,7 +118,7 @@ if (file.exists(cache)) {
     nrun = 10, seed = 42, verbose = TRUE,
     .options = "mp5"
   )
-  write_rds(tumor.hc.nmf.rank, cache)
+  write_rds(tumor.hc.nmf.rank, cache, "gz")
 }
 
 plot(tumor.hc.nmf.rank)
