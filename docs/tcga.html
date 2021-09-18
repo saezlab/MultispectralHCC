@@ -11,7 +11,7 @@
 
 <meta name="author" content="Jovan Tanevski" />
 
-<meta name="date" content="2021-09-17" />
+<meta name="date" content="2021-09-18" />
 
 <title>Analysis of TCGA RPPA LIHC samples</title>
 
@@ -372,7 +372,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Analysis of TCGA RPPA LIHC samples</h1>
 <h4 class="author">Jovan Tanevski</h4>
-<h4 class="date">2021-09-17</h4>
+<h4 class="date">2021-09-18</h4>
 
 </div>
 
@@ -397,7 +397,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2021-09-17
+<strong>Last updated:</strong> 2021-09-18
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -488,16 +488,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomsaezlabMultispectralHCCtree410dc9089651ef8721d19a1e4581ffc4460a33ebtargetblank410dc90a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/saezlab/MultispectralHCC/tree/410dc9089651ef8721d19a1e4581ffc4460a33eb" target="_blank">410dc90</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomsaezlabMultispectralHCCtree421ce3c61bf5b4e00a71a0fd590325a44224804ctargetblank421ce3ca"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/saezlab/MultispectralHCC/tree/421ce3c61bf5b4e00a71a0fd590325a44224804c" target="_blank">421ce3c</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomsaezlabMultispectralHCCtree410dc9089651ef8721d19a1e4581ffc4460a33ebtargetblank410dc90a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomsaezlabMultispectralHCCtree421ce3c61bf5b4e00a71a0fd590325a44224804ctargetblank421ce3ca" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/saezlab/MultispectralHCC/tree/410dc9089651ef8721d19a1e4581ffc4460a33eb" target="_blank">410dc90</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/saezlab/MultispectralHCC/tree/421ce3c61bf5b4e00a71a0fd590325a44224804c" target="_blank">421ce3c</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -507,7 +507,9 @@ Ignored files:
     Ignored:    .DS_Store
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
+    Ignored:    NMF_9dce62dd2cd4/
     Ignored:    analysis/.DS_Store
+    Ignored:    analysis/figure/
     Ignored:    code/
     Ignored:    data/
     Ignored:    old/
@@ -550,6 +552,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/saezlab/MultispectralHCC/blob/421ce3c61bf5b4e00a71a0fd590325a44224804c/analysis/tcga.Rmd" target="_blank">421ce3c</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-09-18
+</td>
+<td>
+add caching, bump cores to 10%
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/saezlab/MultispectralHCC/cfc1900e9b366625a7b872498f74120758a0b4d8/docs/tcga.html" target="_blank">cfc1900</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-09-17
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1142,6 +1178,19 @@ skim(tcga.raw)</code></pre>
 </table>
 <p><strong>Variable type: numeric</strong></p>
 <table>
+<colgroup>
+<col width="13%" />
+<col width="8%" />
+<col width="11%" />
+<col width="4%" />
+<col width="4%" />
+<col width="4%" />
+<col width="4%" />
+<col width="4%" />
+<col width="4%" />
+<col width="4%" />
+<col width="33%" />
+</colgroup>
 <thead>
 <tr class="header">
 <th align="left">skim_variable</th>
@@ -1169,7 +1218,7 @@ skim(tcga.raw)</code></pre>
 <td align="right">-0.96</td>
 <td align="right">-0.76</td>
 <td align="right">-0.51</td>
-<td align="left">▁▂▂▅▇</td>
+<td align="left">&lt;U+2581&gt;&lt;U+2582&gt;&lt;U+2582&gt;&lt;U+2585&gt;&lt;U+2587&gt;</td>
 </tr>
 <tr class="even">
 <td align="left">AKT_pS473</td>
@@ -1182,7 +1231,7 @@ skim(tcga.raw)</code></pre>
 <td align="right">-0.41</td>
 <td align="right">-0.15</td>
 <td align="right">0.96</td>
-<td align="left">▁▂▃▇▁</td>
+<td align="left">&lt;U+2581&gt;&lt;U+2582&gt;&lt;U+2583&gt;&lt;U+2587&gt;&lt;U+2581&gt;</td>
 </tr>
 <tr class="odd">
 <td align="left">AKT_pT308</td>
@@ -1195,7 +1244,7 @@ skim(tcga.raw)</code></pre>
 <td align="right">0.09</td>
 <td align="right">0.22</td>
 <td align="right">1.72</td>
-<td align="left">▁▃▇▁▁</td>
+<td align="left">&lt;U+2581&gt;&lt;U+2583&gt;&lt;U+2587&gt;&lt;U+2581&gt;&lt;U+2581&gt;</td>
 </tr>
 <tr class="even">
 <td align="left">BETACATENIN</td>
@@ -1208,7 +1257,7 @@ skim(tcga.raw)</code></pre>
 <td align="right">1.51</td>
 <td align="right">1.87</td>
 <td align="right">3.70</td>
-<td align="left">▁▁▇▅▁</td>
+<td align="left">&lt;U+2581&gt;&lt;U+2581&gt;&lt;U+2587&gt;&lt;U+2585&gt;&lt;U+2581&gt;</td>
 </tr>
 <tr class="odd">
 <td align="left">JNK_pT183Y185</td>
@@ -1221,7 +1270,7 @@ skim(tcga.raw)</code></pre>
 <td align="right">-0.17</td>
 <td align="right">-0.04</td>
 <td align="right">0.48</td>
-<td align="left">▁▂▇▇▂</td>
+<td align="left">&lt;U+2581&gt;&lt;U+2582&gt;&lt;U+2587&gt;&lt;U+2587&gt;&lt;U+2582&gt;</td>
 </tr>
 <tr class="even">
 <td align="left">MEK1_pS217S221</td>
@@ -1234,7 +1283,7 @@ skim(tcga.raw)</code></pre>
 <td align="right">-0.23</td>
 <td align="right">-0.10</td>
 <td align="right">2.58</td>
-<td align="left">▇▃▁▁▁</td>
+<td align="left">&lt;U+2587&gt;&lt;U+2583&gt;&lt;U+2581&gt;&lt;U+2581&gt;&lt;U+2581&gt;</td>
 </tr>
 <tr class="odd">
 <td align="left">P38_pT180Y182</td>
@@ -1247,7 +1296,7 @@ skim(tcga.raw)</code></pre>
 <td align="right">0.50</td>
 <td align="right">0.72</td>
 <td align="right">2.95</td>
-<td align="left">▁▂▇▁▁</td>
+<td align="left">&lt;U+2581&gt;&lt;U+2582&gt;&lt;U+2587&gt;&lt;U+2581&gt;&lt;U+2581&gt;</td>
 </tr>
 <tr class="even">
 <td align="left">P70S6K_pT389</td>
@@ -1260,7 +1309,7 @@ skim(tcga.raw)</code></pre>
 <td align="right">-0.95</td>
 <td align="right">-0.65</td>
 <td align="right">1.09</td>
-<td align="left">▂▃▇▃▁</td>
+<td align="left">&lt;U+2582&gt;&lt;U+2583&gt;&lt;U+2587&gt;&lt;U+2583&gt;&lt;U+2581&gt;</td>
 </tr>
 <tr class="odd">
 <td align="left">PDK1_pS241</td>
@@ -1273,7 +1322,7 @@ skim(tcga.raw)</code></pre>
 <td align="right">0.37</td>
 <td align="right">0.55</td>
 <td align="right">1.62</td>
-<td align="left">▁▇▇▂▁</td>
+<td align="left">&lt;U+2581&gt;&lt;U+2587&gt;&lt;U+2587&gt;&lt;U+2582&gt;&lt;U+2581&gt;</td>
 </tr>
 <tr class="even">
 <td align="left">S6_pS235S236</td>
@@ -1286,7 +1335,7 @@ skim(tcga.raw)</code></pre>
 <td align="right">-0.67</td>
 <td align="right">-0.36</td>
 <td align="right">1.12</td>
-<td align="left">▁▁▅▇▂</td>
+<td align="left">&lt;U+2581&gt;&lt;U+2581&gt;&lt;U+2585&gt;&lt;U+2587&gt;&lt;U+2582&gt;</td>
 </tr>
 <tr class="odd">
 <td align="left">YAP_pS127</td>
@@ -1299,7 +1348,7 @@ skim(tcga.raw)</code></pre>
 <td align="right">2.10</td>
 <td align="right">2.54</td>
 <td align="right">4.05</td>
-<td align="left">▁▇▇▂▁</td>
+<td align="left">&lt;U+2581&gt;&lt;U+2587&gt;&lt;U+2587&gt;&lt;U+2582&gt;&lt;U+2581&gt;</td>
 </tr>
 <tr class="even">
 <td align="left">TRANSGLUTAMINASE</td>
@@ -1312,7 +1361,7 @@ skim(tcga.raw)</code></pre>
 <td align="right">-0.59</td>
 <td align="right">-0.20</td>
 <td align="right">2.72</td>
-<td align="left">▇▃▁▁▁</td>
+<td align="left">&lt;U+2587&gt;&lt;U+2583&gt;&lt;U+2581&gt;&lt;U+2581&gt;&lt;U+2581&gt;</td>
 </tr>
 </tbody>
 </table>
@@ -1359,6 +1408,19 @@ skim(tcga.norm)</code></pre>
 </table>
 <p><strong>Variable type: numeric</strong></p>
 <table>
+<colgroup>
+<col width="14%" />
+<col width="8%" />
+<col width="11%" />
+<col width="4%" />
+<col width="4%" />
+<col width="5%" />
+<col width="5%" />
+<col width="4%" />
+<col width="3%" />
+<col width="4%" />
+<col width="34%" />
+</colgroup>
 <thead>
 <tr class="header">
 <th align="left">skim_variable</th>
@@ -1386,7 +1448,7 @@ skim(tcga.norm)</code></pre>
 <td align="right">0.05</td>
 <td align="right">0.3</td>
 <td align="right">1.87</td>
-<td align="left">▁▃▇▂▁</td>
+<td align="left">&lt;U+2581&gt;&lt;U+2583&gt;&lt;U+2587&gt;&lt;U+2582&gt;&lt;U+2581&gt;</td>
 </tr>
 <tr class="even">
 <td align="left">AKT_pS473</td>
@@ -1399,7 +1461,7 @@ skim(tcga.norm)</code></pre>
 <td align="right">0.05</td>
 <td align="right">0.3</td>
 <td align="right">1.87</td>
-<td align="left">▁▃▇▂▁</td>
+<td align="left">&lt;U+2581&gt;&lt;U+2583&gt;&lt;U+2587&gt;&lt;U+2582&gt;&lt;U+2581&gt;</td>
 </tr>
 <tr class="odd">
 <td align="left">AKT_pT308</td>
@@ -1412,7 +1474,7 @@ skim(tcga.norm)</code></pre>
 <td align="right">0.05</td>
 <td align="right">0.3</td>
 <td align="right">1.87</td>
-<td align="left">▁▃▇▂▁</td>
+<td align="left">&lt;U+2581&gt;&lt;U+2583&gt;&lt;U+2587&gt;&lt;U+2582&gt;&lt;U+2581&gt;</td>
 </tr>
 <tr class="even">
 <td align="left">BETACATENIN</td>
@@ -1425,7 +1487,7 @@ skim(tcga.norm)</code></pre>
 <td align="right">0.05</td>
 <td align="right">0.3</td>
 <td align="right">1.87</td>
-<td align="left">▁▃▇▂▁</td>
+<td align="left">&lt;U+2581&gt;&lt;U+2583&gt;&lt;U+2587&gt;&lt;U+2582&gt;&lt;U+2581&gt;</td>
 </tr>
 <tr class="odd">
 <td align="left">JNK_pT183Y185</td>
@@ -1438,7 +1500,7 @@ skim(tcga.norm)</code></pre>
 <td align="right">0.05</td>
 <td align="right">0.3</td>
 <td align="right">1.87</td>
-<td align="left">▁▃▇▂▁</td>
+<td align="left">&lt;U+2581&gt;&lt;U+2583&gt;&lt;U+2587&gt;&lt;U+2582&gt;&lt;U+2581&gt;</td>
 </tr>
 <tr class="even">
 <td align="left">MEK1_pS217S221</td>
@@ -1451,7 +1513,7 @@ skim(tcga.norm)</code></pre>
 <td align="right">0.05</td>
 <td align="right">0.3</td>
 <td align="right">1.87</td>
-<td align="left">▁▃▇▂▁</td>
+<td align="left">&lt;U+2581&gt;&lt;U+2583&gt;&lt;U+2587&gt;&lt;U+2582&gt;&lt;U+2581&gt;</td>
 </tr>
 <tr class="odd">
 <td align="left">P38_pT180Y182</td>
@@ -1464,7 +1526,7 @@ skim(tcga.norm)</code></pre>
 <td align="right">0.05</td>
 <td align="right">0.3</td>
 <td align="right">1.87</td>
-<td align="left">▁▃▇▂▁</td>
+<td align="left">&lt;U+2581&gt;&lt;U+2583&gt;&lt;U+2587&gt;&lt;U+2582&gt;&lt;U+2581&gt;</td>
 </tr>
 <tr class="even">
 <td align="left">P70S6K_pT389</td>
@@ -1477,7 +1539,7 @@ skim(tcga.norm)</code></pre>
 <td align="right">0.05</td>
 <td align="right">0.3</td>
 <td align="right">1.87</td>
-<td align="left">▁▃▇▂▁</td>
+<td align="left">&lt;U+2581&gt;&lt;U+2583&gt;&lt;U+2587&gt;&lt;U+2582&gt;&lt;U+2581&gt;</td>
 </tr>
 <tr class="odd">
 <td align="left">PDK1_pS241</td>
@@ -1490,7 +1552,7 @@ skim(tcga.norm)</code></pre>
 <td align="right">0.05</td>
 <td align="right">0.3</td>
 <td align="right">1.87</td>
-<td align="left">▁▃▇▂▁</td>
+<td align="left">&lt;U+2581&gt;&lt;U+2583&gt;&lt;U+2587&gt;&lt;U+2582&gt;&lt;U+2581&gt;</td>
 </tr>
 <tr class="even">
 <td align="left">S6_pS235S236</td>
@@ -1503,7 +1565,7 @@ skim(tcga.norm)</code></pre>
 <td align="right">0.05</td>
 <td align="right">0.3</td>
 <td align="right">1.87</td>
-<td align="left">▁▃▇▂▁</td>
+<td align="left">&lt;U+2581&gt;&lt;U+2583&gt;&lt;U+2587&gt;&lt;U+2582&gt;&lt;U+2581&gt;</td>
 </tr>
 <tr class="odd">
 <td align="left">YAP_pS127</td>
@@ -1516,7 +1578,7 @@ skim(tcga.norm)</code></pre>
 <td align="right">0.05</td>
 <td align="right">0.3</td>
 <td align="right">1.87</td>
-<td align="left">▁▃▇▂▁</td>
+<td align="left">&lt;U+2581&gt;&lt;U+2583&gt;&lt;U+2587&gt;&lt;U+2582&gt;&lt;U+2581&gt;</td>
 </tr>
 <tr class="even">
 <td align="left">TRANSGLUTAMINASE</td>
@@ -1529,7 +1591,7 @@ skim(tcga.norm)</code></pre>
 <td align="right">0.05</td>
 <td align="right">0.3</td>
 <td align="right">1.87</td>
-<td align="left">▁▃▇▂▁</td>
+<td align="left">&lt;U+2581&gt;&lt;U+2583&gt;&lt;U+2587&gt;&lt;U+2582&gt;&lt;U+2581&gt;</td>
 </tr>
 </tbody>
 </table>
@@ -1883,6 +1945,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/saezlab/MultispectralHCC/blob/cfc1900e9b366625a7b872498f74120758a0b4d8/docs/figure/tcga.Rmd/unnamed-chunk-7-1.svg" target="_blank">cfc1900</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-09-17
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/saezlab/MultispectralHCC/blob/9a18eda5afc5ff52002d9bfaaf9b82f4f9a56258/docs/figure/tcga.Rmd/unnamed-chunk-7-1.svg" target="_blank">9a18eda</a>
@@ -2445,6 +2518,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/saezlab/MultispectralHCC/blob/cfc1900e9b366625a7b872498f74120758a0b4d8/docs/figure/tcga.Rmd/unnamed-chunk-13-1.svg" target="_blank">cfc1900</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-09-17
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/saezlab/MultispectralHCC/blob/ae61865ec6bf0a8488ad093a31341b14d82c9f3b/docs/figure/tcga.Rmd/unnamed-chunk-13-1.svg" target="_blank">ae61865</a>
 </td>
 <td>
@@ -2632,32 +2716,33 @@ topTable(tcga.hclust.eb)</code></pre>
 <pre class="r"><code>tests.leiden &lt;- decideTests(tcga.leiden.eb)
 
 tests.leiden@.Data</code></pre>
-<pre><code>                 Cluster1 Cluster2 Cluster3
-P53                    -1        1        1
-AKT_pS473              -1        1        1
-AKT_pT308              -1        0        1
-BETACATENIN             0        1       -1
-JNK_pT183Y185          -1        0        1
-MEK1_pS217S221          0        0        0
-P38_pT180Y182          -1        0        1
-P70S6K_pT389           -1        1        1
-PDK1_pS241              1        0       -1
-S6_pS235S236           -1        0        1
-YAP_pS127               1        0       -1
-TRANSGLUTAMINASE        1        0       -1</code></pre>
+<pre><code>                 Cluster1 Cluster2 Cluster3 Cluster4
+P53                    -1        1        1        0
+AKT_pS473              -1        1        1        0
+AKT_pT308              -1        0        1        0
+BETACATENIN             1        1       -1       -1
+JNK_pT183Y185          -1        0        1        0
+MEK1_pS217S221          0        0        0        0
+P38_pT180Y182          -1        0        1        0
+P70S6K_pT389           -1        1        1       -1
+PDK1_pS241              1        0       -1        0
+S6_pS235S236           -1        0        1        1
+YAP_pS127               1        0       -1        0
+TRANSGLUTAMINASE        0        0       -1        1</code></pre>
 <pre class="r"><code>summary(tests.leiden)</code></pre>
-<pre><code>       Cluster1 Cluster2 Cluster3
-Down          7        0        4
-NotSig        2        8        1
-Up            3        4        7</code></pre>
+<pre><code>       Cluster1 Cluster2 Cluster3 Cluster4
+Down          7        0        4        2
+NotSig        2        8        1        8
+Up            3        4        7        2</code></pre>
 <p>Differential expression analysis (silhouette)</p>
 <p>Calculate the similarity of samples using the expression and the silhouette scores based on the assigned clusters.</p>
 <pre class="r"><code>silhouette.leiden &lt;- silhouette(leiden.clusters, dist(tcga.norm))
 fviz_silhouette(silhouette.leiden)</code></pre>
 <pre><code>  cluster size ave.sil.width
-1       1   75         -0.08
-2       2   60          0.19
-3       3   49          0.02</code></pre>
+1       1   65         -0.06
+2       2   60          0.18
+3       3   47          0.04
+4       4   12         -0.05</code></pre>
 <p><img src="figure/tcga.Rmd/unnamed-chunk-15-1.svg" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-15-1">
@@ -2681,6 +2766,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/saezlab/MultispectralHCC/blob/cfc1900e9b366625a7b872498f74120758a0b4d8/docs/figure/tcga.Rmd/unnamed-chunk-15-1.svg" target="_blank">cfc1900</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-09-17
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/saezlab/MultispectralHCC/blob/ae61865ec6bf0a8488ad093a31341b14d82c9f3b/docs/figure/tcga.Rmd/unnamed-chunk-15-1.svg" target="_blank">ae61865</a>
@@ -2769,172 +2865,235 @@ tcga.core.samples &lt;- tcga.norm %&gt;% add_column(Cluster = leiden.clusters) %
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">P70S6K_pT389</td>
-<td align="right">0.0000000</td>
-<td align="right">1</td>
-<td align="right">-1.0874717</td>
-<td align="right">0.0000000</td>
-</tr>
-<tr class="even">
 <td align="left">AKT_pS473</td>
 <td align="right">0.0000000</td>
 <td align="right">1</td>
-<td align="right">-0.9967265</td>
-<td align="right">0.0000000</td>
-</tr>
-<tr class="odd">
-<td align="left">P53</td>
-<td align="right">0.0000000</td>
-<td align="right">1</td>
-<td align="right">-1.0804359</td>
+<td align="right">-0.9515080</td>
 <td align="right">0.0000000</td>
 </tr>
 <tr class="even">
 <td align="left">P53</td>
 <td align="right">0.0000000</td>
-<td align="right">3</td>
-<td align="right">0.7685440</td>
+<td align="right">1</td>
+<td align="right">-1.0430459</td>
 <td align="right">0.0000000</td>
 </tr>
 <tr class="odd">
 <td align="left">P70S6K_pT389</td>
 <td align="right">0.0000000</td>
-<td align="right">3</td>
-<td align="right">0.7063237</td>
+<td align="right">1</td>
+<td align="right">-1.0392005</td>
 <td align="right">0.0000000</td>
 </tr>
 <tr class="even">
-<td align="left">BETACATENIN</td>
+<td align="left">P70S6K_pT389</td>
 <td align="right">0.0000000</td>
 <td align="right">3</td>
-<td align="right">-0.6289288</td>
+<td align="right">0.7451213</td>
 <td align="right">0.0000000</td>
 </tr>
 <tr class="odd">
+<td align="left">P53</td>
+<td align="right">0.0000000</td>
+<td align="right">3</td>
+<td align="right">0.7888113</td>
+<td align="right">0.0000000</td>
+</tr>
+<tr class="even">
 <td align="left">AKT_pS473</td>
 <td align="right">0.0000000</td>
 <td align="right">3</td>
-<td align="right">0.5438691</td>
-<td align="right">0.0000002</td>
-</tr>
-<tr class="even">
-<td align="left">JNK_pT183Y185</td>
-<td align="right">0.0000002</td>
-<td align="right">3</td>
-<td align="right">0.6394211</td>
-<td align="right">0.0000007</td>
-</tr>
-<tr class="odd">
-<td align="left">PDK1_pS241</td>
-<td align="right">0.0000002</td>
-<td align="right">3</td>
-<td align="right">-0.6011500</td>
-<td align="right">0.0000007</td>
-</tr>
-<tr class="even">
-<td align="left">P38_pT180Y182</td>
-<td align="right">0.0000006</td>
-<td align="right">3</td>
-<td align="right">0.5057055</td>
-<td align="right">0.0000021</td>
+<td align="right">0.5951014</td>
+<td align="right">0.0000000</td>
 </tr>
 <tr class="odd">
 <td align="left">JNK_pT183Y185</td>
-<td align="right">0.0000007</td>
+<td align="right">0.0000000</td>
 <td align="right">1</td>
-<td align="right">-0.8366643</td>
-<td align="right">0.0000024</td>
+<td align="right">-0.9124860</td>
+<td align="right">0.0000000</td>
 </tr>
 <tr class="even">
+<td align="left">JNK_pT183Y185</td>
+<td align="right">0.0000000</td>
+<td align="right">3</td>
+<td align="right">0.5929591</td>
+<td align="right">0.0000001</td>
+</tr>
+<tr class="odd">
 <td align="left">PDK1_pS241</td>
+<td align="right">0.0000003</td>
+<td align="right">3</td>
+<td align="right">-0.5886677</td>
+<td align="right">0.0000013</td>
+</tr>
+<tr class="even">
+<td align="left">AKT_pT308</td>
+<td align="right">0.0000003</td>
+<td align="right">1</td>
+<td align="right">-0.8127502</td>
 <td align="right">0.0000014</td>
-<td align="right">1</td>
-<td align="right">0.6549129</td>
-<td align="right">0.0000042</td>
-</tr>
-<tr class="odd">
-<td align="left">AKT_pT308</td>
-<td align="right">0.0000019</td>
-<td align="right">1</td>
-<td align="right">-0.7738529</td>
-<td align="right">0.0000053</td>
-</tr>
-<tr class="even">
-<td align="left">AKT_pT308</td>
-<td align="right">0.0000039</td>
-<td align="right">3</td>
-<td align="right">0.3788258</td>
-<td align="right">0.0000099</td>
-</tr>
-<tr class="odd">
-<td align="left">P38_pT180Y182</td>
-<td align="right">0.0000400</td>
-<td align="right">1</td>
-<td align="right">-0.6335631</td>
-<td align="right">0.0000960</td>
-</tr>
-<tr class="even">
-<td align="left">S6_pS235S236</td>
-<td align="right">0.0000735</td>
-<td align="right">3</td>
-<td align="right">0.3195876</td>
-<td align="right">0.0001653</td>
-</tr>
-<tr class="odd">
-<td align="left">TRANSGLUTAMINASE</td>
-<td align="right">0.0003745</td>
-<td align="right">3</td>
-<td align="right">-0.4615017</td>
-<td align="right">0.0007932</td>
-</tr>
-<tr class="even">
-<td align="left">S6_pS235S236</td>
-<td align="right">0.0019327</td>
-<td align="right">1</td>
-<td align="right">-0.4625113</td>
-<td align="right">0.0038654</td>
-</tr>
-<tr class="odd">
-<td align="left">YAP_pS127</td>
-<td align="right">0.0039729</td>
-<td align="right">3</td>
-<td align="right">-0.2848829</td>
-<td align="right">0.0075277</td>
-</tr>
-<tr class="even">
-<td align="left">YAP_pS127</td>
-<td align="right">0.0076809</td>
-<td align="right">1</td>
-<td align="right">0.4923553</td>
-<td align="right">0.0138256</td>
-</tr>
-<tr class="odd">
-<td align="left">AKT_pS473</td>
-<td align="right">0.0095635</td>
-<td align="right">2</td>
-<td align="right">0.2786417</td>
-<td align="right">0.0163946</td>
-</tr>
-<tr class="even">
-<td align="left">TRANSGLUTAMINASE</td>
-<td align="right">0.0104905</td>
-<td align="right">1</td>
-<td align="right">0.3641892</td>
-<td align="right">0.0171662</td>
 </tr>
 <tr class="odd">
 <td align="left">BETACATENIN</td>
-<td align="right">0.0147928</td>
-<td align="right">2</td>
-<td align="right">0.2588295</td>
-<td align="right">0.0231540</td>
+<td align="right">0.0000003</td>
+<td align="right">3</td>
+<td align="right">-0.5613748</td>
+<td align="right">0.0000015</td>
 </tr>
 <tr class="even">
 <td align="left">AKT_pT308</td>
-<td align="right">0.0182048</td>
+<td align="right">0.0000008</td>
+<td align="right">3</td>
+<td align="right">0.3897925</td>
+<td align="right">0.0000030</td>
+</tr>
+<tr class="odd">
+<td align="left">P38_pT180Y182</td>
+<td align="right">0.0000011</td>
+<td align="right">3</td>
+<td align="right">0.4830546</td>
+<td align="right">0.0000039</td>
+</tr>
+<tr class="even">
+<td align="left">PDK1_pS241</td>
+<td align="right">0.0000069</td>
+<td align="right">1</td>
+<td align="right">0.6190042</td>
+<td align="right">0.0000237</td>
+</tr>
+<tr class="odd">
+<td align="left">TRANSGLUTAMINASE</td>
+<td align="right">0.0000647</td>
+<td align="right">4</td>
+<td align="right">0.6687992</td>
+<td align="right">0.0002069</td>
+</tr>
+<tr class="even">
+<td align="left">MEK1_pS217S221</td>
+<td align="right">0.0001052</td>
+<td align="right">4</td>
+<td align="right">0.7620182</td>
+<td align="right">0.0003156</td>
+</tr>
+<tr class="odd">
+<td align="left">P70S6K_pT389</td>
+<td align="right">0.0001118</td>
+<td align="right">4</td>
+<td align="right">-0.5501574</td>
+<td align="right">0.0003157</td>
+</tr>
+<tr class="even">
+<td align="left">S6_pS235S236</td>
+<td align="right">0.0001459</td>
+<td align="right">1</td>
+<td align="right">-0.6186327</td>
+<td align="right">0.0003891</td>
+</tr>
+<tr class="odd">
+<td align="left">TRANSGLUTAMINASE</td>
+<td align="right">0.0001960</td>
+<td align="right">3</td>
+<td align="right">-0.4678118</td>
+<td align="right">0.0004950</td>
+</tr>
+<tr class="even">
+<td align="left">YAP_pS127</td>
+<td align="right">0.0004880</td>
+<td align="right">3</td>
+<td align="right">-0.3415873</td>
+<td align="right">0.0011711</td>
+</tr>
+<tr class="odd">
+<td align="left">S6_pS235S236</td>
+<td align="right">0.0011507</td>
+<td align="right">3</td>
+<td align="right">0.2745295</td>
+<td align="right">0.0026301</td>
+</tr>
+<tr class="even">
+<td align="left">P38_pT180Y182</td>
+<td align="right">0.0019148</td>
+<td align="right">1</td>
+<td align="right">-0.4929049</td>
+<td align="right">0.0041777</td>
+</tr>
+<tr class="odd">
+<td align="left">YAP_pS127</td>
+<td align="right">0.0022614</td>
+<td align="right">1</td>
+<td align="right">0.5293986</td>
+<td align="right">0.0047195</td>
+</tr>
+<tr class="even">
+<td align="left">BETACATENIN</td>
+<td align="right">0.0025053</td>
+<td align="right">1</td>
+<td align="right">0.4534593</td>
+<td align="right">0.0050107</td>
+</tr>
+<tr class="odd">
+<td align="left">BETACATENIN</td>
+<td align="right">0.0027574</td>
+<td align="right">4</td>
+<td align="right">-0.8034237</td>
+<td align="right">0.0052942</td>
+</tr>
+<tr class="even">
+<td align="left">AKT_pS473</td>
+<td align="right">0.0031525</td>
 <td align="right">2</td>
-<td align="right">0.2486818</td>
-<td align="right">0.0273072</td>
+<td align="right">0.3042622</td>
+<td align="right">0.0058201</td>
+</tr>
+<tr class="odd">
+<td align="left">BETACATENIN</td>
+<td align="right">0.0082524</td>
+<td align="right">2</td>
+<td align="right">0.2740756</td>
+<td align="right">0.0145708</td>
+</tr>
+<tr class="even">
+<td align="left">AKT_pS473</td>
+<td align="right">0.0084996</td>
+<td align="right">4</td>
+<td align="right">-0.6089976</td>
+<td align="right">0.0145708</td>
+</tr>
+<tr class="odd">
+<td align="left">P53</td>
+<td align="right">0.0093318</td>
+<td align="right">4</td>
+<td align="right">-0.4443350</td>
+<td align="right">0.0151240</td>
+</tr>
+<tr class="even">
+<td align="left">S6_pS235S236</td>
+<td align="right">0.0094525</td>
+<td align="right">4</td>
+<td align="right">0.9038836</td>
+<td align="right">0.0151240</td>
+</tr>
+<tr class="odd">
+<td align="left">AKT_pT308</td>
+<td align="right">0.0225756</td>
+<td align="right">2</td>
+<td align="right">0.2259513</td>
+<td align="right">0.0346134</td>
+</tr>
+<tr class="even">
+<td align="left">MEK1_pS217S221</td>
+<td align="right">0.0230756</td>
+<td align="right">2</td>
+<td align="right">-0.2115988</td>
+<td align="right">0.0346134</td>
+</tr>
+<tr class="odd">
+<td align="left">P70S6K_pT389</td>
+<td align="right">0.0259921</td>
+<td align="right">2</td>
+<td align="right">0.2405353</td>
+<td align="right">0.0378067</td>
 </tr>
 </tbody>
 </table>
@@ -3016,7 +3175,7 @@ Jovan Tanevski
 </table>
 </div>
 </div>
-<pre class="r"><code>tcga.nmf &lt;- nmf(as.matrix(t(tcga.rank)), 9, nrun = 20, seed = 42)</code></pre>
+<pre class="r"><code>tcga.nmf &lt;- tcga.nmf.rank$fit[[&quot;9&quot;]]</code></pre>
 <p>For this analysis 9 clusters were selected based on consensus cophenetic correlation coefficient The analysis can also be repeated with 3 clusters as the cophenetic correlation coefficient for 3 clusters is higher (in continuation).</p>
 <p>Extract basis of NMF (signature of cluster)</p>
 <pre class="r"><code>basismap(tcga.nmf)</code></pre>
@@ -3261,6 +3420,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/saezlab/MultispectralHCC/blob/cfc1900e9b366625a7b872498f74120758a0b4d8/docs/figure/tcga.Rmd/unnamed-chunk-24-1.svg" target="_blank">cfc1900</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-09-17
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/saezlab/MultispectralHCC/blob/9a18eda5afc5ff52002d9bfaaf9b82f4f9a56258/docs/figure/tcga.Rmd/unnamed-chunk-24-1.svg" target="_blank">9a18eda</a>
@@ -3560,6 +3730,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/saezlab/MultispectralHCC/blob/cfc1900e9b366625a7b872498f74120758a0b4d8/docs/figure/tcga.Rmd/unnamed-chunk-26-1.svg" target="_blank">cfc1900</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-09-17
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/saezlab/MultispectralHCC/blob/9a18eda5afc5ff52002d9bfaaf9b82f4f9a56258/docs/figure/tcga.Rmd/unnamed-chunk-26-1.svg" target="_blank">9a18eda</a>
@@ -3862,7 +4043,7 @@ tcga.core.samples &lt;- tcga.norm %&gt;% add_column(Cluster = nmf.clusters) %&gt
 <div id="consensus-nmf-3-clusters" class="section level2">
 <h2>Consensus NMF (3 clusters)</h2>
 <p>Repeat the analysis, but using 3 clusters.</p>
-<pre class="r"><code>tcga.nmf &lt;- nmf(as.matrix(t(tcga.rank)), 3, nrun = 20, seed = 42)</code></pre>
+<pre class="r"><code>tcga.nmf &lt;- tcga.nmf &lt;- tcga.nmf.rank$fit[[&quot;3&quot;]]</code></pre>
 <p>Extract basis of NMF (signature of cluster)</p>
 <pre class="r"><code>basismap(tcga.nmf)</code></pre>
 <p><img src="figure/tcga.Rmd/unnamed-chunk-30-1.svg" width="672" style="display: block; margin: auto;" /></p>
@@ -4108,6 +4289,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/saezlab/MultispectralHCC/blob/cfc1900e9b366625a7b872498f74120758a0b4d8/docs/figure/tcga.Rmd/unnamed-chunk-35-1.svg" target="_blank">cfc1900</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-09-17
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/saezlab/MultispectralHCC/blob/9a18eda5afc5ff52002d9bfaaf9b82f4f9a56258/docs/figure/tcga.Rmd/unnamed-chunk-35-1.svg" target="_blank">9a18eda</a>
 </td>
 <td>
@@ -4300,6 +4492,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/saezlab/MultispectralHCC/blob/cfc1900e9b366625a7b872498f74120758a0b4d8/docs/figure/tcga.Rmd/unnamed-chunk-37-1.svg" target="_blank">cfc1900</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-09-17
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/saezlab/MultispectralHCC/blob/9a18eda5afc5ff52002d9bfaaf9b82f4f9a56258/docs/figure/tcga.Rmd/unnamed-chunk-37-1.svg" target="_blank">9a18eda</a>
@@ -4552,7 +4755,7 @@ BLAS:   /Library/Frameworks/R.framework/Versions/4.1/Resources/lib/libRblas.0.dy
 LAPACK: /Library/Frameworks/R.framework/Versions/4.1/Resources/lib/libRlapack.dylib
 
 locale:
-[1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+[1] C
 
 attached base packages:
 [1] parallel  stats     graphics  grDevices utils     datasets  methods  
@@ -4589,25 +4792,26 @@ loaded via a namespace (and not attached):
  [43] Formula_1.2-4       htmlwidgets_1.5.4   httr_1.4.2         
  [46] ellipsis_0.3.2      pkgconfig_2.0.3     farver_2.1.0       
  [49] nnet_7.3-16         sass_0.4.0          dbplyr_2.1.1       
- [52] utf8_1.2.2          tidyselect_1.1.1    labeling_0.4.2     
- [55] rlang_0.4.11        reshape2_1.4.4      later_1.3.0        
- [58] munsell_0.5.0       cellranger_1.1.0    tools_4.1.1        
- [61] cli_3.0.1           generics_0.1.0      broom_0.7.9        
- [64] evaluate_0.14       fastmap_1.1.0       yaml_2.2.1         
- [67] knitr_1.34          bit64_4.0.5         fs_1.5.0           
- [70] zip_2.2.0           dendextend_1.15.1   whisker_0.4        
- [73] xml2_1.3.2          compiler_4.1.1      rstudioapi_0.13    
- [76] curl_4.3.2          png_0.1-7           ggsignif_0.6.3     
- [79] reprex_2.0.1        bslib_0.3.0         stringi_1.7.4      
- [82] highr_0.9           RSpectra_0.16-0     lattice_0.20-44    
- [85] vctrs_0.3.8         pillar_1.6.2        lifecycle_1.0.0    
- [88] jquerylib_0.1.4     data.table_1.14.0   httpuv_1.6.3       
- [91] latticeExtra_0.6-29 R6_2.5.1            promises_1.2.0.1   
- [94] gridExtra_2.3       rio_0.5.27          codetools_0.2-18   
- [97] assertthat_0.2.1    rprojroot_2.0.2     withr_2.4.2        
-[100] hms_1.1.0           rpart_4.1-15        grid_4.1.1         
-[103] rmarkdown_2.11      carData_3.0-4       git2r_0.28.0       
-[106] ggpubr_0.4.0        lubridate_1.7.10    base64enc_0.1-3    </code></pre>
+ [52] utf8_1.2.2          here_1.0.1          tidyselect_1.1.1   
+ [55] labeling_0.4.2      rlang_0.4.11        reshape2_1.4.4     
+ [58] later_1.3.0         munsell_0.5.0       cellranger_1.1.0   
+ [61] tools_4.1.1         cli_3.0.1           generics_0.1.0     
+ [64] broom_0.7.9         evaluate_0.14       fastmap_1.1.0      
+ [67] yaml_2.2.1          knitr_1.34          bit64_4.0.5        
+ [70] fs_1.5.0            zip_2.2.0           dendextend_1.15.1  
+ [73] whisker_0.4         xml2_1.3.2          compiler_4.1.1     
+ [76] rstudioapi_0.13     curl_4.3.2          png_0.1-7          
+ [79] ggsignif_0.6.3      reprex_2.0.1        bslib_0.3.0        
+ [82] stringi_1.7.4       highr_0.9           RSpectra_0.16-0    
+ [85] lattice_0.20-44     vctrs_0.3.8         pillar_1.6.2       
+ [88] lifecycle_1.0.0     jquerylib_0.1.4     data.table_1.14.0  
+ [91] httpuv_1.6.3        latticeExtra_0.6-29 R6_2.5.1           
+ [94] promises_1.2.0.1    gridExtra_2.3       rio_0.5.27         
+ [97] codetools_0.2-18    assertthat_0.2.1    rprojroot_2.0.2    
+[100] withr_2.4.2         hms_1.1.0           rpart_4.1-15       
+[103] grid_4.1.1          rmarkdown_2.11      carData_3.0-4      
+[106] git2r_0.28.0        ggpubr_0.4.0        lubridate_1.7.10   
+[109] base64enc_0.1-3    </code></pre>
 </div>
 </div>
 
