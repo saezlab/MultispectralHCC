@@ -11,7 +11,7 @@
 
 <meta name="author" content="Jovan Tanevski" />
 
-<meta name="date" content="2021-09-18" />
+<meta name="date" content="2021-09-19" />
 
 <title>cores</title>
 
@@ -372,7 +372,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">cores</h1>
 <h4 class="author">Jovan Tanevski</h4>
-<h4 class="date">2021-09-18</h4>
+<h4 class="date">2021-09-19</h4>
 
 </div>
 
@@ -397,7 +397,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2021-09-18
+<strong>Last updated:</strong> 2021-09-19
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -488,16 +488,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomsaezlabMultispectralHCCtree6b335ff705908b0384a3ed4d5086841027a65fc5targetblank6b335ffa"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/saezlab/MultispectralHCC/tree/6b335ff705908b0384a3ed4d5086841027a65fc5" target="_blank">6b335ff</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomsaezlabMultispectralHCCtree763678d36a2515f20fffb475ac18199eccb8d008targetblank763678da"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/saezlab/MultispectralHCC/tree/763678d36a2515f20fffb475ac18199eccb8d008" target="_blank">763678d</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomsaezlabMultispectralHCCtree6b335ff705908b0384a3ed4d5086841027a65fc5targetblank6b335ffa" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomsaezlabMultispectralHCCtree763678d36a2515f20fffb475ac18199eccb8d008targetblank763678da" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/saezlab/MultispectralHCC/tree/6b335ff705908b0384a3ed4d5086841027a65fc5" target="_blank">6b335ff</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/saezlab/MultispectralHCC/tree/763678d36a2515f20fffb475ac18199eccb8d008" target="_blank">763678d</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -551,6 +551,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/saezlab/MultispectralHCC/blob/763678d36a2515f20fffb475ac18199eccb8d008/analysis/cores.Rmd" target="_blank">763678d</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-09-19
+</td>
+<td>
+umap cache, compression
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/saezlab/MultispectralHCC/8b4d3704dd770d81ee39ae78b7bc592fc62830f0/docs/cores.html" target="_blank">8b4d370</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-09-18
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1134,11 +1168,17 @@ skim(tumor.hc.norm)</code></pre>
 <p>Pilot run. Subsample 10% of the original data.</p>
 <pre class="r"><code>set.seed(42)
 percent &lt;- 10
-subsamp &lt;- sample(nrow(tumor.hc.rank), (1 / percent) * nrow(tumor.hc.rank))</code></pre>
+subsamp &lt;- sample(nrow(tumor.hc.rank), (percent / 100) * nrow(tumor.hc.rank))</code></pre>
 </div>
 <div id="dimensionality-reduction" class="section level2">
 <h2>Dimensionality reduction</h2>
-<pre class="r"><code>tumor.hc.umap &lt;- umap(tumor.hc.norm, n_threads = 5)</code></pre>
+<pre class="r"><code>cache &lt;- &quot;output/tumor.hc.umap.rds&quot;
+if(file.exists(cache)){ 
+  tumor.hc.umap &lt;- read_rds(cache)
+} else {
+  tumor.hc.umap &lt;- umap(tumor.hc.norm, n_threads = 5)
+  write_rds(tumor.hc.umap, cache, &quot;gz&quot;)
+}</code></pre>
 <p>Check if sample is representative in UMAP space</p>
 <pre class="r"><code>tumor.hc.umap.sample &lt;-
   tumor.hc.umap %&gt;%
@@ -1159,11 +1199,48 @@ unsampled &lt;- ggplot(tumor.hc.umap.sample %&gt;% slice(-subsamp), aes(x = U1, 
 
 plot_grid(all, sampled, unsampled)</code></pre>
 <p><img src="figure/cores.Rmd/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-5-1">
+Past versions of unnamed-chunk-5-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-5-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/saezlab/MultispectralHCC/blob/8b4d3704dd770d81ee39ae78b7bc592fc62830f0/docs/figure/cores.Rmd/unnamed-chunk-5-1.png" target="_blank">8b4d370</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-09-18
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="consensus-nmf" class="section level2">
 <h2>Consensus NMF</h2>
 <p>We use an efficient implementation of alternating non negative least-squares with regularized to favor sparse coefficient matrices snmf/r. In this way we aim for cleaner clustering.</p>
-<pre class="r"><code>cache &lt;- paste0(&quot;output/nmf.rank.&quot;, percent, &quot;.rds&quot;)
+<pre class="r"><code>cache &lt;- paste0(&quot;output/tumor.hc.nmf.rank.&quot;, percent, &quot;.rds&quot;)
 
 if (file.exists(cache)) {
   tumor.hc.nmf.rank &lt;- read_rds(cache)
@@ -1173,17 +1250,91 @@ if (file.exists(cache)) {
     nrun = 10, seed = 42, verbose = TRUE,
     .options = &quot;mp5&quot;
   )
-  write_rds(tumor.hc.nmf.rank, cache)
+  write_rds(tumor.hc.nmf.rank, cache, &quot;gz&quot;)
 }
 
 plot(tumor.hc.nmf.rank)</code></pre>
 <pre><code>Warning: Removed 2 rows containing missing values (geom_point).</code></pre>
 <p><img src="figure/cores.Rmd/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-6-1">
+Past versions of unnamed-chunk-6-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-6-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/saezlab/MultispectralHCC/blob/8b4d3704dd770d81ee39ae78b7bc592fc62830f0/docs/figure/cores.Rmd/unnamed-chunk-6-1.png" target="_blank">8b4d370</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-09-18
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>tumor.hc.nmf &lt;- tumor.hc.nmf.rank$fit[[&quot;3&quot;]]
 rm(tumor.hc.nmf.rank)</code></pre>
 <p>Extract basis of NMF (signature of cluster)</p>
 <pre class="r"><code>basismap(tumor.hc.nmf)</code></pre>
 <p><img src="figure/cores.Rmd/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-7-1">
+Past versions of unnamed-chunk-7-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-7-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/saezlab/MultispectralHCC/blob/8b4d3704dd770d81ee39ae78b7bc592fc62830f0/docs/figure/cores.Rmd/unnamed-chunk-7-1.png" target="_blank">8b4d370</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-09-18
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>Extract coefficients of NMF (soft clustering of samples) if a reasonable amount of cells is subselected.</p>
 <pre class="r"><code>if (percent &lt;= 2) coefmap(tumor.hc.nmf)</code></pre>
 <p>Assign clusters</p>
@@ -1198,6 +1349,43 @@ ggplot(tumor.hc.umap.clus, aes(x = U1, y = U2, color = Cluster)) +
   geom_point() +
   theme_classic()</code></pre>
 <p><img src="figure/cores.Rmd/unnamed-chunk-10-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-10-1">
+Past versions of unnamed-chunk-10-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-10-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/saezlab/MultispectralHCC/blob/8b4d3704dd770d81ee39ae78b7bc592fc62830f0/docs/figure/cores.Rmd/unnamed-chunk-10-1.png" target="_blank">8b4d370</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-09-18
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>Expression profiles per cluster</p>
 <pre class="r"><code>tumor.hc.clustered.nmf &lt;- tumor.hc.norm[subsamp, ] %&gt;%
   mutate(Cluster = as.factor(nmf.clusters)) %&gt;%
@@ -1215,6 +1403,43 @@ ggplot(
 
 plot_grid(plotlist = profiles, labels = paste(&quot;Cluster&quot;, seq_len(max(nmf.clusters))))</code></pre>
 <p><img src="figure/cores.Rmd/unnamed-chunk-11-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-11-1">
+Past versions of unnamed-chunk-11-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-11-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/saezlab/MultispectralHCC/blob/8b4d3704dd770d81ee39ae78b7bc592fc62830f0/docs/figure/cores.Rmd/unnamed-chunk-11-1.png" target="_blank">8b4d370</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-09-18
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>Differential expression analysis (silhouette)</p>
 <p>Calculate the similarity of samples using the expression and the silhouette scores based on the assigned clusters.</p>
 <pre class="r"><code>silhouette.nmf &lt;- silhouette(nmf.clusters, dist(tumor.hc.norm[subsamp, ]))
@@ -1224,6 +1449,43 @@ fviz_silhouette(silhouette.nmf)</code></pre>
 2       2  2917          0.20
 3       3 11953          0.08</code></pre>
 <p><img src="figure/cores.Rmd/unnamed-chunk-12-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-12-1">
+Past versions of unnamed-chunk-12-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-12-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/saezlab/MultispectralHCC/blob/8b4d3704dd770d81ee39ae78b7bc592fc62830f0/docs/figure/cores.Rmd/unnamed-chunk-12-1.png" target="_blank">8b4d370</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-09-18
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>Select only the samples with positive silhouette scores as “core samples”</p>
 <pre class="r"><code>core.samples &lt;- which(silhouette.nmf[, 3] &gt; 0)
 tumor.hc.core.samples &lt;- tumor.hc.norm[subsamp, ] %&gt;%
