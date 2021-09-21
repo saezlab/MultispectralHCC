@@ -71,7 +71,7 @@ subsamp <- sample(nrow(tumor.hc.rank), (percent / 100) * nrow(tumor.hc.rank))
 
 ```{r}
 cache <- "output/tumor.hc.umap.rds"
-if(file.exists(cache)){ 
+if (file.exists(cache)) {
   tumor.hc.umap <- read_rds(cache)
 } else {
   tumor.hc.umap <- umap(tumor.hc.norm, n_threads = 5)
@@ -88,15 +88,15 @@ tumor.hc.umap.sample <-
   as_tibble()
 
 all <- ggplot(tumor.hc.umap.sample, aes(x = U1, y = U2)) +
-  geom_point() +
+  geom_point(size = 0.5) +
   theme_classic()
 
 sampled <- ggplot(tumor.hc.umap.sample %>% slice(subsamp), aes(x = U1, y = U2)) +
-  geom_point(color = "darkgreen") +
+  geom_point(color = "darkgreen", size = 0.5) +
   theme_classic()
 
 unsampled <- ggplot(tumor.hc.umap.sample %>% slice(-subsamp), aes(x = U1, y = U2)) +
-  geom_point(color = "darkred") +
+  geom_point(color = "darkred", size = 0.5) +
   theme_classic()
 
 plot_grid(all, sampled, unsampled)
@@ -144,7 +144,7 @@ Assign clusters
 nmf.clusters <- apply(tumor.hc.nmf@fit@H, 2, which.max)
 ```
 
-Plot in 2D PCA and UMAP
+### Plot in 2D PCA and UMAP
 
 ```{r}
 tumor.hc.umap.clus <-
@@ -153,11 +153,11 @@ tumor.hc.umap.clus <-
   mutate(Cluster = as.factor(nmf.clusters))
 
 ggplot(tumor.hc.umap.clus, aes(x = U1, y = U2, color = Cluster)) +
-  geom_point() +
+  geom_point(size = 0.5) +
   theme_classic()
 ```
 
-Expression profiles per cluster 
+### Expression profiles per cluster 
 
 ```{r fig.width=10, fig.height=10}
 tumor.hc.clustered.nmf <- tumor.hc.norm[subsamp, ] %>%
@@ -170,15 +170,37 @@ ggplot(
   aes(x = Marker, y = Norm.value, color = Marker)
 ) +
   stat_summary(fun.data = mean_sdl, show.legend = FALSE) +
-  ylim(-3, 3) +
+  scale_color_brewer(palette = "Set2") +
+  ylim(-1, 3) +
   theme_classic() +
   theme(axis.text.x = element_text(angle = 90, hjust = 1)))
 
 plot_grid(plotlist = profiles, labels = paste("Cluster", seq_len(max(nmf.clusters))))
 ```
 
+### Marker abundance plots
 
-Differential expression analysis (silhouette)
+```{r}
+tumor.hc.umap.markers <- tumor.hc.norm %>%
+  bind_cols(tumor.hc.umap.sample) %>%
+  slice(subsamp)
+
+low <- RColorBrewer::brewer.pal(8, "Set2")[8]
+highs <- RColorBrewer::brewer.pal(8, "Set2")[seq_len(ncol(tumor.hc.norm))]
+
+tumor.hc.umap.markers.plots <- colnames(tumor.hc.norm) %>%
+  map2(highs, \(marker, color){
+    ggplot(tumor.hc.umap.markers, aes_string(x = "U1", y = "U2", color = marker)) +
+      geom_point(size = 0.5) +
+      scale_color_gradient(low = low, high = color) +
+      theme_classic()
+  })
+
+plot_grid(plotlist = tumor.hc.umap.markers.plots)
+```
+
+
+### Differential expression analysis (silhouette)
 
 Calculate the similarity of samples using the expression and the silhouette scores based on the assigned clusters.
 ```{r}
