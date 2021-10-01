@@ -8,10 +8,6 @@ output:
 editor_options:
   chunk_output_type: console
 ---
-```{r include = FALSE}
-knitr::opts_chunk$set(dev = "svg")
-```
-
 
 ## Setup
 
@@ -23,11 +19,9 @@ library(skimr)
 library(uwot)
 library(factoextra)
 library(cowplot)
-library(FNN)
-library(igraph)
-library(leiden)
 library(limma)
 library(NMF)
+library(pheatmap)
 ```
 
 Read filtered TCGA RRPA data and display summary statistics.
@@ -63,337 +57,15 @@ tcga.umap <- umap(tcga.norm, n_neighbors = 10, n_epochs = 1000)
 ```
 
 
-## Hierarchical clustering
+## Consensus NMF clustering
 
-Perform hierarchical clustering of the data and plot the resulting dendrogram. Number of clusters to use (3) is based on gap statistic.
-
-```{r fig.width=16, fig.height=9}
-tcga.hclust <- eclust(tcga.norm, "hclust", 3)
-#fviz_gap_stat(tcga.hclust$gap_stat)
-
-fviz_dend(tcga.hclust, rect = TRUE)
-
-fviz_silhouette(tcga.hclust) +
-  theme_classic() +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1))
-```
-
-Plot in 2D PCA and UMAP
+For this analysis 3 clusters were selected based on the consensus cophenetic correlation coefficient.
 
 ```{r}
-fviz_pca_ind(tcga.pca, geom = "point", col.ind = as.factor(tcga.hclust$cluster)) +
-  theme_classic()
-
-tcga.umap.clus <-
-  tcga.umap %>%
-  cbind(tcga.hclust$cluster) %>%
-  `colnames<-`(c("U1", "U2", "Cluster")) %>%
-  as_tibble() %>%
-  mutate_at("Cluster", as.factor)
-
-ggplot(tcga.umap.clus, aes(x = U1, y = U2, color = Cluster)) +
-  geom_point() +
-  theme_classic()
-```
-
-Expression profiles per cluster 
-
-```{r fig.width=10, fig.height=10}
-tcga.clustered <- tcga.norm %>%
-  mutate(Cluster = as.factor(tcga.hclust$cluster)) %>%
-  pivot_longer(names_to = "Marker", values_to = "Norm.value", -Cluster)
-
-profiles <- seq_len(tcga.hclust$nbclust) %>% map(~
-ggplot(
-  tcga.clustered %>% filter(Cluster == .x),
-  aes(x = Marker, y = Norm.value, color = Marker)
-) +
-  stat_summary(fun.data = mean_sdl, show.legend = FALSE) +
-  ylim(-3, 3) +
-  theme_classic() +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1)))
-
-plot_grid(plotlist = profiles, labels = paste("Cluster", seq_len(tcga.hclust$nbclust)))
-```
-
-
-Differential expression analysis (limma)
-
-```{r}
-design <- model.matrix(~0 + as.factor(tcga.hclust$cluster))
-colnames(design) <- paste0("Cluster", seq_len(tcga.hclust$nbclust))
-
-tcga.hclust.limma <- lmFit(t(tcga.norm), design = design)
-
-tcga.hclust.eb <- eBayes(tcga.hclust.limma)
-
-topTable(tcga.hclust.eb)
-
-tests.hclust <- decideTests(tcga.hclust.eb)
-
-tests.hclust@.Data
-
-summary(tests.hclust)
-
-```
-
-Differential expression analysis (silhouette)
-
-Select only the samples with positive silhouette scores as "core samples"
-```{r}
-core.samples <- which(tcga.hclust$silinfo$widths[,3] > 0)
-tcga.core.samples <- tcga.norm %>% add_column(Cluster = tcga.hclust$cluster) %>% 
-  slice(core.samples)
-```
-
-Calculate difference in means (mean(cluster) - mean(other)), one-vs-all t-test per marker and correct for FDR. Filter q <= 0.05
-
-```{r}
-unique(tcga.core.samples$Cluster) %>% map_dfr(\(c){
-  tcga.core.samples %>% 
-    summarize(across(-Cluster, ~t.test(.x ~ (Cluster==c))$p.value)) %>%
-    pivot_longer(names_to = "Marker", values_to = "p", everything()) %>% 
-    mutate(Cluster = c, Difference = tcga.core.samples %>% 
-             group_by(Cluster == c) %>% 
-             select(-Cluster) %>% 
-             group_split(.keep = FALSE) %>% map(colMeans) %>% reduce(`-`))
- }) %>% 
-  mutate(q = p.adjust(p, method = "fdr"), Difference = -Difference) %>% 
-  filter(q <= 0.05) %>% arrange(q)
-```
-
-
-## Similarity and graph based clustering
-
-Calculate leiden clustering based on weighted shared nearest neighbor graph
-```{r}
-tcga.knn <- knn.index(tcga.norm, 10)
-jaccard.cuttoff <- 0.1
-
-snn <- seq_len(nrow(tcga.knn) - 1) %>% map_dfr(\(id){
-  to <- seq(id + 1, nrow(tcga.knn))
-  jaccard <- to %>%
-    map_dbl(~ length(intersect(tcga.knn[id, ], tcga.knn[.x, ])) /
-      length(union(tcga.knn[id, ], tcga.knn[.x, ])))
-  
-  tibble(from = id, to = to, weight = jaccard) %>% filter(jaccard >= jaccard.cuttoff)
-})
-
-leiden.clusters <- graph_from_data_frame(snn, directed = FALSE) %>% leiden()
-
-```
-
-Plot in 2D PCA and UMAP
-
-```{r}
-fviz_pca_ind(tcga.pca, geom = "point", col.ind = as.factor(leiden.clusters)) +
-  theme_classic()
-
-ggplot(tcga.umap.clus %>% mutate(Cluster = as.factor(leiden.clusters)), 
-       aes(x = U1, y = U2, color = Cluster, shape = Cluster)) +
-  geom_point() +
-  theme_classic()
-```
-
-Expression profiles per cluster 
-
-```{r fig.width=10, fig.height=10}
-tcga.clustered <- tcga.norm %>%
-  mutate(Cluster = as.factor(leiden.clusters)) %>%
-  pivot_longer(names_to = "Marker", values_to = "Norm.value", -Cluster)
-
-profiles <- seq_len(max(leiden.clusters)) %>% map(~
-ggplot(
-  tcga.clustered %>% filter(Cluster == .x),
-  aes(x = Marker, y = Norm.value, color = Marker)
-) +
-  stat_summary(fun.data = mean_sdl, show.legend = FALSE) +
-  ylim(-3, 3) +
-  theme_classic() +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1)))
-
-plot_grid(plotlist = profiles, labels = paste("Cluster", seq_len(max(leiden.clusters))))
-```
-
-Differential expression analysis (limma)
-
-```{r}
-design <- model.matrix(~0 + as.factor(leiden.clusters))
-colnames(design) <- paste0("Cluster", seq_len(max(leiden.clusters)))
-
-tcga.leiden.limma <- lmFit(t(tcga.norm), design = design)
-
-tcga.leiden.eb <- eBayes(tcga.leiden.limma)
-
-topTable(tcga.hclust.eb)
-
-tests.leiden <- decideTests(tcga.leiden.eb)
-
-tests.leiden@.Data
-
-summary(tests.leiden)
-```
-
-
-Differential expression analysis (silhouette)
-
-Calculate the similarity of samples using the expression and the silhouette scores based on the assigned clusters.
-```{r}
-silhouette.leiden <- silhouette(leiden.clusters, dist(tcga.norm))
-fviz_silhouette(silhouette.leiden)
-```
-
-Select only the samples with positive silhouette scores as "core samples"
-```{r}
-core.samples <- which(silhouette.leiden[,3] > 0)
-tcga.core.samples <- tcga.norm %>% add_column(Cluster = leiden.clusters) %>% 
-  slice(core.samples)
-```
-
-Calculate difference in means (mean(cluster) - mean(other)), one-vs-all t-test per marker and correct for FDR. Filter q <= 0.05
-
-```{r}
-unique(tcga.core.samples$Cluster) %>% map_dfr(\(c){
-  tcga.core.samples %>% 
-    summarize(across(-Cluster, ~t.test(.x ~ (Cluster==c))$p.value)) %>%
-    pivot_longer(names_to = "Marker", values_to = "p", everything()) %>% 
-    mutate(Cluster = c, Difference = tcga.core.samples %>% 
-             group_by(Cluster == c) %>% 
-             select(-Cluster) %>% 
-             group_split(.keep = FALSE) %>% map(colMeans) %>% reduce(`-`))
- }) %>% 
-  mutate(q = p.adjust(p, method = "fdr"), Difference = -Difference) %>% 
-  filter(q <= 0.05) %>% arrange(q)
-```
-
-## Consensus NMF (9 clusters)
-
-```{r}
-
 tcga.nmf.rank <- nmfEstimateRank(as.matrix(t(tcga.rank)), seq(2,10), nrun = 20, seed = 42)
 
 plot(tcga.nmf.rank)
 
-tcga.nmf <- tcga.nmf.rank$fit[["9"]]
-
-```
-
-
-For this analysis 9 clusters were selected based on consensus cophenetic correlation coefficient The analysis can also be repeated with 3 clusters as the cophenetic correlation coefficient for 3 clusters is higher (in continuation).
-
-
-
-Extract basis of NMF (signature of cluster)
-
-```{r}
-basismap(tcga.nmf)
-```
-
-Extract coefficients of NMF (soft clustering of samples)
-
-```{r}
-coefmap(tcga.nmf)
-```
-
-Check for signs of overfitting
-
-```{r}
-consensusmap(tcga.nmf)
-```
-
-
-Assign clusters
-```{r}
-nmf.clusters <- apply(tcga.nmf@fit@H, 2, which.max)
-```
-
-Plot in 2D PCA and UMAP
-
-```{r}
-fviz_pca_ind(tcga.pca, geom = "point", col.ind = as.factor(nmf.clusters)) +
-  theme_classic()
-
-ggplot(tcga.umap.clus %>% mutate(Cluster = as.factor(nmf.clusters)), aes(x = U1, y = U2, color = Cluster)) +
-  geom_point() +
-  theme_classic()
-```
-
-Expression profiles per cluster 
-
-```{r fig.width=10, fig.height=10}
-tcga.clustered.nmf <- tcga.norm %>%
-  mutate(Cluster = as.factor(nmf.clusters)) %>%
-  pivot_longer(names_to = "Marker", values_to = "Norm.value", -Cluster)
-
-profiles <- seq_len(max(nmf.clusters)) %>% map(~
-ggplot(
-  tcga.clustered.nmf %>% filter(Cluster == .x),
-  aes(x = Marker, y = Norm.value, color = Marker)
-) +
-  stat_summary(fun.data = mean_sdl, show.legend = FALSE) +
-  ylim(-3, 3) +
-  theme_classic() +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1)))
-
-plot_grid(plotlist = profiles, labels = paste("Cluster", seq_len(max(nmf.clusters))))
-```
-
-Differential expression analysis (limma)
-
-```{r}
-design <- model.matrix(~0 + as.factor(nmf.clusters))
-colnames(design) <- paste0("Cluster", seq_len(max(nmf.clusters)))
-
-tcga.nmf.limma <- lmFit(t(tcga.norm), design = design)
-
-tcga.nmf.eb <- eBayes(tcga.nmf.limma)
-
-topTable(tcga.nmf.eb)
-
-tests.nmf <- decideTests(tcga.nmf.eb)
-
-tests.nmf@.Data
-
-summary(tests.nmf)
-```
-
-Differential expression analysis (silhouette)
-
-Calculate the similarity of samples using the expression and the silhouette scores based on the assigned clusters.
-```{r}
-silhouette.nmf <- silhouette(nmf.clusters, dist(tcga.norm))
-fviz_silhouette(silhouette.nmf)
-```
-
-Select only the samples with positive silhouette scores as "core samples"
-```{r}
-core.samples <- which(silhouette.nmf[,3] > 0)
-tcga.core.samples <- tcga.norm %>% add_column(Cluster = nmf.clusters) %>% 
-  slice(core.samples)
-```
-
-Calculate difference in means (mean(cluster) - mean(other)), one-vs-all t-test per marker and correct for FDR. Filter q <= 0.05
-
-```{r}
-names(which((tcga.core.samples$Cluster %>% table)>1)) %>% map_dfr(\(c){
-  tcga.core.samples %>% 
-    summarize(across(-Cluster, ~t.test(.x ~ (Cluster==c))$p.value)) %>%
-    pivot_longer(names_to = "Marker", values_to = "p", everything()) %>% 
-    mutate(Cluster = c, Difference = tcga.core.samples %>% 
-             group_by(Cluster == c) %>% 
-             select(-Cluster) %>% 
-             group_split(.keep = FALSE) %>% map(colMeans) %>% reduce(`-`))
- }) %>% 
-  mutate(q = p.adjust(p, method = "fdr"), Difference = -Difference) %>% 
-  filter(q <= 0.05) %>% arrange(q)
-```
-
-
-## Consensus NMF (3 clusters)
-
-Repeat the analysis, but using 3 clusters.
-
-```{r}
 tcga.nmf <- tcga.nmf <- tcga.nmf.rank$fit[["3"]]
 ```
 
@@ -427,7 +99,14 @@ Plot in 2D PCA and UMAP
 fviz_pca_ind(tcga.pca, geom = "point", col.ind = as.factor(nmf.clusters)) +
   theme_classic()
 
-ggplot(tcga.umap.clus %>% mutate(Cluster = as.factor(nmf.clusters)), aes(x = U1, y = U2, color = Cluster)) +
+tcga.umap.clus <-
+  tcga.umap %>%
+  cbind(nmf.clusters) %>%
+  `colnames<-`(c("U1", "U2", "Cluster")) %>%
+  as_tibble() %>%
+  mutate_at("Cluster", as.factor)
+
+ggplot(tcga.umap.clus, aes(x = U1, y = U2, color = Cluster)) +
   geom_point() +
   theme_classic()
 ```
@@ -486,10 +165,10 @@ tcga.core.samples <- tcga.norm %>% add_column(Cluster = nmf.clusters) %>%
   slice(core.samples)
 ```
 
-Calculate difference in means (mean(cluster) - mean(other)), one-vs-all t-test per marker and correct for FDR. Filter q <= 0.05
+Calculate difference in means (mean(cluster) - mean(other)), one-vs-all t-test per marker and correct for FDR. Filter q <= 0.05. Plot the differences.
 
 ```{r}
-unique(tcga.core.samples$Cluster) %>% map_dfr(\(c){
+de.table <- unique(tcga.core.samples$Cluster) %>% map_dfr(\(c){
   tcga.core.samples %>% 
     summarize(across(-Cluster, ~t.test(.x ~ (Cluster==c))$p.value)) %>%
     pivot_longer(names_to = "Marker", values_to = "p", everything()) %>% 
@@ -498,6 +177,15 @@ unique(tcga.core.samples$Cluster) %>% map_dfr(\(c){
              select(-Cluster) %>% 
              group_split(.keep = FALSE) %>% map(colMeans) %>% reduce(`-`))
  }) %>% 
-  mutate(q = p.adjust(p, method = "fdr"), Difference = -Difference) %>% 
-  filter(q <= 0.05) %>% arrange(q)
+  mutate(q = p.adjust(p, method = "fdr"), Difference = -Difference)
+
+de.table %>%
+  filter(q <= 0.05) %>%
+  arrange(q)
+
+de.table %>%
+  pivot_wider(names_from = "Cluster", values_from = "Difference", -c(p, q)) %>%
+  column_to_rownames("Marker") %>%
+  as.matrix() %>%
+  pheatmap(scale = "none")
 ```
