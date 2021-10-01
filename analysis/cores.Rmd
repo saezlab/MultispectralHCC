@@ -19,10 +19,13 @@ library(limma)
 library(NMF)
 library(factoextra)
 library(cowplot)
+library(pheatmap)
+library(RColorBrewer)
 ```
 
 ```{r}
-tumor.hc <- read_csv("data/tumor_hepatocytes.csv", col_types = cols()) %>%
+data <- read_csv("data/tumor_hepatocytes.csv", col_types = cols())
+tumor.hc <- data %>%
   select(
     `Cytoplasm AGS (Opal 690) Mean (Normalized Counts, Total Weighting)`,
     `Cytoplasm BerEP4 (Opal 650) Mean (Normalized Counts, Total Weighting)`,
@@ -199,6 +202,58 @@ tumor.hc.umap.markers.plots <- colnames(tumor.hc.norm) %>%
 plot_grid(plotlist = tumor.hc.umap.markers.plots)
 ```
 
+### Core plots
+
+```{r}
+tumor.hc.umap.cores <- data %>%
+  select(`Sample Name`) %>%
+  bind_cols(tumor.hc.umap.sample) %>%
+  slice(subsamp) %>%
+  mutate(
+    c = nmf.clusters,
+    sample = str_extract(`Sample Name`, "[0-9]+_[0-9]+")
+  )
+
+tumor.hc.umap.cores %>%
+  group_by(sample) %>%
+  summarize(
+    Fraction = table(c) / n(),
+    Cluster = names(Fraction),
+    .groups = "drop"
+  ) %>%
+  mutate(Fraction = as.numeric(Fraction)) %>%
+  pivot_wider(names_from = "Cluster", values_from = "Fraction") %>%
+  column_to_rownames("sample") %>%
+  mutate(across(everything(), ~ replace_na(., 0))) %>%
+  as.matrix() %>%
+  pheatmap(
+    scale = "none",
+    color = colorRampPalette(brewer.pal(n = 7, name = "YlOrBr"))(100)
+  )
+
+tumor.hc.umap.cores %>%
+  pull(sample) %>%
+  unique() %>%
+  walk(\(s){
+    output.fig <- paste0("output/", s, ".png")
+    if (!file.exists(output.fig)) {
+      png(output.fig, width  = 800, height = 800)
+      (ggplot(
+        tumor.hc.umap.cores %>%
+          mutate(c = ifelse(sample == s, c, NA), Cluster = as.factor(c)) %>%
+          arrange(!is.na(Cluster), Cluster),
+        aes(x = U1, y = U2, color = Cluster)
+      ) +
+        geom_point(size = 0.5) +
+        scale_color_discrete(na.value = "gray80") +
+        theme_classic()) %>%
+        print()
+      dev.off()
+    }
+  })
+```
+
+Figures with UMAPs for each core can be found in [output](https://github.com/saezlab/MultispectralHCC/tree/master/output).
 
 ### Differential expression analysis (silhouette)
 
@@ -216,10 +271,10 @@ tumor.hc.core.samples <- tumor.hc.norm[subsamp, ] %>%
   slice(core.samples)
 ```
 
-Calculate difference in means (mean(cluster) - mean(other)), one-vs-all t-test per marker and correct for FDR. Filter q <= 0.05
+Calculate difference in means (mean(cluster) - mean(other)), one-vs-all t-test per marker and correct for FDR. Filter q <= 0.05. Plot the differences.
 
 ```{r}
-unique(tumor.hc.core.samples$Cluster) %>%
+de.table <- unique(tumor.hc.core.samples$Cluster) %>%
   map_dfr(\(c){
     tumor.hc.core.samples %>%
       summarize(across(-Cluster, ~ t.test(.x ~ (Cluster == c))$p.value)) %>%
@@ -229,7 +284,15 @@ unique(tumor.hc.core.samples$Cluster) %>%
         select(-Cluster) %>%
         group_split(.keep = FALSE) %>% map(colMeans) %>% reduce(`-`))
   }) %>%
-  mutate(q = p.adjust(p, method = "fdr"), Difference = -Difference) %>%
+  mutate(q = p.adjust(p, method = "fdr"), Difference = -Difference)
+
+de.table %>%
   filter(q <= 0.05) %>%
   arrange(q)
+
+de.table %>%
+  pivot_wider(names_from = "Cluster", values_from = "Difference", -c(p, q)) %>%
+  column_to_rownames("Marker") %>%
+  as.matrix() %>%
+  pheatmap(scale = "none")
 ```
