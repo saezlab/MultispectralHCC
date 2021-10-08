@@ -1,0 +1,108 @@
+---
+title: "misty"
+author: "Jovan Tanevski"
+date: "`r Sys.Date()`"
+output: 
+  workflowr::wflow_html:
+    df_print: kable
+editor_options:
+  chunk_output_type: console
+---
+
+## Setup
+
+```{r setup, message=FALSE}
+library(mistyR)
+library(future)
+library(tidyverse)
+library(skimr)
+
+plan(multisession(workers = 6))
+```
+
+```{r}
+data <- read_csv("data/tumor_hepatocytes.csv", col_types = cols())
+
+tumor.hc <- data %>%
+  select(
+    `Cytoplasm AGS (Opal 690) Mean (Normalized Counts, Total Weighting)`,
+    `Cytoplasm BerEP4 (Opal 650) Mean (Normalized Counts, Total Weighting)`,
+    `Cytoplasm CRP (Opal 540) Mean (Normalized Counts, Total Weighting)`,
+    `Nucleus p-S6 (Opal 570) Mean (Normalized Counts, Total Weighting)`,
+    `Nucleus beta-cat. (Opal 520) Mean (Normalized Counts, Total Weighting)`
+  ) %>%
+  `colnames<-`(str_split(colnames(.), " ") %>%
+    map_chr(~ .x[2]) %>%
+    make.names())
+skim(tumor.hc)
+```
+
+## Run MISTy
+
+```{r}
+data %>%
+  select(`Sample Name`, `Cell X Position`, `Cell Y Position`) %>%
+  `colnames<-`(c("Sample", "X", "Y")) %>%
+  bind_cols(tumor.hc) %>%
+  group_by(Sample) %>%
+  group_walk(\(subset, key){
+    patient <- str_extract(key %>% pull(Sample), "[0-9]+_[0-9]+")
+    output.folder <- paste0("output/misty/", patient)
+
+    if (file.exists(output.folder) | 
+        file.exists(paste0(output.folder, "_failed"))) {
+      return()
+    }
+
+    expr <- subset %>% 
+      select(-c(X, Y)) %>%
+      select(where(~!(sd(.x) == 0 | length(unique(.x)) < 3)))
+    pos <- subset %>% select(X, Y)
+    misty.views <- create_initial_view(expr) %>%
+      add_juxtaview(pos) %>%
+      add_paraview(pos, 100, 15)
+
+    tryCatch(
+      run_misty(misty.views, output.folder, cv = 3),
+      error = function(e) {
+        file.rename(
+          output.folder,
+          paste0(output.folder, "_failed")
+        )
+      }
+    )
+  })
+```
+
+## Collect and browse results
+
+```{r}
+misty.results <- collect_results(list.dirs("output/misty")[-1])
+
+misty.results %>% 
+  plot_improvement_stats("intra.R2") %>%
+  plot_improvement_stats() %>% 
+  plot_view_contributions()
+  
+misty.results %>% 
+  plot_interaction_heatmap("intra", 0) %>%
+  plot_interaction_heatmap("juxta.15", 0) %>% 
+  plot_interaction_heatmap("para.100", 0)
+```
+
+## Signature analysis
+
+```{r}
+sig <- misty.results %>% 
+  extract_signature("performance") %>% 
+  mutate(sample = str_extract(sample, "[0-9]+_[0-9]+"))
+
+sig.pca <- prcomp(sig %>% select(-sample))$x %>% 
+  data.frame() %>% 
+  bind_cols(sig %>% select(sample))
+
+ggplot(sig.pca, aes(x = PC1, y = PC2, color = sample)) + 
+  geom_point() + 
+  theme_classic()
+```
+
