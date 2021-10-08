@@ -47,8 +47,8 @@ upper <- quartiles[2, ] + 1.5 * (quartiles[2, ] - quartiles[1, ])
 
 
 tumor.hc.winsorized <- tumor.hc %>% imap_dfc(\(x, y){
-  x[x < lower[y]] <- x[which.min(x - lower[y])]
-  x[x > upper[y]] <- x[which.min(x - upper[y])]
+  x[x < lower[y]] <- x[which.min(abs(x - lower[y]))]
+  x[x > upper[y]] <- x[which.min(abs(x - upper[y]))]
   x
 })
 
@@ -65,7 +65,7 @@ Pilot run. Subsample 10% of the original data.
 
 ```{r}
 set.seed(42)
-percent <- 10
+percent <- 1
 subsamp <- sample(nrow(tumor.hc.rank), (percent / 100) * nrow(tumor.hc.rank))
 ```
 
