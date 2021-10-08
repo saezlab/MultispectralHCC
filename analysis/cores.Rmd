@@ -65,7 +65,7 @@ Pilot run. Subsample 10% of the original data.
 
 ```{r}
 set.seed(42)
-percent <- 1
+percent <- 5
 subsamp <- sample(nrow(tumor.hc.rank), (percent / 100) * nrow(tumor.hc.rank))
 ```
 
@@ -77,7 +77,8 @@ cache <- "output/tumor.hc.umap.rds"
 if (file.exists(cache)) {
   tumor.hc.umap <- read_rds(cache)
 } else {
-  tumor.hc.umap <- umap(tumor.hc.norm, n_threads = 5)
+  tumor.hc.umap <- umap(tumor.hc.norm,  n_neighbors = 100, nn_method = "annoy", 
+                        metric = "manhattan", n_threads = 7)
   write_rds(tumor.hc.umap, cache, "gz")
 }
 ```
@@ -147,7 +148,7 @@ Assign clusters
 nmf.clusters <- apply(tumor.hc.nmf@fit@H, 2, which.max)
 ```
 
-### Plot in 2D PCA and UMAP
+### Plot in 2D
 
 ```{r}
 tumor.hc.umap.clus <-
