@@ -5,11 +5,15 @@ navbar:
   left:
   - text: Home
     href: index.html
-  - text: About
-    href: about.html
+  - text: TCGA
+    href: tcga.html
+  - text: Cores 3
+    href: cores_3.html
+  - text: Cores 4
+    href: cores_3.html
+  right:
   - text: License
     href: license.html
-  right:
   - icon: fa-github
     text: Source code
     href: https://github.com/saezlab/MultispectralHCC

@@ -31,7 +31,7 @@ tumor.hc <- data %>%
     `Cytoplasm BerEP4 (Opal 650) Mean (Normalized Counts, Total Weighting)`,
     `Cytoplasm CRP (Opal 540) Mean (Normalized Counts, Total Weighting)`,
     `Nucleus p-S6 (Opal 570) Mean (Normalized Counts, Total Weighting)`,
-    `Nucleus beta-cat. (Opal 520) Mean (Normalized Counts, Total Weighting)`
+#    `Nucleus beta-cat. (Opal 520) Mean (Normalized Counts, Total Weighting)`
   ) %>%
   `colnames<-`(str_split(colnames(.), " ") %>% map_chr(~ .x[2]) %>% make.names())
 
@@ -65,7 +65,7 @@ Pilot run. Subsample 10% of the original data.
 
 ```{r}
 set.seed(42)
-percent <- 5
+percent <- 10
 subsamp <- sample(nrow(tumor.hc.rank), (percent / 100) * nrow(tumor.hc.rank))
 ```
 
@@ -77,8 +77,8 @@ cache <- "output/tumor.hc.umap.rds"
 if (file.exists(cache)) {
   tumor.hc.umap <- read_rds(cache)
 } else {
-  tumor.hc.umap <- umap(tumor.hc.norm,  n_neighbors = 100, nn_method = "annoy", 
-                        metric = "manhattan", n_threads = 7)
+  tumor.hc.umap <- umap(tumor.hc.norm, n_neighbors = 100, 
+                        min_dist = 0.2, n_threads = 7)
   write_rds(tumor.hc.umap, cache, "gz")
 }
 ```
@@ -118,7 +118,7 @@ if (file.exists(cache)) {
   tumor.hc.nmf.rank <- read_rds(cache)
 } else {
   tumor.hc.nmf.rank <- nmfEstimateRank(as.matrix(t(tumor.hc.rank[subsamp, ])),
-    range = seq(2, 6), method = "snmf/r",
+    range = seq(2, 5), method = "snmf/r",
     nrun = 10, seed = 42, verbose = TRUE,
     .options = "mp5"
   )
@@ -127,7 +127,7 @@ if (file.exists(cache)) {
 
 plot(tumor.hc.nmf.rank)
 
-tumor.hc.nmf <- tumor.hc.nmf.rank$fit[["3"]]
+tumor.hc.nmf <- tumor.hc.nmf.rank$fit[["4"]]
 rm(tumor.hc.nmf.rank)
 ```
 
@@ -229,6 +229,7 @@ tumor.hc.umap.cores %>%
   as.matrix() %>%
   pheatmap(
     scale = "none",
+    cellheight = 12,
     color = colorRampPalette(brewer.pal(n = 7, name = "YlOrBr"))(100)
   )
 
@@ -236,7 +237,7 @@ tumor.hc.umap.cores %>%
   pull(sample) %>%
   unique() %>%
   walk(\(s){
-    output.fig <- paste0("output/", s, ".png")
+    output.fig <- paste0("output/cores_4/", s, ".png")
     if (!file.exists(output.fig)) {
       png(output.fig, width  = 800, height = 800)
       (ggplot(
