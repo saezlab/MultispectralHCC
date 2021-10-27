@@ -257,14 +257,20 @@ $(document).ready(function () {
   <a href="index.html">Home</a>
 </li>
 <li>
-  <a href="about.html">About</a>
+  <a href="tcga.html">TCGA</a>
 </li>
 <li>
-  <a href="license.html">License</a>
+  <a href="cores_3.html">Cores 3</a>
+</li>
+<li>
+  <a href="cores_3.html">Cores 4</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
+  <a href="license.html">License</a>
+</li>
+<li>
   <a href="https://github.com/saezlab/MultispectralHCC">
     <span class="fa fa-github"></span>
      
@@ -317,7 +323,7 @@ $(document).ready(function () {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2021-10-08
+<strong>Last updated:</strong> 2021-10-27
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 2 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -348,16 +354,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomsaezlabMultispectralHCCtreedb035f5a0457e3a89d377d01f071c747eec30f57targetblankdb035f5a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/saezlab/MultispectralHCC/tree/db035f5a0457e3a89d377d01f071c747eec30f57" target="_blank">db035f5</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomsaezlabMultispectralHCCtreee4ef93732173b5729ddf1a192c58b7df47b6b043targetblanke4ef937a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/saezlab/MultispectralHCC/tree/e4ef93732173b5729ddf1a192c58b7df47b6b043" target="_blank">e4ef937</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomsaezlabMultispectralHCCtreedb035f5a0457e3a89d377d01f071c747eec30f57targetblankdb035f5a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomsaezlabMultispectralHCCtreee4ef93732173b5729ddf1a192c58b7df47b6b043targetblanke4ef937a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/saezlab/MultispectralHCC/tree/db035f5a0457e3a89d377d01f071c747eec30f57" target="_blank">db035f5</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/saezlab/MultispectralHCC/tree/e4ef93732173b5729ddf1a192c58b7df47b6b043" target="_blank">e4ef937</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -367,22 +373,79 @@ Ignored files:
     Ignored:    .DS_Store
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
+    Ignored:    NMF_26ce5dfd0cab/
     Ignored:    analysis/.DS_Store
+    Ignored:    analysis/figure/
     Ignored:    code/
     Ignored:    data/
     Ignored:    old/
     Ignored:    output/.DS_Store
+    Ignored:    output/cores_3/
+    Ignored:    output/cores_4/
     Ignored:    output/tumor.hc.nmf.rank.1.rds
     Ignored:    output/tumor.hc.nmf.rank.10.rds
-    Ignored:    output/tumor.hc.nmf.rank.5.rds
     Ignored:    output/tumor.hc.umap.rds
 
-Untracked files:
-    Untracked:  output/misty/
-
 Unstaged changes:
-    Modified:   output/11_25684.png
-    Modified:   output/14_66422.png
+    Modified:   analysis/tcga.Rmd
+    Deleted:    output/07_4662.png
+    Deleted:    output/08_27704.png
+    Deleted:    output/09_12058.png
+    Deleted:    output/09_19505.png
+    Deleted:    output/10_1150.png
+    Deleted:    output/10_16169.png
+    Deleted:    output/10_19418.png
+    Deleted:    output/10_26818.png
+    Deleted:    output/10_26871.png
+    Deleted:    output/10_28011.png
+    Deleted:    output/10_6446.png
+    Deleted:    output/10_7994.png
+    Deleted:    output/10_8486.png
+    Deleted:    output/11_17328.png
+    Deleted:    output/11_18529.png
+    Deleted:    output/11_19586.png
+    Deleted:    output/11_19933.png
+    Deleted:    output/11_20683.png
+    Deleted:    output/11_22196.png
+    Deleted:    output/11_25684.png
+    Deleted:    output/11_25993.png
+    Deleted:    output/11_26686.png
+    Deleted:    output/11_3580.png
+    Deleted:    output/11_8671.png
+    Deleted:    output/11_9225.png
+    Deleted:    output/12_10971.png
+    Deleted:    output/12_20368.png
+    Deleted:    output/12_21031.png
+    Deleted:    output/12_28533.png
+    Deleted:    output/12_291.png
+    Deleted:    output/12_29804.png
+    Deleted:    output/12_32083.png
+    Deleted:    output/12_8132.png
+    Deleted:    output/13_20857.png
+    Deleted:    output/13_30248.png
+    Deleted:    output/13_372.png
+    Deleted:    output/13_9790.png
+    Deleted:    output/14_10898.png
+    Deleted:    output/14_11220.png
+    Deleted:    output/14_50885.png
+    Deleted:    output/14_55372.png
+    Deleted:    output/14_5837.png
+    Deleted:    output/14_5897.png
+    Deleted:    output/14_62694.png
+    Deleted:    output/14_62836.png
+    Deleted:    output/14_64469.png
+    Deleted:    output/14_65050.png
+    Deleted:    output/14_65563.png
+    Deleted:    output/14_65641.png
+    Deleted:    output/14_65723.png
+    Deleted:    output/14_66422.png
+    Deleted:    output/14_8155.png
+    Deleted:    output/15_04414.png
+    Deleted:    output/15_10312.png
+    Deleted:    output/15_24019.png
+    Deleted:    output/15_28478.png
+    Deleted:    output/16_02092.png
+    Deleted:    output/16_20351.png
 
 </code></pre>
 <p>
@@ -421,6 +484,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/saezlab/MultispectralHCC/blob/a56dc0c995007cc0c5cf811ddb0515972d6a5632/analysis/index.Rmd" target="_blank">a56dc0c</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-10-27
+</td>
+<td>
+remove beta-cat, add cores 3 and 4 clusters
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/saezlab/MultispectralHCC/68cbc321b98a26fd743efee1b3d94069fc6d288a/docs/index.html" target="_blank">68cbc32</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-10-08
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -618,7 +715,8 @@ Start workflowr project.
 <div id="analyses" class="section level2">
 <h2>Analyses</h2>
 <p><a href="tcga.html">Basic exploratory analysis of the TCGA data</a></p>
-<p><a href="cores.html">Pilot analysis of data from hepatocytes from tumor cores</a></p>
+<p><a href="cores_3.html">Pilot analysis of data from hepatocytes from tumor cores (3 clusters)</a></p>
+<p><a href="cores_4.html">Pilot analysis of data from hepatocytes from tumor cores (4 clusters)</a></p>
 <p><a href="misty.html">MISTy analysis of data from hepatocytes from tumor cores</a></p>
 </div>
 
