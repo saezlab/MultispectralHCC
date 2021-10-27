@@ -10,7 +10,7 @@ navbar:
   - text: Cores 3
     href: cores_3.html
   - text: Cores 4
-    href: cores_3.html
+    href: cores_4.html
   right:
   - text: License
     href: license.html
