@@ -29,7 +29,7 @@ tumor.hc <- data %>%
     `Cytoplasm BerEP4 (Opal 650) Mean (Normalized Counts, Total Weighting)`,
     `Cytoplasm CRP (Opal 540) Mean (Normalized Counts, Total Weighting)`,
     `Nucleus p-S6 (Opal 570) Mean (Normalized Counts, Total Weighting)`,
-    `Nucleus beta-cat. (Opal 520) Mean (Normalized Counts, Total Weighting)`
+#    `Nucleus beta-cat. (Opal 520) Mean (Normalized Counts, Total Weighting)`
   ) %>%
   `colnames<-`(str_split(colnames(.), " ") %>%
     map_chr(~ .x[2]) %>%
@@ -59,8 +59,8 @@ data %>%
       select(where(~!(sd(.x) == 0 | length(unique(.x)) < 3)))
     pos <- subset %>% select(X, Y)
     misty.views <- create_initial_view(expr) %>%
-      add_juxtaview(pos) %>%
-      add_paraview(pos, 100, 15)
+      add_juxtaview(pos, 25) %>%
+      add_paraview(pos, 150, 25)
 
     tryCatch(
       run_misty(misty.views, output.folder, cv = 3),
@@ -86,8 +86,8 @@ misty.results %>%
   
 misty.results %>% 
   plot_interaction_heatmap("intra", 0) %>%
-  plot_interaction_heatmap("juxta.15", 0) %>% 
-  plot_interaction_heatmap("para.100", 0)
+  plot_interaction_heatmap("juxta.25", 0) %>% 
+  plot_interaction_heatmap("para.150", 0)
 ```
 
 ## Signature analysis
