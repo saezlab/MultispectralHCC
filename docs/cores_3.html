@@ -1,0 +1,1490 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Jovan Tanevski" />
+
+<meta name="date" content="2021-10-27" />
+
+<title>cores</title>
+
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/master/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">MultispectralHCC</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="tcga.html">TCGA</a>
+</li>
+<li>
+  <a href="cores_3.html">Cores 3</a>
+</li>
+<li>
+  <a href="cores_3.html">Cores 4</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="license.html">License</a>
+</li>
+<li>
+  <a href="https://github.com/saezlab/MultispectralHCC">
+    <span class="fa fa-github"></span>
+     
+    Source code
+  </a>
+</li>
+<li>
+  <a href="https://twitter.com/saezlab">
+    <span class="fa fa-twitter"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="http://www.saezlab.org">
+    <span class="fa fa-university"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">cores</h1>
+<h4 class="author">Jovan Tanevski</h4>
+<h4 class="date">2021-10-27</h4>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2021-10-27
+</p>
+<p>
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+</p>
+<p>
+<strong>Knit directory:</strong> <code>Multispectral HCC/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
+</p>
+<p>
+This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.6.2). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20210728code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20210728)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20210728code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20210728)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr project makes it easier to run your code on other machines.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomsaezlabMultispectralHCCtree5bd76a9b317d91b5d130c7382a0c71b41c6e22cetargetblank5bd76a9a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/saezlab/MultispectralHCC/tree/5bd76a9b317d91b5d130c7382a0c71b41c6e22ce" target="_blank">5bd76a9</a> </a>
+</p>
+</div>
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomsaezlabMultispectralHCCtree5bd76a9b317d91b5d130c7382a0c71b41c6e22cetargetblank5bd76a9a" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version <a href="https://github.com/saezlab/MultispectralHCC/tree/5bd76a9b317d91b5d130c7382a0c71b41c6e22ce" target="_blank">5bd76a9</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .DS_Store
+    Ignored:    .Rhistory
+    Ignored:    .Rproj.user/
+    Ignored:    NMF_26ce5dfd0cab/
+    Ignored:    analysis/.DS_Store
+    Ignored:    code/
+    Ignored:    data/
+    Ignored:    old/
+    Ignored:    output/.DS_Store
+    Ignored:    output/cores_3/
+    Ignored:    output/cores_4/
+    Ignored:    output/tumor.hc.nmf.rank.1.rds
+    Ignored:    output/tumor.hc.nmf.rank.10.rds
+    Ignored:    output/tumor.hc.umap.rds
+
+Unstaged changes:
+    Modified:   analysis/tcga.Rmd
+    Deleted:    output/07_4662.png
+    Deleted:    output/08_27704.png
+    Deleted:    output/09_12058.png
+    Deleted:    output/09_19505.png
+    Deleted:    output/10_1150.png
+    Deleted:    output/10_16169.png
+    Deleted:    output/10_19418.png
+    Deleted:    output/10_26818.png
+    Deleted:    output/10_26871.png
+    Deleted:    output/10_28011.png
+    Deleted:    output/10_6446.png
+    Deleted:    output/10_7994.png
+    Deleted:    output/10_8486.png
+    Deleted:    output/11_17328.png
+    Deleted:    output/11_18529.png
+    Deleted:    output/11_19586.png
+    Deleted:    output/11_19933.png
+    Deleted:    output/11_20683.png
+    Deleted:    output/11_22196.png
+    Deleted:    output/11_25684.png
+    Deleted:    output/11_25993.png
+    Deleted:    output/11_26686.png
+    Deleted:    output/11_3580.png
+    Deleted:    output/11_8671.png
+    Deleted:    output/11_9225.png
+    Deleted:    output/12_10971.png
+    Deleted:    output/12_20368.png
+    Deleted:    output/12_21031.png
+    Deleted:    output/12_28533.png
+    Deleted:    output/12_291.png
+    Deleted:    output/12_29804.png
+    Deleted:    output/12_32083.png
+    Deleted:    output/12_8132.png
+    Deleted:    output/13_20857.png
+    Deleted:    output/13_30248.png
+    Deleted:    output/13_372.png
+    Deleted:    output/13_9790.png
+    Deleted:    output/14_10898.png
+    Deleted:    output/14_11220.png
+    Deleted:    output/14_50885.png
+    Deleted:    output/14_55372.png
+    Deleted:    output/14_5837.png
+    Deleted:    output/14_5897.png
+    Deleted:    output/14_62694.png
+    Deleted:    output/14_62836.png
+    Deleted:    output/14_64469.png
+    Deleted:    output/14_65050.png
+    Deleted:    output/14_65563.png
+    Deleted:    output/14_65641.png
+    Deleted:    output/14_65723.png
+    Deleted:    output/14_66422.png
+    Deleted:    output/14_8155.png
+    Deleted:    output/15_04414.png
+    Deleted:    output/15_10312.png
+    Deleted:    output/15_24019.png
+    Deleted:    output/15_28478.png
+    Deleted:    output/16_02092.png
+    Deleted:    output/16_20351.png
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+
+<p>
+These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/cores_3.Rmd</code>) and HTML (<code>docs/cores_3.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
+</p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/saezlab/MultispectralHCC/blob/a56dc0c995007cc0c5cf811ddb0515972d6a5632/analysis/cores_3.Rmd" target="_blank">a56dc0c</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-10-27
+</td>
+<td>
+remove beta-cat, add cores 3 and 4 clusters
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<div id="setup" class="section level2">
+<h2>Setup</h2>
+<pre class="r"><code>library(tidyverse)
+library(skimr)
+library(uwot)
+library(limma)
+library(NMF)
+library(factoextra)
+library(cowplot)
+library(pheatmap)
+library(RColorBrewer)</code></pre>
+<pre class="r"><code>data &lt;- read_csv(&quot;data/tumor_hepatocytes.csv&quot;, col_types = cols())
+tumor.hc &lt;- data %&gt;%
+  select(
+    `Cytoplasm AGS (Opal 690) Mean (Normalized Counts, Total Weighting)`,
+    `Cytoplasm BerEP4 (Opal 650) Mean (Normalized Counts, Total Weighting)`,
+    `Cytoplasm CRP (Opal 540) Mean (Normalized Counts, Total Weighting)`,
+    `Nucleus p-S6 (Opal 570) Mean (Normalized Counts, Total Weighting)`,
+#    `Nucleus beta-cat. (Opal 520) Mean (Normalized Counts, Total Weighting)`
+  ) %&gt;%
+  `colnames&lt;-`(str_split(colnames(.), &quot; &quot;) %&gt;% map_chr(~ .x[2]) %&gt;% make.names())
+
+skim(tumor.hc)</code></pre>
+<table>
+<caption>Data summary</caption>
+<tbody>
+<tr class="odd">
+<td align="left">Name</td>
+<td align="left">tumor.hc</td>
+</tr>
+<tr class="even">
+<td align="left">Number of rows</td>
+<td align="left">223846</td>
+</tr>
+<tr class="odd">
+<td align="left">Number of columns</td>
+<td align="left">4</td>
+</tr>
+<tr class="even">
+<td align="left">_______________________</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Column type frequency:</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">numeric</td>
+<td align="left">4</td>
+</tr>
+<tr class="odd">
+<td align="left">________________________</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Group variables</td>
+<td align="left">None</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: numeric</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">skim_variable</th>
+<th align="right">n_missing</th>
+<th align="right">complete_rate</th>
+<th align="right">mean</th>
+<th align="right">sd</th>
+<th align="right">p0</th>
+<th align="right">p25</th>
+<th align="right">p50</th>
+<th align="right">p75</th>
+<th align="right">p100</th>
+<th align="left">hist</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">AGS</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0.27</td>
+<td align="right">0.41</td>
+<td align="right">0</td>
+<td align="right">0.07</td>
+<td align="right">0.12</td>
+<td align="right">0.25</td>
+<td align="right">5.23</td>
+<td align="left">▇▁▁▁▁</td>
+</tr>
+<tr class="even">
+<td align="left">BerEP4</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1.09</td>
+<td align="right">2.19</td>
+<td align="right">0</td>
+<td align="right">0.21</td>
+<td align="right">0.32</td>
+<td align="right">0.58</td>
+<td align="right">24.08</td>
+<td align="left">▇▁▁▁▁</td>
+</tr>
+<tr class="odd">
+<td align="left">CRP</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">2.51</td>
+<td align="right">3.08</td>
+<td align="right">0</td>
+<td align="right">0.55</td>
+<td align="right">1.00</td>
+<td align="right">3.50</td>
+<td align="right">35.80</td>
+<td align="left">▇▁▁▁▁</td>
+</tr>
+<tr class="even">
+<td align="left">p.S6</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1.31</td>
+<td align="right">1.25</td>
+<td align="right">0</td>
+<td align="right">0.58</td>
+<td align="right">0.94</td>
+<td align="right">1.61</td>
+<td align="right">35.24</td>
+<td align="left">▇▁▁▁▁</td>
+</tr>
+</tbody>
+</table>
+<p>Detect outliers based on Tukey’s interquartile approach and winsorize. Follow by quantile normalization and ranking to get rid of the effect of abundance</p>
+<pre class="r"><code>quartiles &lt;- apply(tumor.hc, 2, \(x) quantile(x, c(.25, .75)))
+lower &lt;- quartiles[1, ] - 1.5 * (quartiles[2, ] - quartiles[1, ])
+upper &lt;- quartiles[2, ] + 1.5 * (quartiles[2, ] - quartiles[1, ])
+
+
+tumor.hc.winsorized &lt;- tumor.hc %&gt;% imap_dfc(\(x, y){
+  x[x &lt; lower[y]] &lt;- x[which.min(abs(x - lower[y]))]
+  x[x &gt; upper[y]] &lt;- x[which.min(abs(x - upper[y]))]
+  x
+})
+
+skim(tumor.hc.winsorized)</code></pre>
+<table>
+<caption>Data summary</caption>
+<tbody>
+<tr class="odd">
+<td align="left">Name</td>
+<td align="left">tumor.hc.winsorized</td>
+</tr>
+<tr class="even">
+<td align="left">Number of rows</td>
+<td align="left">223846</td>
+</tr>
+<tr class="odd">
+<td align="left">Number of columns</td>
+<td align="left">4</td>
+</tr>
+<tr class="even">
+<td align="left">_______________________</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Column type frequency:</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">numeric</td>
+<td align="left">4</td>
+</tr>
+<tr class="odd">
+<td align="left">________________________</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Group variables</td>
+<td align="left">None</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: numeric</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">skim_variable</th>
+<th align="right">n_missing</th>
+<th align="right">complete_rate</th>
+<th align="right">mean</th>
+<th align="right">sd</th>
+<th align="right">p0</th>
+<th align="right">p25</th>
+<th align="right">p50</th>
+<th align="right">p75</th>
+<th align="right">p100</th>
+<th align="left">hist</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">AGS</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0.19</td>
+<td align="right">0.16</td>
+<td align="right">0</td>
+<td align="right">0.07</td>
+<td align="right">0.12</td>
+<td align="right">0.25</td>
+<td align="right">0.52</td>
+<td align="left">▇▅▂▁▃</td>
+</tr>
+<tr class="even">
+<td align="left">BerEP4</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0.46</td>
+<td align="right">0.35</td>
+<td align="right">0</td>
+<td align="right">0.21</td>
+<td align="right">0.32</td>
+<td align="right">0.58</td>
+<td align="right">1.15</td>
+<td align="left">▆▇▂▁▃</td>
+</tr>
+<tr class="odd">
+<td align="left">CRP</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">2.31</td>
+<td align="right">2.50</td>
+<td align="right">0</td>
+<td align="right">0.55</td>
+<td align="right">1.00</td>
+<td align="right">3.50</td>
+<td align="right">7.93</td>
+<td align="left">▇▂▁▁▂</td>
+</tr>
+<tr class="even">
+<td align="left">p.S6</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1.21</td>
+<td align="right">0.83</td>
+<td align="right">0</td>
+<td align="right">0.58</td>
+<td align="right">0.94</td>
+<td align="right">1.61</td>
+<td align="right">3.16</td>
+<td align="left">▆▇▃▂▂</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>tumor.hc.norm &lt;- normalizeQuantiles(data.frame(tumor.hc.winsorized))
+
+skim(tumor.hc.norm)</code></pre>
+<table>
+<caption>Data summary</caption>
+<tbody>
+<tr class="odd">
+<td align="left">Name</td>
+<td align="left">tumor.hc.norm</td>
+</tr>
+<tr class="even">
+<td align="left">Number of rows</td>
+<td align="left">223846</td>
+</tr>
+<tr class="odd">
+<td align="left">Number of columns</td>
+<td align="left">4</td>
+</tr>
+<tr class="even">
+<td align="left">_______________________</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Column type frequency:</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">numeric</td>
+<td align="left">4</td>
+</tr>
+<tr class="odd">
+<td align="left">________________________</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Group variables</td>
+<td align="left">None</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: numeric</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">skim_variable</th>
+<th align="right">n_missing</th>
+<th align="right">complete_rate</th>
+<th align="right">mean</th>
+<th align="right">sd</th>
+<th align="right">p0</th>
+<th align="right">p25</th>
+<th align="right">p50</th>
+<th align="right">p75</th>
+<th align="right">p100</th>
+<th align="left">hist</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">AGS</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1.06</td>
+<td align="right">0.99</td>
+<td align="right">0</td>
+<td align="right">0.35</td>
+<td align="right">0.6</td>
+<td align="right">1.49</td>
+<td align="right">3.19</td>
+<td align="left">▇▃▁▁▂</td>
+</tr>
+<tr class="even">
+<td align="left">BerEP4</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1.07</td>
+<td align="right">1.00</td>
+<td align="right">0</td>
+<td align="right">0.35</td>
+<td align="right">0.6</td>
+<td align="right">1.49</td>
+<td align="right">3.15</td>
+<td align="left">▇▃▂▁▂</td>
+</tr>
+<tr class="odd">
+<td align="left">CRP</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1.04</td>
+<td align="right">0.96</td>
+<td align="right">0</td>
+<td align="right">0.35</td>
+<td align="right">0.6</td>
+<td align="right">1.49</td>
+<td align="right">3.19</td>
+<td align="left">▇▃▁▁▂</td>
+</tr>
+<tr class="even">
+<td align="left">p.S6</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1.04</td>
+<td align="right">0.96</td>
+<td align="right">0</td>
+<td align="right">0.35</td>
+<td align="right">0.6</td>
+<td align="right">1.49</td>
+<td align="right">3.19</td>
+<td align="left">▇▃▁▁▂</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>tumor.hc.rank &lt;- mutate_all(tumor.hc.winsorized, ~ rank(., ties.method = &quot;min&quot;))</code></pre>
+<p>Pilot run. Subsample 10% of the original data.</p>
+<pre class="r"><code>set.seed(42)
+percent &lt;- 10
+subsamp &lt;- sample(nrow(tumor.hc.rank), (percent / 100) * nrow(tumor.hc.rank))</code></pre>
+</div>
+<div id="dimensionality-reduction" class="section level2">
+<h2>Dimensionality reduction</h2>
+<pre class="r"><code>cache &lt;- &quot;output/tumor.hc.umap.rds&quot;
+if (file.exists(cache)) {
+  tumor.hc.umap &lt;- read_rds(cache)
+} else {
+  tumor.hc.umap &lt;- umap(tumor.hc.norm, n_neighbors = 100, 
+                        min_dist = 0.2, n_threads = 7)
+  write_rds(tumor.hc.umap, cache, &quot;gz&quot;)
+}</code></pre>
+<p>Check if sample is representative in UMAP space</p>
+<pre class="r"><code>tumor.hc.umap.sample &lt;-
+  tumor.hc.umap %&gt;%
+  `colnames&lt;-`(c(&quot;U1&quot;, &quot;U2&quot;)) %&gt;%
+  as_tibble()
+
+all &lt;- ggplot(tumor.hc.umap.sample, aes(x = U1, y = U2)) +
+  geom_point(size = 0.5) +
+  theme_classic()
+
+sampled &lt;- ggplot(tumor.hc.umap.sample %&gt;% slice(subsamp), aes(x = U1, y = U2)) +
+  geom_point(color = &quot;darkgreen&quot;, size = 0.5) +
+  theme_classic()
+
+unsampled &lt;- ggplot(tumor.hc.umap.sample %&gt;% slice(-subsamp), aes(x = U1, y = U2)) +
+  geom_point(color = &quot;darkred&quot;, size = 0.5) +
+  theme_classic()
+
+plot_grid(all, sampled, unsampled)</code></pre>
+<p><img src="figure/cores_3.Rmd/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="consensus-nmf" class="section level2">
+<h2>Consensus NMF</h2>
+<p>We use an efficient implementation of alternating non negative least-squares with regularized to favor sparse coefficient matrices snmf/r. In this way we aim for cleaner clustering.</p>
+<pre class="r"><code>cache &lt;- paste0(&quot;output/tumor.hc.nmf.rank.&quot;, percent, &quot;.rds&quot;)
+
+if (file.exists(cache)) {
+  tumor.hc.nmf.rank &lt;- read_rds(cache)
+} else {
+  tumor.hc.nmf.rank &lt;- nmfEstimateRank(as.matrix(t(tumor.hc.rank[subsamp, ])),
+    range = seq(2, 5), method = &quot;snmf/r&quot;,
+    nrun = 10, seed = 42, verbose = TRUE,
+    .options = &quot;mp5&quot;
+  )
+  write_rds(tumor.hc.nmf.rank, cache, &quot;gz&quot;)
+}
+
+plot(tumor.hc.nmf.rank)</code></pre>
+<pre><code>Warning: Removed 2 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/cores_3.Rmd/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>tumor.hc.nmf &lt;- tumor.hc.nmf.rank$fit[[&quot;3&quot;]]
+rm(tumor.hc.nmf.rank)</code></pre>
+<p>Extract basis of NMF (signature of cluster)</p>
+<pre class="r"><code>basismap(tumor.hc.nmf)</code></pre>
+<p><img src="figure/cores_3.Rmd/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Extract coefficients of NMF (soft clustering of samples) if a reasonable amount of cells is subselected.</p>
+<pre class="r"><code>if (percent &lt;= 2) coefmap(tumor.hc.nmf)</code></pre>
+<p>Assign clusters</p>
+<pre class="r"><code>nmf.clusters &lt;- apply(tumor.hc.nmf@fit@H, 2, which.max)</code></pre>
+<div id="plot-in-2d" class="section level3">
+<h3>Plot in 2D</h3>
+<pre class="r"><code>tumor.hc.umap.clus &lt;-
+  tumor.hc.umap.sample %&gt;%
+  slice(subsamp) %&gt;%
+  mutate(Cluster = as.factor(nmf.clusters))
+
+ggplot(tumor.hc.umap.clus, aes(x = U1, y = U2, color = Cluster)) +
+  geom_point(size = 0.5) +
+  theme_classic()</code></pre>
+<p><img src="figure/cores_3.Rmd/unnamed-chunk-10-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="expression-profiles-per-cluster" class="section level3">
+<h3>Expression profiles per cluster</h3>
+<pre class="r"><code>tumor.hc.clustered.nmf &lt;- tumor.hc.norm[subsamp, ] %&gt;%
+  mutate(Cluster = as.factor(nmf.clusters)) %&gt;%
+  pivot_longer(names_to = &quot;Marker&quot;, values_to = &quot;Norm.value&quot;, -Cluster)
+
+profiles &lt;- seq_len(max(nmf.clusters)) %&gt;% map(~
+ggplot(
+  tumor.hc.clustered.nmf %&gt;% filter(Cluster == .x),
+  aes(x = Marker, y = Norm.value, color = Marker)
+) +
+  stat_summary(fun.data = mean_sdl, show.legend = FALSE) +
+  scale_color_brewer(palette = &quot;Set2&quot;) +
+  ylim(-1, 3) +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)))
+
+plot_grid(plotlist = profiles, labels = paste(&quot;Cluster&quot;, seq_len(max(nmf.clusters))))</code></pre>
+<pre><code>Warning: Removed 3010 rows containing non-finite values (stat_summary).</code></pre>
+<pre><code>Warning: Removed 2629 rows containing non-finite values (stat_summary).</code></pre>
+<pre><code>Warning: Removed 4541 rows containing non-finite values (stat_summary).</code></pre>
+<pre><code>Warning: Removed 1 rows containing missing values (geom_segment).</code></pre>
+<p><img src="figure/cores_3.Rmd/unnamed-chunk-11-1.png" width="960" style="display: block; margin: auto;" /></p>
+</div>
+<div id="marker-abundance-plots" class="section level3">
+<h3>Marker abundance plots</h3>
+<pre class="r"><code>tumor.hc.umap.markers &lt;- tumor.hc.norm %&gt;%
+  bind_cols(tumor.hc.umap.sample) %&gt;%
+  slice(subsamp)
+
+low &lt;- RColorBrewer::brewer.pal(8, &quot;Set2&quot;)[8]
+highs &lt;- RColorBrewer::brewer.pal(8, &quot;Set2&quot;)[seq_len(ncol(tumor.hc.norm))]
+
+tumor.hc.umap.markers.plots &lt;- colnames(tumor.hc.norm) %&gt;%
+  map2(highs, \(marker, color){
+    ggplot(tumor.hc.umap.markers, aes_string(x = &quot;U1&quot;, y = &quot;U2&quot;, color = marker)) +
+      geom_point(size = 0.5) +
+      scale_color_gradient(low = low, high = color) +
+      theme_classic()
+  })
+
+plot_grid(plotlist = tumor.hc.umap.markers.plots)</code></pre>
+<p><img src="figure/cores_3.Rmd/unnamed-chunk-12-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="core-plots" class="section level3">
+<h3>Core plots</h3>
+<pre class="r"><code>tumor.hc.umap.cores &lt;- data %&gt;%
+  select(`Sample Name`) %&gt;%
+  bind_cols(tumor.hc.umap.sample) %&gt;%
+  slice(subsamp) %&gt;%
+  mutate(
+    c = nmf.clusters,
+    sample = str_extract(`Sample Name`, &quot;[0-9]+_[0-9]+&quot;)
+  )
+
+tumor.hc.umap.cores %&gt;%
+  group_by(sample) %&gt;%
+  summarize(
+    Fraction = table(c) / n(),
+    Cluster = names(Fraction),
+    .groups = &quot;drop&quot;
+  ) %&gt;%
+  mutate(Fraction = as.numeric(Fraction)) %&gt;%
+  pivot_wider(names_from = &quot;Cluster&quot;, values_from = &quot;Fraction&quot;) %&gt;%
+  column_to_rownames(&quot;sample&quot;) %&gt;%
+  mutate(across(everything(), ~ replace_na(., 0))) %&gt;%
+  as.matrix() %&gt;%
+  pheatmap(
+    scale = &quot;none&quot;,
+    cellheight = 12,
+    color = colorRampPalette(brewer.pal(n = 7, name = &quot;YlOrBr&quot;))(100)
+  )</code></pre>
+<p><img src="figure/cores_3.Rmd/unnamed-chunk-13-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>tumor.hc.umap.cores %&gt;%
+  pull(sample) %&gt;%
+  unique() %&gt;%
+  walk(\(s){
+    output.fig &lt;- paste0(&quot;output/cores_3/&quot;, s, &quot;.png&quot;)
+    if (!file.exists(output.fig)) {
+      png(output.fig, width  = 800, height = 800)
+      (ggplot(
+        tumor.hc.umap.cores %&gt;%
+          mutate(c = ifelse(sample == s, c, NA), Cluster = as.factor(c)) %&gt;%
+          arrange(!is.na(Cluster), Cluster),
+        aes(x = U1, y = U2, color = Cluster)
+      ) +
+        geom_point(size = 0.5) +
+        scale_color_discrete(na.value = &quot;gray80&quot;) +
+        theme_classic()) %&gt;%
+        print()
+      dev.off()
+    }
+  })</code></pre>
+<p>Figures with UMAPs for each core can be found in <a href="https://github.com/saezlab/MultispectralHCC/tree/master/output">output</a>.</p>
+</div>
+<div id="differential-expression-analysis-silhouette" class="section level3">
+<h3>Differential expression analysis (silhouette)</h3>
+<p>Calculate the similarity of samples using the expression and the silhouette scores based on the assigned clusters.</p>
+<pre class="r"><code>silhouette.nmf &lt;- silhouette(nmf.clusters, dist(tumor.hc.norm[subsamp, ]))
+fviz_silhouette(silhouette.nmf)</code></pre>
+<pre><code>  cluster size ave.sil.width
+1       1 6768          0.27
+2       2 6915          0.28
+3       3 8701          0.10</code></pre>
+<p><img src="figure/cores_3.Rmd/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Select only the samples with positive silhouette scores as “core samples”</p>
+<pre class="r"><code>core.samples &lt;- which(silhouette.nmf[, 3] &gt; 0)
+tumor.hc.core.samples &lt;- tumor.hc.norm[subsamp, ] %&gt;%
+  add_column(Cluster = nmf.clusters) %&gt;%
+  slice(core.samples)</code></pre>
+<p>Calculate difference in means (mean(cluster) - mean(other)), one-vs-all t-test per marker and correct for FDR. Filter q &lt;= 0.05. Plot the differences.</p>
+<pre class="r"><code>de.table &lt;- unique(tumor.hc.core.samples$Cluster) %&gt;%
+  map_dfr(\(c){
+    tumor.hc.core.samples %&gt;%
+      summarize(across(-Cluster, ~ t.test(.x ~ (Cluster == c))$p.value)) %&gt;%
+      pivot_longer(names_to = &quot;Marker&quot;, values_to = &quot;p&quot;, everything()) %&gt;%
+      mutate(Cluster = c, Difference = tumor.hc.core.samples %&gt;%
+        group_by(Cluster == c) %&gt;%
+        select(-Cluster) %&gt;%
+        group_split(.keep = FALSE) %&gt;% map(colMeans) %&gt;% reduce(`-`))
+  }) %&gt;%
+  mutate(q = p.adjust(p, method = &quot;fdr&quot;), Difference = -Difference)
+
+de.table %&gt;%
+  filter(q &lt;= 0.05) %&gt;%
+  arrange(q)</code></pre>
+<div class="kable-table">
+<table>
+<thead>
+<tr class="header">
+<th align="left">Marker</th>
+<th align="right">p</th>
+<th align="right">Cluster</th>
+<th align="right">Difference</th>
+<th align="right">q</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">AGS</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">-1.0320764</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">BerEP4</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1.3710267</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">CRP</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">-0.8034967</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">BerEP4</td>
+<td align="right">0</td>
+<td align="right">3</td>
+<td align="right">-0.7006799</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">CRP</td>
+<td align="right">0</td>
+<td align="right">3</td>
+<td align="right">1.6533305</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">p.S6</td>
+<td align="right">0</td>
+<td align="right">3</td>
+<td align="right">1.4568872</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">AGS</td>
+<td align="right">0</td>
+<td align="right">2</td>
+<td align="right">1.3080009</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">BerEP4</td>
+<td align="right">0</td>
+<td align="right">2</td>
+<td align="right">-0.6980330</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">CRP</td>
+<td align="right">0</td>
+<td align="right">2</td>
+<td align="right">-0.7529256</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">p.S6</td>
+<td align="right">0</td>
+<td align="right">2</td>
+<td align="right">-0.8927345</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">p.S6</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">-0.4757420</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">AGS</td>
+<td align="right">0</td>
+<td align="right">3</td>
+<td align="right">-0.3094173</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+<pre class="r"><code>de.table %&gt;%
+  pivot_wider(names_from = &quot;Cluster&quot;, values_from = &quot;Difference&quot;, -c(p, q)) %&gt;%
+  column_to_rownames(&quot;Marker&quot;) %&gt;%
+  as.matrix() %&gt;%
+  pheatmap(scale = &quot;none&quot;)</code></pre>
+<p><img src="figure/cores_3.Rmd/unnamed-chunk-16-1.png" width="672" style="display: block; margin: auto;" /></p>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 4.1.1 (2021-08-10)
+Platform: x86_64-apple-darwin17.0 (64-bit)
+Running under: macOS Big Sur 10.16
+
+Matrix products: default
+BLAS:   /Library/Frameworks/R.framework/Versions/4.1/Resources/lib/libRblas.0.dylib
+LAPACK: /Library/Frameworks/R.framework/Versions/4.1/Resources/lib/libRlapack.dylib
+
+locale:
+[1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+
+attached base packages:
+[1] parallel  stats     graphics  grDevices utils     datasets  methods  
+[8] base     
+
+other attached packages:
+ [1] RColorBrewer_1.1-2  pheatmap_1.0.12     cowplot_1.1.1      
+ [4] factoextra_1.0.7    NMF_0.23.0          synchronicity_1.3.5
+ [7] bigmemory_4.5.36    Biobase_2.52.0      BiocGenerics_0.38.0
+[10] cluster_2.1.2       rngtools_1.5.2      pkgmaker_0.32.2    
+[13] registry_0.5-1      limma_3.48.3        uwot_0.1.10        
+[16] Matrix_1.3-4        skimr_2.1.3         forcats_0.5.1      
+[19] stringr_1.4.0       dplyr_1.0.7         purrr_0.3.4        
+[22] readr_2.0.2         tidyr_1.1.4         tibble_3.1.5       
+[25] ggplot2_3.3.5       tidyverse_1.3.1     workflowr_1.6.2    
+
+loaded via a namespace (and not attached):
+  [1] bigmemory.sri_0.1.3 colorspace_2.0-2    ggsignif_0.6.3     
+  [4] rio_0.5.27          ellipsis_0.3.2      rprojroot_2.0.2    
+  [7] htmlTable_2.3.0     base64enc_0.1-3     fs_1.5.0           
+ [10] rstudioapi_0.13     ggpubr_0.4.0        farver_2.1.0       
+ [13] ggrepel_0.9.1       bit64_4.0.5         fansi_0.5.0        
+ [16] lubridate_1.8.0     xml2_1.3.2          codetools_0.2-18   
+ [19] splines_4.1.1       doParallel_1.0.16   knitr_1.36         
+ [22] Formula_1.2-4       jsonlite_1.7.2      broom_0.7.9        
+ [25] gridBase_0.4-7      dbplyr_2.1.1        png_0.1-7          
+ [28] compiler_4.1.1      httr_1.4.2          backports_1.2.1    
+ [31] assertthat_0.2.1    fastmap_1.1.0       cli_3.0.1          
+ [34] later_1.3.0         htmltools_0.5.2     tools_4.1.1        
+ [37] gtable_0.3.0        glue_1.4.2          reshape2_1.4.4     
+ [40] Rcpp_1.0.7          carData_3.0-4       cellranger_1.1.0   
+ [43] jquerylib_0.1.4     vctrs_0.3.8         iterators_1.0.13   
+ [46] xfun_0.27           openxlsx_4.2.4      rvest_1.0.2        
+ [49] lifecycle_1.0.1     rstatix_0.7.0       scales_1.1.1       
+ [52] vroom_1.5.5         hms_1.1.1           promises_1.2.0.1   
+ [55] curl_4.3.2          yaml_2.2.1          gridExtra_2.3      
+ [58] sass_0.4.0          rpart_4.1-15        latticeExtra_0.6-29
+ [61] stringi_1.7.5       highr_0.9           foreach_1.5.1      
+ [64] checkmate_2.0.0     zip_2.2.0           repr_1.1.3         
+ [67] rlang_0.4.12        pkgconfig_2.0.3     evaluate_0.14      
+ [70] lattice_0.20-45     htmlwidgets_1.5.4   labeling_0.4.2     
+ [73] bit_4.0.4           tidyselect_1.1.1    plyr_1.8.6         
+ [76] magrittr_2.0.1      R6_2.5.1            generics_0.1.0     
+ [79] Hmisc_4.6-0         DBI_1.1.1           foreign_0.8-81     
+ [82] pillar_1.6.4        haven_2.4.3         whisker_0.4        
+ [85] withr_2.4.2         abind_1.4-5         nnet_7.3-16        
+ [88] survival_3.2-13     car_3.0-11          modelr_0.1.8       
+ [91] crayon_1.4.1        uuid_0.1-4          utf8_1.2.2         
+ [94] tzdb_0.1.2          rmarkdown_2.11      jpeg_0.1-9         
+ [97] grid_4.1.1          readxl_1.3.1        data.table_1.14.2  
+[100] git2r_0.28.0        reprex_2.0.1        digest_0.6.28      
+[103] xtable_1.8-4        httpuv_1.6.3        munsell_0.5.0      
+[106] bslib_0.3.1        </code></pre>
+</div>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+http://docs.mathjax.org/en/latest/configuration.html.  This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
