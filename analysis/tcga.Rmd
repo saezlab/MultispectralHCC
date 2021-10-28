@@ -27,8 +27,15 @@ library(pheatmap)
 Read filtered TCGA RRPA data and display summary statistics.
 
 ```{r}
-tcga.raw <- read_csv("data/TCGA-RPPA-LIHC_selected.csv", col_types = cols()) %>%
-  select(-TumorType) %>%
+tcga.lihc <- read_tsv("data/TCGA-RPPA-pancan-clean.txt") %>%
+  filter(TumorType == "LIHC")
+
+tcga.raw <- tcga.lihc %>%
+  select(
+    SampleID, BETACATENIN, CKIT, JNK_pT183Y185, JNK2, MAPK_pT202Y204,
+    P38MAPK, P38_pT180Y182, PKCALPHA, PKCALPHA_pS657, PKCDELTA_pS664,
+    S6_pS235S236, STAT3_pY705, TRANSGLUTAMINASE
+  ) %>%
   column_to_rownames("SampleID")
 
 skim(tcga.raw)
@@ -62,7 +69,7 @@ tcga.umap <- umap(tcga.norm, n_neighbors = 10, n_epochs = 1000)
 For this analysis 3 clusters were selected based on the consensus cophenetic correlation coefficient.
 
 ```{r}
-tcga.nmf.rank <- nmfEstimateRank(as.matrix(t(tcga.rank)), seq(2,10), nrun = 20, seed = 42)
+tcga.nmf.rank <- nmfEstimateRank(as.matrix(t(tcga.rank)), seq(2, 10), nrun = 20, seed = 42)
 
 plot(tcga.nmf.rank)
 
@@ -134,7 +141,7 @@ plot_grid(plotlist = profiles, labels = paste("Cluster", seq_len(max(nmf.cluster
 Differential expression analysis (limma)
 
 ```{r}
-design <- model.matrix(~0 + as.factor(nmf.clusters))
+design <- model.matrix(~ 0 + as.factor(nmf.clusters))
 colnames(design) <- paste0("Cluster", seq_len(max(nmf.clusters)))
 
 tcga.nmf.limma <- lmFit(t(tcga.norm), design = design)
@@ -160,23 +167,25 @@ fviz_silhouette(silhouette.nmf)
 
 Select only the samples with positive silhouette scores as "core samples"
 ```{r}
-core.samples <- which(silhouette.nmf[,3] > 0)
-tcga.core.samples <- tcga.norm %>% add_column(Cluster = nmf.clusters) %>% 
+core.samples <- which(silhouette.nmf[, 3] > 0)
+tcga.core.samples <- tcga.norm %>%
+  add_column(Cluster = nmf.clusters) %>%
   slice(core.samples)
 ```
 
 Calculate difference in means (mean(cluster) - mean(other)), one-vs-all t-test per marker and correct for FDR. Filter q <= 0.05. Plot the differences.
 
 ```{r}
-de.table <- unique(tcga.core.samples$Cluster) %>% map_dfr(\(c){
-  tcga.core.samples %>% 
-    summarize(across(-Cluster, ~t.test(.x ~ (Cluster==c))$p.value)) %>%
-    pivot_longer(names_to = "Marker", values_to = "p", everything()) %>% 
-    mutate(Cluster = c, Difference = tcga.core.samples %>% 
-             group_by(Cluster == c) %>% 
-             select(-Cluster) %>% 
-             group_split(.keep = FALSE) %>% map(colMeans) %>% reduce(`-`))
- }) %>% 
+de.table <- unique(tcga.core.samples$Cluster) %>%
+  map_dfr(\(c){
+    tcga.core.samples %>%
+      summarize(across(-Cluster, ~ t.test(.x ~ (Cluster == c))$p.value)) %>%
+      pivot_longer(names_to = "Marker", values_to = "p", everything()) %>%
+      mutate(Cluster = c, Difference = tcga.core.samples %>%
+        group_by(Cluster == c) %>%
+        select(-Cluster) %>%
+        group_split(.keep = FALSE) %>% map(colMeans) %>% reduce(`-`))
+  }) %>%
   mutate(q = p.adjust(p, method = "fdr"), Difference = -Difference)
 
 de.table %>%
