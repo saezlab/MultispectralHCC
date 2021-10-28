@@ -1,0 +1,200 @@
+---
+title: "Analysis of TCGA RPPA LIHC samples"
+author: "Jovan Tanevski"
+date: "`r Sys.Date()`"
+output: 
+  workflowr::wflow_html:
+    df_print: kable
+editor_options:
+  chunk_output_type: console
+---
+
+## Setup
+
+Load required libraries.
+
+```{r setup, message = FALSE}
+library(tidyverse)
+library(skimr)
+library(uwot)
+library(factoextra)
+library(cowplot)
+library(limma)
+library(NMF)
+library(pheatmap)
+```
+
+Read filtered TCGA RRPA data and display summary statistics.
+
+```{r}
+tcga.lihc <- read_tsv("data/TCGA-RPPA-pancan-clean.txt") %>%
+  filter(TumorType == "LIHC")
+
+tcga.raw <- tcga.lihc %>%
+  select(
+    SampleID, BETACATENIN, CKIT, JNK_pT183Y185, JNK2, MAPK_pT202Y204,
+    P38MAPK, P38_pT180Y182, PKCALPHA, PKCALPHA_pS657, PKCDELTA_pS664,
+    S6_pS235S236, STAT3_pY705, TRANSGLUTAMINASE
+  ) %>%
+  column_to_rownames("SampleID")
+
+skim(tcga.raw)
+```
+
+Quantile normalization and rank normalization for NMF as suggested in https://gdac.broadinstitute.org/runs/analyses__2016_01_28/reports/cancer/LIHC/RPPA_Clustering_CNMF/nozzle.html
+
+```{r}
+
+tcga.norm <- normalizeQuantiles(tcga.raw)
+
+skim(tcga.norm)
+
+tcga.rank <- mutate_all(tcga.raw, rank)
+```
+
+
+## Dimensionality reduction
+
+```{r}
+tcga.pca <- prcomp(tcga.norm)
+summary(tcga.pca)
+
+set.seed(42)
+tcga.umap <- umap(tcga.norm, n_neighbors = 10, n_epochs = 1000)
+```
+
+
+## Consensus NMF clustering
+
+For this analysis 3 clusters were selected based on the consensus cophenetic correlation coefficient.
+
+```{r}
+tcga.nmf.rank <- nmfEstimateRank(as.matrix(t(tcga.rank)), seq(2, 10), nrun = 20, seed = 42)
+
+plot(tcga.nmf.rank)
+
+tcga.nmf <- tcga.nmf <- tcga.nmf.rank$fit[["6"]]
+```
+
+Extract basis of NMF (signature of cluster)
+
+```{r}
+basismap(tcga.nmf)
+```
+
+Extract coefficients of NMF (soft clustering of samples)
+
+```{r}
+coefmap(tcga.nmf)
+```
+
+Check for signs of overfitting
+
+```{r}
+consensusmap(tcga.nmf)
+```
+
+
+Assign clusters
+```{r}
+nmf.clusters <- apply(tcga.nmf@fit@H, 2, which.max)
+```
+
+Plot in 2D PCA and UMAP
+
+```{r}
+fviz_pca_ind(tcga.pca, geom = "point", col.ind = as.factor(nmf.clusters)) +
+  theme_classic()
+
+tcga.umap.clus <-
+  tcga.umap %>%
+  cbind(nmf.clusters) %>%
+  `colnames<-`(c("U1", "U2", "Cluster")) %>%
+  as_tibble() %>%
+  mutate_at("Cluster", as.factor)
+
+ggplot(tcga.umap.clus, aes(x = U1, y = U2, color = Cluster)) +
+  geom_point() +
+  theme_classic()
+```
+
+Expression profiles per cluster 
+
+```{r fig.width=10, fig.height=10}
+tcga.clustered.nmf <- tcga.norm %>%
+  mutate(Cluster = as.factor(nmf.clusters)) %>%
+  pivot_longer(names_to = "Marker", values_to = "Norm.value", -Cluster)
+
+profiles <- seq_len(max(nmf.clusters)) %>% map(~
+ggplot(
+  tcga.clustered.nmf %>% filter(Cluster == .x),
+  aes(x = Marker, y = Norm.value, color = Marker)
+) +
+  stat_summary(fun.data = mean_sdl, show.legend = FALSE) +
+  ylim(-3, 3) +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)))
+
+plot_grid(plotlist = profiles, labels = paste("Cluster", seq_len(max(nmf.clusters))))
+```
+
+Differential expression analysis (limma)
+
+```{r}
+design <- model.matrix(~ 0 + as.factor(nmf.clusters))
+colnames(design) <- paste0("Cluster", seq_len(max(nmf.clusters)))
+
+tcga.nmf.limma <- lmFit(t(tcga.norm), design = design)
+
+tcga.nmf.eb <- eBayes(tcga.nmf.limma)
+
+topTable(tcga.nmf.eb)
+
+tests.nmf <- decideTests(tcga.nmf.eb)
+
+tests.nmf@.Data
+
+summary(tests.nmf)
+```
+
+Differential expression analysis (silhouette)
+
+Calculate the similarity of samples using the expression and the silhouette scores based on the assigned clusters.
+```{r}
+silhouette.nmf <- silhouette(nmf.clusters, dist(tcga.norm))
+fviz_silhouette(silhouette.nmf)
+```
+
+Select only the samples with positive silhouette scores as "core samples"
+```{r}
+core.samples <- which(silhouette.nmf[, 3] > 0)
+tcga.core.samples <- tcga.norm %>%
+  add_column(Cluster = nmf.clusters) %>%
+  slice(core.samples)
+```
+
+Calculate difference in means (mean(cluster) - mean(other)), one-vs-all t-test per marker and correct for FDR. Filter q <= 0.05. Plot the differences.
+
+```{r}
+de.table <- unique(tcga.core.samples$Cluster) %>%
+  map_dfr(\(c){
+    tcga.core.samples %>%
+      summarize(across(-Cluster, ~ t.test(.x ~ (Cluster == c))$p.value)) %>%
+      pivot_longer(names_to = "Marker", values_to = "p", everything()) %>%
+      mutate(Cluster = c, Difference = tcga.core.samples %>%
+        group_by(Cluster == c) %>%
+        select(-Cluster) %>%
+        group_split(.keep = FALSE) %>% map(colMeans) %>% reduce(`-`))
+  }) %>%
+  mutate(q = p.adjust(p, method = "fdr"), Difference = -Difference)
+
+de.table %>%
+  filter(q <= 0.05) %>%
+  arrange(q)
+
+de.table %>%
+  pivot_wider(names_from = "Cluster", values_from = "Difference", -c(p, q)) %>%
+  column_to_rownames("Marker") %>%
+  as.matrix() %>%
+  pheatmap(scale = "none")
+```

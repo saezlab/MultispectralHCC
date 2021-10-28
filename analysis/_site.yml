@@ -5,8 +5,10 @@ navbar:
   left:
   - text: Home
     href: index.html
-  - text: TCGA
-    href: tcga.html
+  - text: TCGA 3
+    href: tcga_3.html
+  - text: TCGA 6
+    href: tcga_6.html
   - text: Cores 3
     href: cores_3.html
   - text: Cores 4
