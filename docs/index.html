@@ -263,10 +263,10 @@ $(document).ready(function () {
   <a href="tcga_6.html">TCGA 6</a>
 </li>
 <li>
-  <a href="cores_3.html">Cores 3</a>
+  <a href="cores_explore.html">Cores explore</a>
 </li>
 <li>
-  <a href="cores_4.html">Cores 4</a>
+  <a href="cores_3.html">Cores 3</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -326,7 +326,7 @@ $(document).ready(function () {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2021-10-28
+<strong>Last updated:</strong> 2021-11-11
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 2 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -357,16 +357,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomsaezlabMultispectralHCCtree1c9b86caf8ceb51fabacfe38483e8a6d984139b8targetblank1c9b86ca"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/saezlab/MultispectralHCC/tree/1c9b86caf8ceb51fabacfe38483e8a6d984139b8" target="_blank">1c9b86c</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomsaezlabMultispectralHCCtreee98088dc6ec130e9312726adea453a7903304203targetblanke98088da"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/saezlab/MultispectralHCC/tree/e98088dc6ec130e9312726adea453a7903304203" target="_blank">e98088d</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomsaezlabMultispectralHCCtree1c9b86caf8ceb51fabacfe38483e8a6d984139b8targetblank1c9b86ca" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomsaezlabMultispectralHCCtreee98088dc6ec130e9312726adea453a7903304203targetblanke98088da" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/saezlab/MultispectralHCC/tree/1c9b86caf8ceb51fabacfe38483e8a6d984139b8" target="_blank">1c9b86c</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/saezlab/MultispectralHCC/tree/e98088dc6ec130e9312726adea453a7903304203" target="_blank">e98088d</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -385,6 +385,12 @@ Ignored files:
     Ignored:    output/tumor.hc.nmf.rank.1.rds
     Ignored:    output/tumor.hc.nmf.rank.10.rds
     Ignored:    output/tumor.hc.umap.rds
+
+Untracked files:
+    Untracked:  core_cluster_fractions.pdf
+    Untracked:  output/cores_3/11_18529_T_HCC1_Core[1,11,M]_[61473,19738].im3.png
+    Untracked:  output/cores_3/12_291_T_HCC1_Core[1,5,K]_[58929,10236].im3.png
+    Untracked:  output/cores_3/13_372_T_HCC1_Core[1,3,A]_[45443,7020].im3.png
 
 </code></pre>
 <p>
@@ -423,6 +429,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/saezlab/MultispectralHCC/blob/e98088dc6ec130e9312726adea453a7903304203/analysis/index.Rmd" target="_blank">e98088d</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-11-11
+</td>
+<td>
+core analysis of all hepatocytes for one core per patient
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/saezlab/MultispectralHCC/19338d94de696f868484137414ec0bc83a38e03c/docs/index.html" target="_blank">19338d9</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-10-28
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -723,8 +763,8 @@ Start workflowr project.
 <h2>Analyses</h2>
 <p><a href="tcga_3.html">Basic exploratory analysis of the TCGA data (3 clusters)</a></p>
 <p><a href="tcga_6.html">Basic exploratory analysis of the TCGA data (6 clusters)</a></p>
-<p><a href="cores_3.html">Pilot analysis of data from hepatocytes from tumor cores (3 clusters)</a></p>
-<p><a href="cores_4.html">Pilot analysis of data from hepatocytes from tumor cores (4 clusters)</a></p>
+<p><a href="cores_explore.html">Pilot/exploratory analysis of data from hepatocytes from tumor cores (4 clusters)</a></p>
+<p><a href="cores_3.html">Analysis of data from all hepatocytes from tumor cores (3 clusters)</a></p>
 <p><a href="misty.html">MISTy analysis of data from hepatocytes from tumor cores</a></p>
 </div>
 
