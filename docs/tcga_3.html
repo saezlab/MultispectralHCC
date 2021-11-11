@@ -11,7 +11,7 @@
 
 <meta name="author" content="Jovan Tanevski" />
 
-<meta name="date" content="2021-10-28" />
+<meta name="date" content="2021-11-11" />
 
 <title>Analysis of TCGA RPPA LIHC samples</title>
 
@@ -341,10 +341,10 @@ div.tocify {
   <a href="tcga_6.html">TCGA 6</a>
 </li>
 <li>
-  <a href="cores_3.html">Cores 3</a>
+  <a href="cores_explore.html">Cores explore</a>
 </li>
 <li>
-  <a href="cores_4.html">Cores 4</a>
+  <a href="cores_3.html">Cores 3</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -381,7 +381,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Analysis of TCGA RPPA LIHC samples</h1>
 <h4 class="author">Jovan Tanevski</h4>
-<h4 class="date">2021-10-28</h4>
+<h4 class="date">2021-11-11</h4>
 
 </div>
 
@@ -406,7 +406,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2021-10-28
+<strong>Last updated:</strong> 2021-11-11
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -497,16 +497,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomsaezlabMultispectralHCCtree182f85eee63752a045dabd1182d2b7ef4eab57e6targetblank182f85ea"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/saezlab/MultispectralHCC/tree/182f85eee63752a045dabd1182d2b7ef4eab57e6" target="_blank">182f85e</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomsaezlabMultispectralHCCtreed27c5d152951b30d3ae5fdf7633aa312d3e441a2targetblankd27c5d1a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/saezlab/MultispectralHCC/tree/d27c5d152951b30d3ae5fdf7633aa312d3e441a2" target="_blank">d27c5d1</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomsaezlabMultispectralHCCtree182f85eee63752a045dabd1182d2b7ef4eab57e6targetblank182f85ea" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomsaezlabMultispectralHCCtreed27c5d152951b30d3ae5fdf7633aa312d3e441a2targetblankd27c5d1a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/saezlab/MultispectralHCC/tree/182f85eee63752a045dabd1182d2b7ef4eab57e6" target="_blank">182f85e</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/saezlab/MultispectralHCC/tree/d27c5d152951b30d3ae5fdf7633aa312d3e441a2" target="_blank">d27c5d1</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -525,6 +525,12 @@ Ignored files:
     Ignored:    output/tumor.hc.nmf.rank.1.rds
     Ignored:    output/tumor.hc.nmf.rank.10.rds
     Ignored:    output/tumor.hc.umap.rds
+
+Untracked files:
+    Untracked:  core_cluster_fractions.pdf
+    Untracked:  output/cores_3/11_18529_T_HCC1_Core[1,11,M]_[61473,19738].im3.png
+    Untracked:  output/cores_3/12_291_T_HCC1_Core[1,5,K]_[58929,10236].im3.png
+    Untracked:  output/cores_3/13_372_T_HCC1_Core[1,3,A]_[45443,7020].im3.png
 
 </code></pre>
 <p>
@@ -563,6 +569,23 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/saezlab/MultispectralHCC/515f7e642955e4845707ee7b3905e80c48ec2744/docs/tcga_3.html" target="_blank">515f7e6</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-10-28
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1099,22 +1122,207 @@ tcga.umap &lt;- umap(tcga.norm, n_neighbors = 10, n_epochs = 1000)</code></pre>
 
 plot(tcga.nmf.rank)</code></pre>
 <p><img src="figure/tcga_3.Rmd/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-4-1">
+Past versions of unnamed-chunk-4-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-4-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/saezlab/MultispectralHCC/blob/515f7e642955e4845707ee7b3905e80c48ec2744/docs/figure/tcga_3.Rmd/unnamed-chunk-4-1.png" target="_blank">515f7e6</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-10-28
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>tcga.nmf &lt;- tcga.nmf &lt;- tcga.nmf.rank$fit[[&quot;3&quot;]]</code></pre>
 <p>Extract basis of NMF (signature of cluster)</p>
 <pre class="r"><code>basismap(tcga.nmf)</code></pre>
 <p><img src="figure/tcga_3.Rmd/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-5-1">
+Past versions of unnamed-chunk-5-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-5-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/saezlab/MultispectralHCC/blob/515f7e642955e4845707ee7b3905e80c48ec2744/docs/figure/tcga_3.Rmd/unnamed-chunk-5-1.png" target="_blank">515f7e6</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-10-28
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>Extract coefficients of NMF (soft clustering of samples)</p>
 <pre class="r"><code>coefmap(tcga.nmf)</code></pre>
 <p><img src="figure/tcga_3.Rmd/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-6-1">
+Past versions of unnamed-chunk-6-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-6-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/saezlab/MultispectralHCC/blob/515f7e642955e4845707ee7b3905e80c48ec2744/docs/figure/tcga_3.Rmd/unnamed-chunk-6-1.png" target="_blank">515f7e6</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-10-28
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>Check for signs of overfitting</p>
 <pre class="r"><code>consensusmap(tcga.nmf)</code></pre>
 <p><img src="figure/tcga_3.Rmd/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-7-1">
+Past versions of unnamed-chunk-7-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-7-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/saezlab/MultispectralHCC/blob/515f7e642955e4845707ee7b3905e80c48ec2744/docs/figure/tcga_3.Rmd/unnamed-chunk-7-1.png" target="_blank">515f7e6</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-10-28
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>Assign clusters</p>
 <pre class="r"><code>nmf.clusters &lt;- apply(tcga.nmf@fit@H, 2, which.max)</code></pre>
 <p>Plot in 2D PCA and UMAP</p>
 <pre class="r"><code>fviz_pca_ind(tcga.pca, geom = &quot;point&quot;, col.ind = as.factor(nmf.clusters)) +
   theme_classic()</code></pre>
 <p><img src="figure/tcga_3.Rmd/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-9-1">
+Past versions of unnamed-chunk-9-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-9-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/saezlab/MultispectralHCC/blob/515f7e642955e4845707ee7b3905e80c48ec2744/docs/figure/tcga_3.Rmd/unnamed-chunk-9-1.png" target="_blank">515f7e6</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-10-28
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>tcga.umap.clus &lt;-
   tcga.umap %&gt;%
   cbind(nmf.clusters) %&gt;%
@@ -1126,6 +1334,43 @@ ggplot(tcga.umap.clus, aes(x = U1, y = U2, color = Cluster)) +
   geom_point() +
   theme_classic()</code></pre>
 <p><img src="figure/tcga_3.Rmd/unnamed-chunk-9-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-9-2">
+Past versions of unnamed-chunk-9-2.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-9-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/saezlab/MultispectralHCC/blob/515f7e642955e4845707ee7b3905e80c48ec2744/docs/figure/tcga_3.Rmd/unnamed-chunk-9-2.png" target="_blank">515f7e6</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-10-28
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>Expression profiles per cluster</p>
 <pre class="r"><code>tcga.clustered.nmf &lt;- tcga.norm %&gt;%
   mutate(Cluster = as.factor(nmf.clusters)) %&gt;%
@@ -1143,6 +1388,43 @@ ggplot(
 
 plot_grid(plotlist = profiles, labels = paste(&quot;Cluster&quot;, seq_len(max(nmf.clusters))))</code></pre>
 <p><img src="figure/tcga_3.Rmd/unnamed-chunk-10-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-10-1">
+Past versions of unnamed-chunk-10-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-10-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/saezlab/MultispectralHCC/blob/515f7e642955e4845707ee7b3905e80c48ec2744/docs/figure/tcga_3.Rmd/unnamed-chunk-10-1.png" target="_blank">515f7e6</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-10-28
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>Differential expression analysis (limma)</p>
 <pre class="r"><code>design &lt;- model.matrix(~ 0 + as.factor(nmf.clusters))
 colnames(design) &lt;- paste0(&quot;Cluster&quot;, seq_len(max(nmf.clusters)))
@@ -1301,6 +1583,43 @@ fviz_silhouette(silhouette.nmf)</code></pre>
 2       2   92          0.24
 3       3   73          0.07</code></pre>
 <p><img src="figure/tcga_3.Rmd/unnamed-chunk-12-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-12-1">
+Past versions of unnamed-chunk-12-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-12-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/saezlab/MultispectralHCC/blob/515f7e642955e4845707ee7b3905e80c48ec2744/docs/figure/tcga_3.Rmd/unnamed-chunk-12-1.png" target="_blank">515f7e6</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-10-28
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>Select only the samples with positive silhouette scores as “core samples”</p>
 <pre class="r"><code>core.samples &lt;- which(silhouette.nmf[, 3] &gt; 0)
 tcga.core.samples &lt;- tcga.norm %&gt;%
@@ -1567,6 +1886,43 @@ de.table %&gt;%
   as.matrix() %&gt;%
   pheatmap(scale = &quot;none&quot;)</code></pre>
 <p><img src="figure/tcga_3.Rmd/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-14-1">
+Past versions of unnamed-chunk-14-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-14-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/saezlab/MultispectralHCC/blob/515f7e642955e4845707ee7b3905e80c48ec2744/docs/figure/tcga_3.Rmd/unnamed-chunk-14-1.png" target="_blank">515f7e6</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-10-28
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -1593,51 +1949,50 @@ attached base packages:
 other attached packages:
  [1] RColorBrewer_1.1-2  doParallel_1.0.16   iterators_1.0.13   
  [4] foreach_1.5.1       pheatmap_1.0.12     NMF_0.23.0         
- [7] synchronicity_1.3.5 bigmemory_4.5.36    Biobase_2.53.0     
-[10] BiocGenerics_0.39.2 cluster_2.1.2       rngtools_1.5.2     
-[13] pkgmaker_0.32.2     registry_0.5-1      limma_3.49.5       
+ [7] synchronicity_1.3.5 bigmemory_4.5.36    Biobase_2.54.0     
+[10] BiocGenerics_0.40.0 cluster_2.1.2       rngtools_1.5.2     
+[13] pkgmaker_0.32.2     registry_0.5-1      limma_3.50.0       
 [16] cowplot_1.1.1       factoextra_1.0.7    uwot_0.1.10        
 [19] Matrix_1.3-4        skimr_2.1.3         forcats_0.5.1      
 [22] stringr_1.4.0       dplyr_1.0.7         purrr_0.3.4        
-[25] readr_2.0.2         tidyr_1.1.4         tibble_3.1.5       
+[25] readr_2.0.2         tidyr_1.1.4         tibble_3.1.6       
 [28] ggplot2_3.3.5       tidyverse_1.3.1     workflowr_1.6.2    
 
 loaded via a namespace (and not attached):
   [1] bigmemory.sri_0.1.3 colorspace_2.0-2    ggsignif_0.6.3     
-  [4] rio_0.5.27          ellipsis_0.3.2      rprojroot_2.0.2    
-  [7] htmlTable_2.3.0     base64enc_0.1-3     fs_1.5.0           
- [10] rstudioapi_0.13     ggpubr_0.4.0        farver_2.1.0       
- [13] ggrepel_0.9.1       bit64_4.0.5         RSpectra_0.16-0    
- [16] fansi_0.5.0         lubridate_1.8.0     xml2_1.3.2         
- [19] splines_4.1.1       codetools_0.2-18    knitr_1.36         
- [22] Formula_1.2-4       jsonlite_1.7.2      broom_0.7.9        
- [25] gridBase_0.4-7      dbplyr_2.1.1        png_0.1-7          
- [28] compiler_4.1.1      httr_1.4.2          backports_1.3.0    
- [31] assertthat_0.2.1    fastmap_1.1.0       cli_3.0.1          
- [34] later_1.3.0         htmltools_0.5.2     tools_4.1.1        
- [37] gtable_0.3.0        glue_1.4.2          reshape2_1.4.4     
- [40] Rcpp_1.0.7          carData_3.0-4       cellranger_1.1.0   
- [43] jquerylib_0.1.4     vctrs_0.3.8         xfun_0.27          
- [46] openxlsx_4.2.4      rvest_1.0.2         lifecycle_1.0.1    
- [49] rstatix_0.7.0       scales_1.1.1        vroom_1.5.5        
- [52] hms_1.1.1           promises_1.2.0.1    curl_4.3.2         
- [55] yaml_2.2.1          gridExtra_2.3       sass_0.4.0         
- [58] rpart_4.1-15        latticeExtra_0.6-29 stringi_1.7.5      
- [61] highr_0.9           checkmate_2.0.0     zip_2.2.0          
- [64] repr_1.1.3          rlang_0.4.12        pkgconfig_2.0.3    
- [67] evaluate_0.14       lattice_0.20-45     htmlwidgets_1.5.4  
- [70] labeling_0.4.2      bit_4.0.4           tidyselect_1.1.1   
- [73] plyr_1.8.6          magrittr_2.0.1      R6_2.5.1           
- [76] Hmisc_4.6-0         generics_0.1.1      DBI_1.1.1          
- [79] foreign_0.8-81      pillar_1.6.4        haven_2.4.3        
- [82] whisker_0.4         withr_2.4.2         nnet_7.3-16        
- [85] survival_3.2-13     abind_1.4-5         modelr_0.1.8       
- [88] crayon_1.4.1        car_3.0-11          uuid_0.1-4         
- [91] utf8_1.2.2          tzdb_0.1.2          rmarkdown_2.11     
- [94] jpeg_0.1-9          grid_4.1.1          readxl_1.3.1       
- [97] data.table_1.14.2   FNN_1.1.3           git2r_0.28.0       
-[100] reprex_2.0.1        digest_0.6.28       xtable_1.8-4       
-[103] httpuv_1.6.3        munsell_0.5.0       bslib_0.3.1        </code></pre>
+  [4] ellipsis_0.3.2      rprojroot_2.0.2     htmlTable_2.3.0    
+  [7] base64enc_0.1-3     fs_1.5.0            rstudioapi_0.13    
+ [10] ggpubr_0.4.0        farver_2.1.0        ggrepel_0.9.1      
+ [13] bit64_4.0.5         RSpectra_0.16-0     fansi_0.5.0        
+ [16] lubridate_1.8.0     xml2_1.3.2          splines_4.1.1      
+ [19] codetools_0.2-18    knitr_1.36          Formula_1.2-4      
+ [22] jsonlite_1.7.2      broom_0.7.10        gridBase_0.4-7     
+ [25] dbplyr_2.1.1        png_0.1-7           compiler_4.1.1     
+ [28] httr_1.4.2          backports_1.3.0     assertthat_0.2.1   
+ [31] fastmap_1.1.0       cli_3.1.0           later_1.3.0        
+ [34] htmltools_0.5.2     tools_4.1.1         gtable_0.3.0       
+ [37] glue_1.5.0          reshape2_1.4.4      Rcpp_1.0.7         
+ [40] carData_3.0-4       cellranger_1.1.0    jquerylib_0.1.4    
+ [43] vctrs_0.3.8         xfun_0.28           rvest_1.0.2        
+ [46] lifecycle_1.0.1     rstatix_0.7.0       scales_1.1.1       
+ [49] vroom_1.5.6         hms_1.1.1           promises_1.2.0.1   
+ [52] yaml_2.2.1          gridExtra_2.3       sass_0.4.0         
+ [55] rpart_4.1-15        latticeExtra_0.6-29 stringi_1.7.5      
+ [58] highr_0.9           checkmate_2.0.0     repr_1.1.3         
+ [61] rlang_0.4.12        pkgconfig_2.0.3     evaluate_0.14      
+ [64] lattice_0.20-45     htmlwidgets_1.5.4   labeling_0.4.2     
+ [67] bit_4.0.4           tidyselect_1.1.1    plyr_1.8.6         
+ [70] magrittr_2.0.1      R6_2.5.1            Hmisc_4.6-0        
+ [73] generics_0.1.1      DBI_1.1.1           foreign_0.8-81     
+ [76] pillar_1.6.4        haven_2.4.3         whisker_0.4        
+ [79] withr_2.4.2         nnet_7.3-16         survival_3.2-13    
+ [82] abind_1.4-5         modelr_0.1.8        crayon_1.4.2       
+ [85] car_3.0-12          uuid_1.0-3          utf8_1.2.2         
+ [88] tzdb_0.2.0          rmarkdown_2.11      jpeg_0.1-9         
+ [91] grid_4.1.1          readxl_1.3.1        data.table_1.14.2  
+ [94] FNN_1.1.3           git2r_0.28.0        reprex_2.0.1       
+ [97] digest_0.6.28       xtable_1.8-4        httpuv_1.6.3       
+[100] munsell_0.5.0       bslib_0.3.1        </code></pre>
 </div>
 </div>
 
