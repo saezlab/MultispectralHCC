@@ -14,7 +14,7 @@ editor_options:
 
 [Basic exploratory analysis of the TCGA data (6 clusters)](tcga_6.html)
 
-[Pilot/exploratory analysis of data from hepatocytes from tumor cores (4 clusters)](cores_explore.html)
+[Pilot/exploratory analysis of data from hepatocytes from tumor cores](cores_explore.html)
 
 [Analysis of data from all hepatocytes from tumor cores (3 clusters)](cores_3.html)
 
