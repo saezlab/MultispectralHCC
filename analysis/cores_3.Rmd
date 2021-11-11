@@ -71,9 +71,6 @@ selected.cores <- data %>% select(`Sample Name`) %>%
   group_by(sample) %>% slice_sample() %>% pull(`Sample Name`)
 
 subsamp <- which(data %>% pull(`Sample Name`) %in% selected.cores)
-
-#percent <- 2
-#subsamp <- sample(nrow(tumor.hc.rank), (percent / 100) * nrow(tumor.hc.rank))
 ```
 
 
@@ -125,7 +122,7 @@ cache <- "output/tumor.hc.nmf.all.3.rds"
 if (file.exists(cache)) {
   tumor.hc.nmf <- read_rds(cache)
 } else {
-  tumor.hc.nmf <- nmfEstimateRank(as.matrix(t(tumor.hc.rank[subsamp, ])),
+  tumor.hc.nmf <- nmf(as.matrix(t(tumor.hc.rank[subsamp, ])),
     rank = 3, method = "snmf/r",
     nrun = 10, seed = 42, verbose = TRUE,
     .options = "vp10-m"
