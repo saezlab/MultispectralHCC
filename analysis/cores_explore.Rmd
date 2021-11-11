@@ -1,0 +1,129 @@
+---
+title: "cores"
+author: "Jovan Tanevski"
+date: "`r Sys.Date()`"
+output: 
+  workflowr::wflow_html:
+    df_print: kable
+editor_options:
+  chunk_output_type: console
+---
+
+## Setup
+
+```{r setup, message = FALSE}
+library(tidyverse)
+library(skimr)
+library(uwot)
+library(limma)
+library(NMF)
+library(factoextra)
+library(cowplot)
+library(pheatmap)
+library(RColorBrewer)
+```
+
+```{r}
+data <- read_csv("data/tumor_hepatocytes.csv", col_types = cols())
+tumor.hc <- data %>%
+  select(
+    `Cytoplasm AGS (Opal 690) Mean (Normalized Counts, Total Weighting)`,
+    `Cytoplasm BerEP4 (Opal 650) Mean (Normalized Counts, Total Weighting)`,
+    `Cytoplasm CRP (Opal 540) Mean (Normalized Counts, Total Weighting)`,
+    `Nucleus p-S6 (Opal 570) Mean (Normalized Counts, Total Weighting)`,
+#    `Nucleus beta-cat. (Opal 520) Mean (Normalized Counts, Total Weighting)`
+  ) %>%
+  `colnames<-`(str_split(colnames(.), " ") %>% map_chr(~ .x[2]) %>% make.names())
+
+skim(tumor.hc)
+```
+
+Detect outliers based on Tukey's interquartile approach and winsorize. Follow by quantile normalization and ranking to get rid of the effect of abundance
+
+```{r}
+quartiles <- apply(tumor.hc, 2, \(x) quantile(x, c(.25, .75)))
+lower <- quartiles[1, ] - 1.5 * (quartiles[2, ] - quartiles[1, ])
+upper <- quartiles[2, ] + 1.5 * (quartiles[2, ] - quartiles[1, ])
+
+
+tumor.hc.winsorized <- tumor.hc %>% imap_dfc(\(x, y){
+  x[x < lower[y]] <- x[which.min(abs(x - lower[y]))]
+  x[x > upper[y]] <- x[which.min(abs(x - upper[y]))]
+  x
+})
+
+skim(tumor.hc.winsorized)
+
+tumor.hc.norm <- normalizeQuantiles(data.frame(tumor.hc.winsorized))
+
+skim(tumor.hc.norm)
+
+tumor.hc.rank <- mutate_all(tumor.hc.winsorized, ~ rank(., ties.method = "min"))
+```
+
+Pilot run. Subsample 10% of the original data.
+
+```{r}
+set.seed(42)
+percent <- 10
+subsamp <- sample(nrow(tumor.hc.rank), (percent / 100) * nrow(tumor.hc.rank))
+```
+
+
+## Dimensionality reduction
+
+```{r}
+cache <- "output/tumor.hc.umap.rds"
+if (file.exists(cache)) {
+  tumor.hc.umap <- read_rds(cache)
+} else {
+  tumor.hc.umap <- umap(tumor.hc.norm, n_neighbors = 100, 
+                        min_dist = 0.2, n_threads = 7)
+  write_rds(tumor.hc.umap, cache, "gz")
+}
+```
+
+Check if sample is representative in UMAP space
+
+```{r}
+tumor.hc.umap.sample <-
+  tumor.hc.umap %>%
+  `colnames<-`(c("U1", "U2")) %>%
+  as_tibble()
+
+all <- ggplot(tumor.hc.umap.sample, aes(x = U1, y = U2)) +
+  geom_point(size = 0.5) +
+  theme_classic()
+
+sampled <- ggplot(tumor.hc.umap.sample %>% slice(subsamp), aes(x = U1, y = U2)) +
+  geom_point(color = "darkgreen", size = 0.5) +
+  theme_classic()
+
+unsampled <- ggplot(tumor.hc.umap.sample %>% slice(-subsamp), aes(x = U1, y = U2)) +
+  geom_point(color = "darkred", size = 0.5) +
+  theme_classic()
+
+plot_grid(all, sampled, unsampled)
+```
+
+
+## Consensus NMF
+
+We use an efficient implementation of alternating non negative least-squares with regularized to favor sparse coefficient matrices snmf/r. In this way we aim for cleaner clustering.
+
+```{r}
+cache <- paste0("output/tumor.hc.nmf.rank.", percent, ".rds")
+
+if (file.exists(cache)) {
+  tumor.hc.nmf.rank <- read_rds(cache)
+} else {
+  tumor.hc.nmf.rank <- nmfEstimateRank(as.matrix(t(tumor.hc.rank[subsamp, ])),
+    range = seq(2, 5), method = "snmf/r",
+    nrun = 10, seed = 42, verbose = TRUE,
+    .options = "mp5"
+  )
+  write_rds(tumor.hc.nmf.rank, cache, "gz")
+}
+
+plot(tumor.hc.nmf.rank)
+```

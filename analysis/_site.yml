@@ -9,10 +9,10 @@ navbar:
     href: tcga_3.html
   - text: TCGA 6
     href: tcga_6.html
+  - text: Cores explore
+    href: cores_explore.html
   - text: Cores 3
     href: cores_3.html
-  - text: Cores 4
-    href: cores_4.html
   right:
   - text: License
     href: license.html
