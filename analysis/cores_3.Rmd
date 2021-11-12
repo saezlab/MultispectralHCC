@@ -278,8 +278,9 @@ available.images %>% walk(\(img){
     
     pdf(paste0("output/cores_3/", name, ".pdf"))
     #the t should be flipped along the y direction to match coordinates in spatial
-    (ggRGB(flip(rb, "y")) + 
-      geom_point(data = spatial %>% filter(sample == s), aes(x = X, y = Y, color = Cluster)) +
+    (ggRGB(flip(rb, "y"), maxpixels = 1e8) + 
+      geom_point(data = spatial %>% filter(sample == s), 
+                 aes(x = X, y = Y, color = Cluster), pch = 21) +
       theme_map()) %>%
       print()
     dev.off()
