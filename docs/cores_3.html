@@ -11,7 +11,7 @@
 
 <meta name="author" content="Jovan Tanevski" />
 
-<meta name="date" content="2021-10-28" />
+<meta name="date" content="2021-11-12" />
 
 <title>cores</title>
 
@@ -341,10 +341,10 @@ div.tocify {
   <a href="tcga_6.html">TCGA 6</a>
 </li>
 <li>
-  <a href="cores_3.html">Cores 3</a>
+  <a href="cores_explore.html">Cores explore</a>
 </li>
 <li>
-  <a href="cores_4.html">Cores 4</a>
+  <a href="cores_3.html">Cores 3</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -381,7 +381,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">cores</h1>
 <h4 class="author">Jovan Tanevski</h4>
-<h4 class="date">2021-10-28</h4>
+<h4 class="date">2021-11-12</h4>
 
 </div>
 
@@ -406,7 +406,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2021-10-28
+<strong>Last updated:</strong> 2021-11-12
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -497,16 +497,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomsaezlabMultispectralHCCtree182f85eee63752a045dabd1182d2b7ef4eab57e6targetblank182f85ea"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/saezlab/MultispectralHCC/tree/182f85eee63752a045dabd1182d2b7ef4eab57e6" target="_blank">182f85e</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomsaezlabMultispectralHCCtree1a7cca3056b8f335943494099183ba48a203f562targetblank1a7cca3a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/saezlab/MultispectralHCC/tree/1a7cca3056b8f335943494099183ba48a203f562" target="_blank">1a7cca3</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomsaezlabMultispectralHCCtree182f85eee63752a045dabd1182d2b7ef4eab57e6targetblank182f85ea" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomsaezlabMultispectralHCCtree1a7cca3056b8f335943494099183ba48a203f562targetblank1a7cca3a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/saezlab/MultispectralHCC/tree/182f85eee63752a045dabd1182d2b7ef4eab57e6" target="_blank">182f85e</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/saezlab/MultispectralHCC/tree/1a7cca3056b8f335943494099183ba48a203f562" target="_blank">1a7cca3</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -516,15 +516,154 @@ Ignored files:
     Ignored:    .DS_Store
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
-    Ignored:    NMF_26ce5dfd0cab/
     Ignored:    analysis/.DS_Store
+    Ignored:    analysis/figure/
     Ignored:    code/
     Ignored:    data/
     Ignored:    old/
     Ignored:    output/.DS_Store
+    Ignored:    output/cores_3/.DS_Store
+    Ignored:    output/silhouette.nmf.rds
+    Ignored:    output/tumor.hc.nmf.all.3.rds
     Ignored:    output/tumor.hc.nmf.rank.1.rds
     Ignored:    output/tumor.hc.nmf.rank.10.rds
     Ignored:    output/tumor.hc.umap.rds
+
+Untracked files:
+    Untracked:  core_cluster_fractions.pdf
+    Untracked:  output/cores_3/09_12058_T_HCC1_Core[1,5,O]_[64353,10620].tif.pdf
+    Untracked:  output/cores_3/09_12058_T_HCC1_Core[1,5,O]_[64353,10620]_composite_image.tif.pdf
+    Untracked:  output/cores_3/10_19418_T_HCC1_Core[1,7,F]_[52018,13307].tif.pdf
+    Untracked:  output/cores_3/10_19418_T_HCC1_Core[1,7,F]_[52018,13307]_composite_image.tif.pdf
+    Untracked:  output/cores_3/11_19586_T_HCC1_Core[1,1,L]_[60801,3853].tif.pdf
+    Untracked:  output/cores_3/11_19586_T_HCC1_Core[1,1,L]_[60801,3853]_composite_image.tif.pdf
+    Untracked:  output/cores_3/11_22196_T_HCC1_Core[1,7,L]_[60177,13499].tif.pdf
+    Untracked:  output/cores_3/11_22196_T_HCC1_Core[1,7,L]_[60177,13499]_composite_image.tif.pdf
+    Untracked:  output/cores_3/12_291_T_HCC1_Core[1,5,K]_[58929,10236].tif.pdf
+    Untracked:  output/cores_3/12_291_T_HCC1_Core[1,5,K]_[58929,10236]_composite_image.tif.pdf
+    Untracked:  output/cores_3/14_55372_T_HCC2_Core[1,4,I]_[52796,8447].tif.pdf
+    Untracked:  output/cores_3/14_55372_T_HCC2_Core[1,4,I]_[52796,8447]_composite_image.tif.pdf
+    Untracked:  output/cores_3/15_04414_T_HCC2_Core[1,6,D]_[44733,11134].tif.pdf
+    Untracked:  output/cores_3/15_04414_T_HCC2_Core[1,6,D]_[44733,11134]_composite_image.tif.pdf
+    Untracked:  output/cores_3/tif_clusters.zip
+
+Unstaged changes:
+    Modified:   output/cores_3/07_4662.png
+    Modified:   output/cores_3/08_27704.png
+    Modified:   output/cores_3/09_12058.png
+    Modified:   output/cores_3/09_19505.png
+    Modified:   output/cores_3/10_1150.png
+    Modified:   output/cores_3/10_16169.png
+    Modified:   output/cores_3/10_19418.png
+    Modified:   output/cores_3/10_26818.png
+    Modified:   output/cores_3/10_26871.png
+    Modified:   output/cores_3/10_28011.png
+    Modified:   output/cores_3/10_6446.png
+    Modified:   output/cores_3/10_7994.png
+    Modified:   output/cores_3/10_8486.png
+    Modified:   output/cores_3/11_17328.png
+    Modified:   output/cores_3/11_18529.png
+    Modified:   output/cores_3/11_19586.png
+    Modified:   output/cores_3/11_19933.png
+    Modified:   output/cores_3/11_20683.png
+    Modified:   output/cores_3/11_22196.png
+    Modified:   output/cores_3/11_25684.png
+    Modified:   output/cores_3/11_25993.png
+    Modified:   output/cores_3/11_26686.png
+    Modified:   output/cores_3/11_3580.png
+    Modified:   output/cores_3/11_8671.png
+    Modified:   output/cores_3/11_9225.png
+    Modified:   output/cores_3/12_10971.png
+    Modified:   output/cores_3/12_20368.png
+    Modified:   output/cores_3/12_21031.png
+    Modified:   output/cores_3/12_28533.png
+    Modified:   output/cores_3/12_291.png
+    Modified:   output/cores_3/12_29804.png
+    Modified:   output/cores_3/12_32083.png
+    Modified:   output/cores_3/12_8132.png
+    Modified:   output/cores_3/13_20857.png
+    Modified:   output/cores_3/13_30248.png
+    Modified:   output/cores_3/13_372.png
+    Modified:   output/cores_3/13_9790.png
+    Modified:   output/cores_3/14_10898.png
+    Modified:   output/cores_3/14_11220.png
+    Modified:   output/cores_3/14_50885.png
+    Modified:   output/cores_3/14_55372.png
+    Modified:   output/cores_3/14_5837.png
+    Modified:   output/cores_3/14_5897.png
+    Modified:   output/cores_3/14_62694.png
+    Modified:   output/cores_3/14_62836.png
+    Modified:   output/cores_3/14_64469.png
+    Modified:   output/cores_3/14_65050.png
+    Modified:   output/cores_3/14_65563.png
+    Modified:   output/cores_3/14_65641.png
+    Modified:   output/cores_3/14_65723.png
+    Modified:   output/cores_3/14_66422.png
+    Modified:   output/cores_3/14_8155.png
+    Modified:   output/cores_3/15_04414.png
+    Modified:   output/cores_3/15_10312.png
+    Modified:   output/cores_3/15_24019.png
+    Modified:   output/cores_3/15_28478.png
+    Modified:   output/cores_3/16_02092.png
+    Modified:   output/cores_3/16_20351.png
+    Deleted:    output/cores_4/07_4662.png
+    Deleted:    output/cores_4/08_27704.png
+    Deleted:    output/cores_4/09_12058.png
+    Deleted:    output/cores_4/09_19505.png
+    Deleted:    output/cores_4/10_1150.png
+    Deleted:    output/cores_4/10_16169.png
+    Deleted:    output/cores_4/10_19418.png
+    Deleted:    output/cores_4/10_26818.png
+    Deleted:    output/cores_4/10_26871.png
+    Deleted:    output/cores_4/10_28011.png
+    Deleted:    output/cores_4/10_6446.png
+    Deleted:    output/cores_4/10_7994.png
+    Deleted:    output/cores_4/10_8486.png
+    Deleted:    output/cores_4/11_17328.png
+    Deleted:    output/cores_4/11_18529.png
+    Deleted:    output/cores_4/11_19586.png
+    Deleted:    output/cores_4/11_19933.png
+    Deleted:    output/cores_4/11_20683.png
+    Deleted:    output/cores_4/11_22196.png
+    Deleted:    output/cores_4/11_25684.png
+    Deleted:    output/cores_4/11_25993.png
+    Deleted:    output/cores_4/11_26686.png
+    Deleted:    output/cores_4/11_3580.png
+    Deleted:    output/cores_4/11_8671.png
+    Deleted:    output/cores_4/11_9225.png
+    Deleted:    output/cores_4/12_10971.png
+    Deleted:    output/cores_4/12_20368.png
+    Deleted:    output/cores_4/12_21031.png
+    Deleted:    output/cores_4/12_28533.png
+    Deleted:    output/cores_4/12_291.png
+    Deleted:    output/cores_4/12_29804.png
+    Deleted:    output/cores_4/12_32083.png
+    Deleted:    output/cores_4/12_8132.png
+    Deleted:    output/cores_4/13_20857.png
+    Deleted:    output/cores_4/13_30248.png
+    Deleted:    output/cores_4/13_372.png
+    Deleted:    output/cores_4/13_9790.png
+    Deleted:    output/cores_4/14_10898.png
+    Deleted:    output/cores_4/14_11220.png
+    Deleted:    output/cores_4/14_50885.png
+    Deleted:    output/cores_4/14_55372.png
+    Deleted:    output/cores_4/14_5837.png
+    Deleted:    output/cores_4/14_5897.png
+    Deleted:    output/cores_4/14_62694.png
+    Deleted:    output/cores_4/14_62836.png
+    Deleted:    output/cores_4/14_64469.png
+    Deleted:    output/cores_4/14_65050.png
+    Deleted:    output/cores_4/14_65563.png
+    Deleted:    output/cores_4/14_65641.png
+    Deleted:    output/cores_4/14_65723.png
+    Deleted:    output/cores_4/14_66422.png
+    Deleted:    output/cores_4/14_8155.png
+    Deleted:    output/cores_4/15_04414.png
+    Deleted:    output/cores_4/15_10312.png
+    Deleted:    output/cores_4/15_24019.png
+    Deleted:    output/cores_4/15_28478.png
+    Deleted:    output/cores_4/16_02092.png
+    Deleted:    output/cores_4/16_20351.png
 
 </code></pre>
 <p>
@@ -563,6 +702,108 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/saezlab/MultispectralHCC/blob/1a7cca3056b8f335943494099183ba48a203f562/analysis/cores_3.Rmd" target="_blank">1a7cca3</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-11-12
+</td>
+<td>
+wflow_publish("analysis/cores_3.Rmd")
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/saezlab/MultispectralHCC/blob/a52096dd5a722f637e36eba22698a31dfba5159e/analysis/cores_3.Rmd" target="_blank">a52096d</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-11-12
+</td>
+<td>
+overlay tifs with cluster info, manual silhouette calculation
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/saezlab/MultispectralHCC/blob/baf95ea022c2df70b9e08093821f19970e061ec8/analysis/cores_3.Rmd" target="_blank">baf95ea</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-11-12
+</td>
+<td>
+keep all residuals, fix object access
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/saezlab/MultispectralHCC/blob/6ff2531f4e6f292f8ea61831e3ccaab60ba579f1/analysis/cores_3.Rmd" target="_blank">6ff2531</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-11-11
+</td>
+<td>
+small fix
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/saezlab/MultispectralHCC/blob/e98088dc6ec130e9312726adea453a7903304203/analysis/cores_3.Rmd" target="_blank">e98088d</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-11-11
+</td>
+<td>
+core analysis of all hepatocytes for one core per patient
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/saezlab/MultispectralHCC/515f7e642955e4845707ee7b3905e80c48ec2744/docs/cores_3.html" target="_blank">515f7e6</a>
+</td>
+<td>
+Jovan Tanevski
+</td>
+<td>
+2021-10-28
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -623,17 +864,21 @@ remove beta-cat, add cores 3 and 4 clusters
 </div>
 <div id="setup" class="section level2">
 <h2>Setup</h2>
-<pre class="r"><code>library(tidyverse)
-library(skimr)
+<pre class="r"><code>library(skimr)
 library(uwot)
 library(limma)
 library(NMF)
-library(factoextra)
 library(cowplot)
 library(pheatmap)
-library(RColorBrewer)</code></pre>
-<pre class="r"><code>data &lt;- read_csv(&quot;data/tumor_hepatocytes.csv&quot;, col_types = cols())
-tumor.hc &lt;- data %&gt;%
+library(RColorBrewer)
+library(distances)
+library(furrr)
+library(raster)
+library(RStoolbox)
+library(tidyverse)</code></pre>
+<pre class="r"><code>data &lt;- read_csv(&quot;data/tumor_hepatocytes.csv&quot;, col_types = cols())</code></pre>
+<pre><code>Warning: One or more parsing issues, see `problems()` for details</code></pre>
+<pre class="r"><code>tumor.hc &lt;- data %&gt;%
   select(
     `Cytoplasm AGS (Opal 690) Mean (Normalized Counts, Total Weighting)`,
     `Cytoplasm BerEP4 (Opal 650) Mean (Normalized Counts, Total Weighting)`,
@@ -988,10 +1233,14 @@ skim(tumor.hc.norm)</code></pre>
 </tbody>
 </table>
 <pre class="r"><code>tumor.hc.rank &lt;- mutate_all(tumor.hc.winsorized, ~ rank(., ties.method = &quot;min&quot;))</code></pre>
-<p>Pilot run. Subsample 10% of the original data.</p>
+<p>Pilot run. Subsample one core per patient from the original data.</p>
 <pre class="r"><code>set.seed(42)
-percent &lt;- 10
-subsamp &lt;- sample(nrow(tumor.hc.rank), (percent / 100) * nrow(tumor.hc.rank))</code></pre>
+selected.cores &lt;- data %&gt;% select(`Sample Name`) %&gt;% 
+  mutate(sample = str_extract(`Sample Name`, &quot;[0-9]{2}_[0-9]+&quot;)) %&gt;% 
+  group_by(`Sample Name`) %&gt;% distinct() %&gt;% ungroup() %&gt;% 
+  group_by(sample) %&gt;% slice_sample() %&gt;% pull(`Sample Name`)
+
+subsamp &lt;- which(data %&gt;% pull(`Sample Name`) %in% selected.cores)</code></pre>
 </div>
 <div id="dimensionality-reduction" class="section level2">
 <h2>Dimensionality reduction</h2>
@@ -1002,14 +1251,14 @@ if (file.exists(cache)) {
   tumor.hc.umap &lt;- umap(tumor.hc.norm, n_neighbors = 100, 
                         min_dist = 0.2, n_threads = 7)
   write_rds(tumor.hc.umap, cache, &quot;gz&quot;)
-}</code></pre>
-<p>Check if sample is representative in UMAP space</p>
-<pre class="r"><code>tumor.hc.umap.sample &lt;-
+}
+
+tumor.hc.umap.sample &lt;-
   tumor.hc.umap %&gt;%
   `colnames&lt;-`(c(&quot;U1&quot;, &quot;U2&quot;)) %&gt;%
-  as_tibble()
-
-all &lt;- ggplot(tumor.hc.umap.sample, aes(x = U1, y = U2)) +
+  as_tibble()</code></pre>
+<p>Check if sample is representative in UMAP space</p>
+<pre class="r"><code>all &lt;- ggplot(tumor.hc.umap.sample, aes(x = U1, y = U2)) +
   geom_point(size = 0.5) +
   theme_classic()
 
@@ -1064,61 +1313,18 @@ Jovan Tanevski
 <div id="consensus-nmf" class="section level2">
 <h2>Consensus NMF</h2>
 <p>We use an efficient implementation of alternating non negative least-squares with regularized to favor sparse coefficient matrices snmf/r. In this way we aim for cleaner clustering.</p>
-<pre class="r"><code>cache &lt;- paste0(&quot;output/tumor.hc.nmf.rank.&quot;, percent, &quot;.rds&quot;)
+<pre class="r"><code>cache &lt;- &quot;output/tumor.hc.nmf.all.3.rds&quot;
 
 if (file.exists(cache)) {
-  tumor.hc.nmf.rank &lt;- read_rds(cache)
+  tumor.hc.nmf &lt;- read_rds(cache)
 } else {
-  tumor.hc.nmf.rank &lt;- nmfEstimateRank(as.matrix(t(tumor.hc.rank[subsamp, ])),
-    range = seq(2, 5), method = &quot;snmf/r&quot;,
+  tumor.hc.nmf &lt;- nmf(as.matrix(t(tumor.hc.rank[subsamp, ])),
+    rank = 3, method = &quot;snmf/r&quot;,
     nrun = 10, seed = 42, verbose = TRUE,
-    .options = &quot;mp5&quot;
+    .options = &quot;vkp10-m&quot;
   )
-  write_rds(tumor.hc.nmf.rank, cache, &quot;gz&quot;)
-}
-
-plot(tumor.hc.nmf.rank)</code></pre>
-<pre><code>Warning: Removed 2 rows containing missing values (geom_point).</code></pre>
-<p><img src="figure/cores_3.Rmd/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-6-1">
-Past versions of unnamed-chunk-6-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-6-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/saezlab/MultispectralHCC/blob/a915f4693fae0907042e8dfa435180c95bcdf5df/docs/figure/cores_3.Rmd/unnamed-chunk-6-1.png" target="_blank">a915f46</a>
-</td>
-<td>
-Jovan Tanevski
-</td>
-<td>
-2021-10-27
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<pre class="r"><code>tumor.hc.nmf &lt;- tumor.hc.nmf.rank$fit[[&quot;3&quot;]]
-rm(tumor.hc.nmf.rank)</code></pre>
+  write_rds(tumor.hc.nmf, cache, &quot;gz&quot;)
+}</code></pre>
 <p>Extract basis of NMF (signature of cluster)</p>
 <pre class="r"><code>basismap(tumor.hc.nmf)</code></pre>
 <p><img src="figure/cores_3.Rmd/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
@@ -1159,10 +1365,8 @@ Jovan Tanevski
 </table>
 </div>
 </div>
-<p>Extract coefficients of NMF (soft clustering of samples) if a reasonable amount of cells is subselected.</p>
-<pre class="r"><code>if (percent &lt;= 2) coefmap(tumor.hc.nmf)</code></pre>
 <p>Assign clusters</p>
-<pre class="r"><code>nmf.clusters &lt;- apply(tumor.hc.nmf@fit@H, 2, which.max)</code></pre>
+<pre class="r"><code>nmf.clusters &lt;- apply(fit(tumor.hc.nmf)@H, 2, which.max)</code></pre>
 <div id="plot-in-2d" class="section level3">
 <h3>Plot in 2D</h3>
 <pre class="r"><code>tumor.hc.umap.clus &lt;-
@@ -1173,7 +1377,31 @@ Jovan Tanevski
 ggplot(tumor.hc.umap.clus, aes(x = U1, y = U2, color = Cluster)) +
   geom_point(size = 0.5) +
   theme_classic()</code></pre>
-<p><img src="figure/cores_3.Rmd/unnamed-chunk-10-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/cores_3.Rmd/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="expression-profiles-per-cluster" class="section level3">
+<h3>Expression profiles per cluster</h3>
+<pre class="r"><code>tumor.hc.clustered.nmf &lt;- tumor.hc.norm[subsamp, ] %&gt;%
+  mutate(Cluster = as.factor(nmf.clusters)) %&gt;%
+  pivot_longer(names_to = &quot;Marker&quot;, values_to = &quot;Norm.value&quot;, -Cluster)
+
+profiles &lt;- seq_len(max(nmf.clusters)) %&gt;% map(~
+ggplot(
+  tumor.hc.clustered.nmf %&gt;% filter(Cluster == .x),
+  aes(x = Marker, y = Norm.value, color = Marker)
+) +
+  stat_summary(fun.data = mean_sdl, show.legend = FALSE) +
+  scale_color_brewer(palette = &quot;Set2&quot;) +
+  ylim(-1, 3) +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)))
+
+plot_grid(plotlist = profiles, labels = paste(&quot;Cluster&quot;, seq_len(max(nmf.clusters))))</code></pre>
+<pre><code>Warning: Removed 14390 rows containing non-finite values (stat_summary).</code></pre>
+<pre><code>Warning: Removed 16165 rows containing non-finite values (stat_summary).</code></pre>
+<pre><code>Warning: Removed 24968 rows containing non-finite values (stat_summary).</code></pre>
+<pre><code>Warning: Removed 1 rows containing missing values (geom_segment).</code></pre>
+<p><img src="figure/cores_3.Rmd/unnamed-chunk-10-1.png" width="960" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-10-1">
 Past versions of unnamed-chunk-10-1.png
@@ -1212,29 +1440,25 @@ Jovan Tanevski
 </div>
 </div>
 </div>
-<div id="expression-profiles-per-cluster" class="section level3">
-<h3>Expression profiles per cluster</h3>
-<pre class="r"><code>tumor.hc.clustered.nmf &lt;- tumor.hc.norm[subsamp, ] %&gt;%
-  mutate(Cluster = as.factor(nmf.clusters)) %&gt;%
-  pivot_longer(names_to = &quot;Marker&quot;, values_to = &quot;Norm.value&quot;, -Cluster)
+<div id="marker-abundance-plots" class="section level3">
+<h3>Marker abundance plots</h3>
+<pre class="r"><code>tumor.hc.umap.markers &lt;- tumor.hc.norm %&gt;%
+  bind_cols(tumor.hc.umap.sample) %&gt;%
+  slice(subsamp)
 
-profiles &lt;- seq_len(max(nmf.clusters)) %&gt;% map(~
-ggplot(
-  tumor.hc.clustered.nmf %&gt;% filter(Cluster == .x),
-  aes(x = Marker, y = Norm.value, color = Marker)
-) +
-  stat_summary(fun.data = mean_sdl, show.legend = FALSE) +
-  scale_color_brewer(palette = &quot;Set2&quot;) +
-  ylim(-1, 3) +
-  theme_classic() +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1)))
+low &lt;- RColorBrewer::brewer.pal(8, &quot;Set2&quot;)[8]
+highs &lt;- RColorBrewer::brewer.pal(8, &quot;Set2&quot;)[seq_len(ncol(tumor.hc.norm))]
 
-plot_grid(plotlist = profiles, labels = paste(&quot;Cluster&quot;, seq_len(max(nmf.clusters))))</code></pre>
-<pre><code>Warning: Removed 3010 rows containing non-finite values (stat_summary).</code></pre>
-<pre><code>Warning: Removed 2629 rows containing non-finite values (stat_summary).</code></pre>
-<pre><code>Warning: Removed 4541 rows containing non-finite values (stat_summary).</code></pre>
-<pre><code>Warning: Removed 1 rows containing missing values (geom_segment).</code></pre>
-<p><img src="figure/cores_3.Rmd/unnamed-chunk-11-1.png" width="960" style="display: block; margin: auto;" /></p>
+tumor.hc.umap.markers.plots &lt;- colnames(tumor.hc.norm) %&gt;%
+  map2(highs, \(marker, color){
+    ggplot(tumor.hc.umap.markers, aes_string(x = &quot;U1&quot;, y = &quot;U2&quot;, color = marker)) +
+      geom_point(size = 0.5) +
+      scale_color_gradient(low = low, high = color) +
+      theme_classic()
+  })
+
+plot_grid(plotlist = tumor.hc.umap.markers.plots)</code></pre>
+<p><img src="figure/cores_3.Rmd/unnamed-chunk-11-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-11-1">
 Past versions of unnamed-chunk-11-1.png
@@ -1273,24 +1497,34 @@ Jovan Tanevski
 </div>
 </div>
 </div>
-<div id="marker-abundance-plots" class="section level3">
-<h3>Marker abundance plots</h3>
-<pre class="r"><code>tumor.hc.umap.markers &lt;- tumor.hc.norm %&gt;%
+<div id="core-plots" class="section level3">
+<h3>Core plots</h3>
+<pre class="r"><code>tumor.hc.umap.cores &lt;- data %&gt;%
+  select(`Sample Name`) %&gt;%
   bind_cols(tumor.hc.umap.sample) %&gt;%
-  slice(subsamp)
+  slice(subsamp) %&gt;%
+  mutate(
+    c = nmf.clusters,
+    sample = str_extract(`Sample Name`, &quot;[0-9]+_[0-9]+&quot;)
+  )
 
-low &lt;- RColorBrewer::brewer.pal(8, &quot;Set2&quot;)[8]
-highs &lt;- RColorBrewer::brewer.pal(8, &quot;Set2&quot;)[seq_len(ncol(tumor.hc.norm))]
-
-tumor.hc.umap.markers.plots &lt;- colnames(tumor.hc.norm) %&gt;%
-  map2(highs, \(marker, color){
-    ggplot(tumor.hc.umap.markers, aes_string(x = &quot;U1&quot;, y = &quot;U2&quot;, color = marker)) +
-      geom_point(size = 0.5) +
-      scale_color_gradient(low = low, high = color) +
-      theme_classic()
-  })
-
-plot_grid(plotlist = tumor.hc.umap.markers.plots)</code></pre>
+tumor.hc.umap.cores %&gt;%
+  group_by(sample) %&gt;%
+  summarize(
+    Fraction = table(c) / n(),
+    Cluster = names(Fraction),
+    .groups = &quot;drop&quot;
+  ) %&gt;%
+  mutate(Fraction = as.numeric(Fraction)) %&gt;%
+  pivot_wider(names_from = &quot;Cluster&quot;, values_from = &quot;Fraction&quot;) %&gt;%
+  column_to_rownames(&quot;sample&quot;) %&gt;%
+  mutate(across(everything(), ~ replace_na(., 0))) %&gt;%
+  as.matrix() %&gt;%
+  pheatmap(
+    scale = &quot;none&quot;,
+    color = colorRampPalette(brewer.pal(n = 7, name = &quot;YlOrBr&quot;))(100),
+    fontsize = 6
+  )</code></pre>
 <p><img src="figure/cores_3.Rmd/unnamed-chunk-12-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-12-1">
@@ -1329,73 +1563,6 @@ Jovan Tanevski
 </table>
 </div>
 </div>
-</div>
-<div id="core-plots" class="section level3">
-<h3>Core plots</h3>
-<pre class="r"><code>tumor.hc.umap.cores &lt;- data %&gt;%
-  select(`Sample Name`) %&gt;%
-  bind_cols(tumor.hc.umap.sample) %&gt;%
-  slice(subsamp) %&gt;%
-  mutate(
-    c = nmf.clusters,
-    sample = str_extract(`Sample Name`, &quot;[0-9]+_[0-9]+&quot;)
-  )
-
-tumor.hc.umap.cores %&gt;%
-  group_by(sample) %&gt;%
-  summarize(
-    Fraction = table(c) / n(),
-    Cluster = names(Fraction),
-    .groups = &quot;drop&quot;
-  ) %&gt;%
-  mutate(Fraction = as.numeric(Fraction)) %&gt;%
-  pivot_wider(names_from = &quot;Cluster&quot;, values_from = &quot;Fraction&quot;) %&gt;%
-  column_to_rownames(&quot;sample&quot;) %&gt;%
-  mutate(across(everything(), ~ replace_na(., 0))) %&gt;%
-  as.matrix() %&gt;%
-  pheatmap(
-    scale = &quot;none&quot;,
-    cellheight = 12,
-    color = colorRampPalette(brewer.pal(n = 7, name = &quot;YlOrBr&quot;))(100)
-  )</code></pre>
-<p><img src="figure/cores_3.Rmd/unnamed-chunk-13-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-13-1">
-Past versions of unnamed-chunk-13-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-13-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/saezlab/MultispectralHCC/blob/a915f4693fae0907042e8dfa435180c95bcdf5df/docs/figure/cores_3.Rmd/unnamed-chunk-13-1.png" target="_blank">a915f46</a>
-</td>
-<td>
-Jovan Tanevski
-</td>
-<td>
-2021-10-27
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
 <pre class="r"><code>tumor.hc.umap.cores %&gt;%
   pull(sample) %&gt;%
   unique() %&gt;%
@@ -1417,56 +1584,94 @@ Jovan Tanevski
     }
   })</code></pre>
 <p>Figures with UMAPs for each core can be found in <a href="https://github.com/saezlab/MultispectralHCC/tree/master/output">output</a>.</p>
+<p>Overlay cluster information on available tiffs</p>
+<pre class="r"><code>available.images &lt;- list.files(&quot;data/core images/&quot;, full.names = TRUE)
+
+spatial &lt;- data %&gt;% 
+  select(`Sample Name`, `Cell X Position`, `Cell Y Position`) %&gt;% 
+  `colnames&lt;-`(c(&quot;sample&quot;, &quot;X&quot;, &quot;Y&quot;)) %&gt;%
+  slice(subsamp) %&gt;% 
+  mutate(Cluster = as.factor(nmf.clusters))
+
+available.images %&gt;% walk(\(img){
+  id &lt;- str_extract(img, &quot;[0-9]{2}_[0-9]+(_[^_\\.]*){4}&quot;)
+  name &lt;- str_extract(img, &quot;[0-9]{2}_[0-9]+(_[^_\\.]*)*.tif&quot;)
+  s &lt;- paste0(id,&quot;.im3&quot;)
+  if(s %in% spatial$sample){
+    rb &lt;- brick(img)
+    
+    
+    names(rb) &lt;- c(&quot;r&quot;, &quot;g&quot;, &quot;b&quot;)
+    
+    pdf(paste0(&quot;output/cores_3/&quot;, name, &quot;.pdf&quot;))
+    #the t should be flipped along the y direction to match coordinates in spatial
+    (ggRGB(flip(rb, &quot;y&quot;)) + 
+      geom_point(data = spatial %&gt;% filter(sample == s), aes(x = X, y = Y, color = Cluster)) +
+      theme_map()) %&gt;%
+      print()
+    dev.off()
+  }
+  
+})</code></pre>
 </div>
 <div id="differential-expression-analysis-silhouette" class="section level3">
 <h3>Differential expression analysis (silhouette)</h3>
 <p>Calculate the similarity of samples using the expression and the silhouette scores based on the assigned clusters.</p>
-<pre class="r"><code>silhouette.nmf &lt;- silhouette(nmf.clusters, dist(tumor.hc.norm[subsamp, ]))
-fviz_silhouette(silhouette.nmf)</code></pre>
-<pre><code>  cluster size ave.sil.width
-1       1 6768          0.27
-2       2 6915          0.28
-3       3 8701          0.10</code></pre>
-<p><img src="figure/cores_3.Rmd/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-14-1">
-Past versions of unnamed-chunk-14-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-14-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
+<pre class="r"><code>cache &lt;- &quot;output/silhouette.nmf.rds&quot;
+
+if (file.exists(cache)) {
+  silhouette.nmf &lt;- read_rds(cache)
+} else {
+  # manual calculation of silhouette scores with lazily evaluated distance matrix
+  subsamp.dists &lt;- distances(tumor.hc.norm[subsamp, ])
+  
+  plan(multisession, workers = 5)
+  
+  silhouette.nmf &lt;- nmf.clusters %&gt;% future_imap_dbl(\(c, i){
+    dists &lt;- tibble(d = subsamp.dists[i,][-i], cluster = nmf.clusters[-i]) %&gt;% 
+      group_by(cluster) %&gt;% 
+      summarize(m = mean(d)) 
+    
+    a &lt;- dists %&gt;% filter(cluster == c) %&gt;% pluck(&quot;m&quot;, 1)
+    b &lt;- dists %&gt;% filter(cluster != c) %&gt;% pull(m) %&gt;% min()
+    
+    (b - a)/max(a, b)
+  }, .options = furrr::furrr_options(packages = &quot;distances&quot;), .progress = TRUE)
+  
+  write_rds(silhouette.nmf, cache, &quot;gz&quot;)
+}
+
+tibble(c = nmf.clusters, s = silhouette.nmf) %&gt;% 
+  group_by(c) %&gt;% 
+  summarize(m = mean(s))</code></pre>
+<div class="kable-table">
+<table>
 <thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
+<tr class="header">
+<th align="right">c</th>
+<th align="right">m</th>
 </tr>
 </thead>
 <tbody>
-<tr>
-<td>
-<a href="https://github.com/saezlab/MultispectralHCC/blob/a915f4693fae0907042e8dfa435180c95bcdf5df/docs/figure/cores_3.Rmd/unnamed-chunk-14-1.png" target="_blank">a915f46</a>
-</td>
-<td>
-Jovan Tanevski
-</td>
-<td>
-2021-10-27
-</td>
+<tr class="odd">
+<td align="right">1</td>
+<td align="right">0.3791663</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="right">0.3017454</td>
+</tr>
+<tr class="odd">
+<td align="right">3</td>
+<td align="right">0.1130977</td>
 </tr>
 </tbody>
 </table>
 </div>
-</div>
+<pre class="r"><code>print(paste0(&quot;Average silhouette score: &quot;, mean(silhouette.nmf)))</code></pre>
+<pre><code>[1] &quot;Average silhouette score: 0.250828061783453&quot;</code></pre>
 <p>Select only the samples with positive silhouette scores as “core samples”</p>
-<pre class="r"><code>core.samples &lt;- which(silhouette.nmf[, 3] &gt; 0)
+<pre class="r"><code>core.samples &lt;- which(silhouette.nmf &gt; 0)
 tumor.hc.core.samples &lt;- tumor.hc.norm[subsamp, ] %&gt;%
   add_column(Cluster = nmf.clusters) %&gt;%
   slice(core.samples)</code></pre>
@@ -1502,84 +1707,84 @@ de.table %&gt;%
 <td align="left">AGS</td>
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">-1.0320764</td>
+<td align="right">-1.1509970</td>
 <td align="right">0</td>
 </tr>
 <tr class="even">
 <td align="left">BerEP4</td>
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">1.3710267</td>
+<td align="right">1.3643187</td>
 <td align="right">0</td>
 </tr>
 <tr class="odd">
 <td align="left">CRP</td>
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">-0.8034967</td>
+<td align="right">-0.8705340</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">p.S6</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">-0.6053700</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">AGS</td>
+<td align="right">0</td>
+<td align="right">3</td>
+<td align="right">-0.4408815</td>
 <td align="right">0</td>
 </tr>
 <tr class="even">
 <td align="left">BerEP4</td>
 <td align="right">0</td>
 <td align="right">3</td>
-<td align="right">-0.7006799</td>
+<td align="right">-0.7472194</td>
 <td align="right">0</td>
 </tr>
 <tr class="odd">
 <td align="left">CRP</td>
 <td align="right">0</td>
 <td align="right">3</td>
-<td align="right">1.6533305</td>
+<td align="right">1.6290324</td>
 <td align="right">0</td>
 </tr>
 <tr class="even">
 <td align="left">p.S6</td>
 <td align="right">0</td>
 <td align="right">3</td>
-<td align="right">1.4568872</td>
+<td align="right">1.4251024</td>
 <td align="right">0</td>
 </tr>
 <tr class="odd">
 <td align="left">AGS</td>
 <td align="right">0</td>
 <td align="right">2</td>
-<td align="right">1.3080009</td>
+<td align="right">1.6605926</td>
 <td align="right">0</td>
 </tr>
 <tr class="even">
 <td align="left">BerEP4</td>
 <td align="right">0</td>
 <td align="right">2</td>
-<td align="right">-0.6980330</td>
+<td align="right">-0.7006696</td>
 <td align="right">0</td>
 </tr>
 <tr class="odd">
 <td align="left">CRP</td>
 <td align="right">0</td>
 <td align="right">2</td>
-<td align="right">-0.7529256</td>
+<td align="right">-0.7032498</td>
 <td align="right">0</td>
 </tr>
 <tr class="even">
 <td align="left">p.S6</td>
 <td align="right">0</td>
 <td align="right">2</td>
-<td align="right">-0.8927345</td>
-<td align="right">0</td>
-</tr>
-<tr class="odd">
-<td align="left">p.S6</td>
-<td align="right">0</td>
-<td align="right">1</td>
-<td align="right">-0.4757420</td>
-<td align="right">0</td>
-</tr>
-<tr class="even">
-<td align="left">AGS</td>
-<td align="right">0</td>
-<td align="right">3</td>
-<td align="right">-0.3094173</td>
+<td align="right">-0.7808243</td>
 <td align="right">0</td>
 </tr>
 </tbody>
@@ -1651,53 +1856,59 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
- [1] RColorBrewer_1.1-2  pheatmap_1.0.12     cowplot_1.1.1      
- [4] factoextra_1.0.7    NMF_0.23.0          synchronicity_1.3.5
- [7] bigmemory_4.5.36    Biobase_2.53.0      BiocGenerics_0.39.2
-[10] cluster_2.1.2       rngtools_1.5.2      pkgmaker_0.32.2    
-[13] registry_0.5-1      limma_3.49.5        uwot_0.1.10        
-[16] Matrix_1.3-4        skimr_2.1.3         forcats_0.5.1      
-[19] stringr_1.4.0       dplyr_1.0.7         purrr_0.3.4        
-[22] readr_2.0.2         tidyr_1.1.4         tibble_3.1.5       
-[25] ggplot2_3.3.5       tidyverse_1.3.1     workflowr_1.6.2    
+ [1] forcats_0.5.1       stringr_1.4.0       dplyr_1.0.7        
+ [4] purrr_0.3.4         readr_2.1.0         tidyr_1.1.4        
+ [7] tibble_3.1.6        ggplot2_3.3.5       tidyverse_1.3.1    
+[10] RStoolbox_0.2.6     raster_3.5-2        sp_1.4-5           
+[13] furrr_0.2.3         future_1.23.0       distances_0.1.8    
+[16] RColorBrewer_1.1-2  pheatmap_1.0.12     cowplot_1.1.1      
+[19] NMF_0.23.0          synchronicity_1.3.5 bigmemory_4.5.36   
+[22] Biobase_2.54.0      BiocGenerics_0.40.0 cluster_2.1.2      
+[25] rngtools_1.5.2      pkgmaker_0.32.2     registry_0.5-1     
+[28] limma_3.50.0        uwot_0.1.10         Matrix_1.3-4       
+[31] skimr_2.1.3         workflowr_1.6.2    
 
 loaded via a namespace (and not attached):
-  [1] bigmemory.sri_0.1.3 colorspace_2.0-2    ggsignif_0.6.3     
-  [4] rio_0.5.27          ellipsis_0.3.2      rprojroot_2.0.2    
-  [7] htmlTable_2.3.0     base64enc_0.1-3     fs_1.5.0           
- [10] rstudioapi_0.13     ggpubr_0.4.0        farver_2.1.0       
- [13] ggrepel_0.9.1       bit64_4.0.5         fansi_0.5.0        
- [16] lubridate_1.8.0     xml2_1.3.2          codetools_0.2-18   
- [19] splines_4.1.1       doParallel_1.0.16   knitr_1.36         
- [22] Formula_1.2-4       jsonlite_1.7.2      broom_0.7.9        
- [25] gridBase_0.4-7      dbplyr_2.1.1        png_0.1-7          
- [28] compiler_4.1.1      httr_1.4.2          backports_1.3.0    
- [31] assertthat_0.2.1    fastmap_1.1.0       cli_3.0.1          
- [34] later_1.3.0         htmltools_0.5.2     tools_4.1.1        
- [37] gtable_0.3.0        glue_1.4.2          reshape2_1.4.4     
- [40] Rcpp_1.0.7          carData_3.0-4       cellranger_1.1.0   
- [43] jquerylib_0.1.4     vctrs_0.3.8         iterators_1.0.13   
- [46] xfun_0.27           openxlsx_4.2.4      rvest_1.0.2        
- [49] lifecycle_1.0.1     rstatix_0.7.0       scales_1.1.1       
- [52] vroom_1.5.5         hms_1.1.1           promises_1.2.0.1   
- [55] parallel_4.1.1      curl_4.3.2          yaml_2.2.1         
- [58] gridExtra_2.3       sass_0.4.0          rpart_4.1-15       
- [61] latticeExtra_0.6-29 stringi_1.7.5       highr_0.9          
- [64] foreach_1.5.1       checkmate_2.0.0     zip_2.2.0          
- [67] repr_1.1.3          rlang_0.4.12        pkgconfig_2.0.3    
- [70] evaluate_0.14       lattice_0.20-45     htmlwidgets_1.5.4  
- [73] labeling_0.4.2      bit_4.0.4           tidyselect_1.1.1   
- [76] plyr_1.8.6          magrittr_2.0.1      R6_2.5.1           
- [79] generics_0.1.1      Hmisc_4.6-0         DBI_1.1.1          
- [82] foreign_0.8-81      pillar_1.6.4        haven_2.4.3        
- [85] whisker_0.4         withr_2.4.2         abind_1.4-5        
- [88] nnet_7.3-16         survival_3.2-13     car_3.0-11         
- [91] modelr_0.1.8        crayon_1.4.1        uuid_0.1-4         
- [94] utf8_1.2.2          tzdb_0.1.2          rmarkdown_2.11     
- [97] jpeg_0.1-9          grid_4.1.1          readxl_1.3.1       
-[100] data.table_1.14.2   git2r_0.28.0        reprex_2.0.1       
-[103] digest_0.6.28       xtable_1.8-4        httpuv_1.6.3       
-[106] munsell_0.5.0       bslib_0.3.1        </code></pre>
+  [1] readxl_1.3.1         uuid_1.0-3           backports_1.3.0     
+  [4] Hmisc_4.6-0          plyr_1.8.6           repr_1.1.3          
+  [7] splines_4.1.1        listenv_0.8.0        gridBase_0.4-7      
+ [10] digest_0.6.28        foreach_1.5.1        htmltools_0.5.2     
+ [13] fansi_0.5.0          checkmate_2.0.0      magrittr_2.0.1      
+ [16] doParallel_1.0.16    tzdb_0.2.0           recipes_0.1.17      
+ [19] globals_0.14.0       modelr_0.1.8         gower_0.2.2         
+ [22] vroom_1.5.6          jpeg_0.1-9           colorspace_2.0-2    
+ [25] rvest_1.0.2          haven_2.4.3          xfun_0.28           
+ [28] rgdal_1.5-27         crayon_1.4.2         jsonlite_1.7.2      
+ [31] bigmemory.sri_0.1.3  survival_3.2-13      iterators_1.0.13    
+ [34] glue_1.5.0           gtable_0.3.0         ipred_0.9-12        
+ [37] future.apply_1.8.1   scales_1.1.1         DBI_1.1.1           
+ [40] Rcpp_1.0.7           htmlTable_2.3.0      xtable_1.8-4        
+ [43] foreign_0.8-81       bit_4.0.4            Formula_1.2-4       
+ [46] stats4_4.1.1         lava_1.6.10          prodlim_2019.11.13  
+ [49] htmlwidgets_1.5.4    httr_1.4.2           geosphere_1.5-14    
+ [52] ellipsis_0.3.2       farver_2.1.0         pkgconfig_2.0.3     
+ [55] XML_3.99-0.8         nnet_7.3-16          sass_0.4.0          
+ [58] dbplyr_2.1.1         utf8_1.2.2           caret_6.0-90        
+ [61] labeling_0.4.2       tidyselect_1.1.1     rlang_0.4.12        
+ [64] reshape2_1.4.4       later_1.3.0          munsell_0.5.0       
+ [67] cellranger_1.1.0     tools_4.1.1          cli_3.1.0           
+ [70] generics_0.1.1       broom_0.7.10         evaluate_0.14       
+ [73] fastmap_1.1.0        yaml_2.2.1           bit64_4.0.5         
+ [76] ModelMetrics_1.2.2.2 knitr_1.36           fs_1.5.0            
+ [79] nlme_3.1-153         whisker_0.4          xml2_1.3.2          
+ [82] compiler_4.1.1       rstudioapi_0.13      png_0.1-7           
+ [85] reprex_2.0.1         bslib_0.3.1          stringi_1.7.5       
+ [88] highr_0.9            rgeos_0.5-8          lattice_0.20-45     
+ [91] vctrs_0.3.8          pillar_1.6.4         lifecycle_1.0.1     
+ [94] jquerylib_0.1.4      data.table_1.14.2    httpuv_1.6.3        
+ [97] latticeExtra_0.6-29  R6_2.5.1             promises_1.2.0.1    
+[100] gridExtra_2.3        parallelly_1.28.1    codetools_0.2-18    
+[103] MASS_7.3-54          assertthat_0.2.1     rprojroot_2.0.2     
+[106] withr_2.4.2          parallel_4.1.1       hms_1.1.1           
+[109] terra_1.4-11         grid_4.1.1           rpart_4.1-15        
+[112] timeDate_3043.102    class_7.3-19         rmarkdown_2.11      
+[115] git2r_0.28.0         pROC_1.18.0          lubridate_1.8.0     
+[118] base64enc_0.1-3     </code></pre>
 </div>
 </div>
 </div>
