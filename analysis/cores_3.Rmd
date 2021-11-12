@@ -125,7 +125,7 @@ if (file.exists(cache)) {
   tumor.hc.nmf <- nmf(as.matrix(t(tumor.hc.rank[subsamp, ])),
     rank = 3, method = "snmf/r",
     nrun = 10, seed = 42, verbose = TRUE,
-    .options = "vp10-m"
+    .options = "vkp10-m"
   )
   write_rds(tumor.hc.nmf, cache, "gz")
 }
@@ -137,15 +137,9 @@ Extract basis of NMF (signature of cluster)
 basismap(tumor.hc.nmf)
 ```
 
-Extract coefficients of NMF (soft clustering of samples) if a reasonable amount of cells is subselected.
-
-```{r}
-if (percent <= 2) coefmap(tumor.hc.nmf)
-```
-
 Assign clusters
 ```{r}
-nmf.clusters <- apply(tumor.hc.nmf@fit@H, 2, which.max)
+nmf.clusters <- apply(fit(tumor.hc.nmf)@H, 2, which.max)
 ```
 
 ### Plot in 2D
