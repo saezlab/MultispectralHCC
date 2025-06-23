@@ -41,6 +41,14 @@ tumor.hc <- data %>%
 skim(tumor.hc)
 ```
 
+
+Number of cells per core
+```{r}
+cpc <- data %>% group_by(`Sample Name`) %>% summarise(Cells = n())
+head(cpc, n = 10)
+write_csv(cpc, "output/cells_per_core.csv")
+```
+
 Detect outliers based on Tukey's interquartile approach and winsorize. Follow by quantile normalization and ranking to get rid of the effect of abundance
 
 ```{r}
@@ -64,7 +72,7 @@ skim(tumor.hc.norm)
 tumor.hc.rank <- mutate_all(tumor.hc.winsorized, ~ rank(., ties.method = "min"))
 ```
 
-Pilot run. Subsample one core per patient from the original data.
+Subsample one core per patient from the original data.
 
 ```{r}
 set.seed(42)
@@ -144,6 +152,19 @@ Assign clusters
 ```{r}
 nmf.clusters <- apply(fit(tumor.hc.nmf)@H, 2, which.max)
 ```
+
+Assignments per core
+```{r}
+percore <- data %>% slice(subsamp) %>% select(`Sample Name`) %>% mutate(Cluster = nmf.clusters) %>% 
+  group_by(`Sample Name`) %>% select(Cluster) %>% table() %>% data.frame() %>% pivot_wider(names_from = Cluster, values_from = Freq) %>%
+  rowwise() %>% mutate(purity = max(`1`, `2` ,`3`)/sum(`1`,`2`,`3`))
+
+head(percore, n=10)
+write_csv(percore, "output/clusters_per_core.csv")
+
+```
+
+
 
 ### Plot in 2D
 
@@ -322,6 +343,10 @@ if (file.exists(cache)) {
 tibble(c = nmf.clusters, s = silhouette.nmf) %>% 
   group_by(c) %>% 
   summarize(m = mean(s))
+
+tibble(c = nmf.clusters, s = silhouette.nmf) %>% 
+  group_by(c) %>% 
+  summarize(zeros = sum(s<0)) %>% write_csv("output/silhouette_less_zero.csv")
 
 print(paste0("Average silhouette score: ", mean(silhouette.nmf)))
 ```
