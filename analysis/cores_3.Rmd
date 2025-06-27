@@ -164,6 +164,24 @@ write_csv(percore, "output/clusters_per_core.csv")
 
 ```
 
+Use the calculated factorization to predict cell clusters in excluded samples
+```{r}
+other.cores <- as.matrix(t(tumor.hc.rank[-subsamp, ]))
+
+res.H <- fcnnls(fit(tumor.hc.nmf)@W, other.cores, pseudo = FALSE)
+nmf.clusters.other <-  apply(res.H$x, 2, which.max)
+
+percore.other <- data %>% slice(-subsamp) %>% select(`Sample Name`) %>% mutate(Cluster = nmf.clusters.other) %>% 
+  group_by(`Sample Name`) %>% select(Cluster) %>% table() %>% data.frame() %>% pivot_wider(names_from = Cluster, values_from = Freq) %>%
+  rowwise() %>% mutate(purity = max(`1`, `2` ,`3`)/sum(`1`,`2`,`3`))
+
+test.summary  <- rbind(cbind(percore, test = FALSE),cbind(percore.other, test = TRUE))
+test.summary.patient <- cbind(test.summary, patient = str_extract(test.summary$Sample.Name, "[0-9]{2}_[0-9]+"))
+
+
+write_csv(percore, "output/clusters_per_core_other.csv")
+write_csv(test.summary.patient, "output/clusters_per_core_test_summary.csv")
+```
 
 
 ### Plot in 2D
