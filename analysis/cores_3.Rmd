@@ -34,7 +34,6 @@ tumor.hc <- data %>%
     `Cytoplasm BerEP4 (Opal 650) Mean (Normalized Counts, Total Weighting)`,
     `Cytoplasm CRP (Opal 540) Mean (Normalized Counts, Total Weighting)`,
     `Nucleus p-S6 (Opal 570) Mean (Normalized Counts, Total Weighting)`,
-#    `Nucleus beta-cat. (Opal 520) Mean (Normalized Counts, Total Weighting)`
   ) %>%
   `colnames<-`(str_split(colnames(.), " ") %>% map_chr(~ .x[2]) %>% make.names())
 
@@ -44,7 +43,9 @@ skim(tumor.hc)
 
 Number of cells per core
 ```{r}
-cpc <- data %>% group_by(`Sample Name`) %>% summarise(Cells = n())
+cpc <- data %>%
+  group_by(`Sample Name`) %>%
+  summarise(Cells = n())
 head(cpc, n = 10)
 write_csv(cpc, "output/cells_per_core.csv")
 ```
@@ -72,28 +73,17 @@ skim(tumor.hc.norm)
 tumor.hc.rank <- mutate_all(tumor.hc.winsorized, ~ rank(., ties.method = "min"))
 ```
 
-Subsample one core per patient from the original data.
-
-```{r}
-set.seed(42)
-selected.cores <- data %>% select(`Sample Name`) %>% 
-  mutate(sample = str_extract(`Sample Name`, "[0-9]{2}_[0-9]+")) %>% 
-  group_by(`Sample Name`) %>% distinct() %>% ungroup() %>% 
-  group_by(sample) %>% slice_sample() %>% pull(`Sample Name`)
-
-subsamp <- which(data %>% pull(`Sample Name`) %in% selected.cores)
-```
-
-
-## Dimensionality reduction
+## Dimensionality reduction for visualization
 
 ```{r}
 cache <- "output/tumor.hc.umap.rds"
 if (file.exists(cache)) {
   tumor.hc.umap <- read_rds(cache)
 } else {
-  tumor.hc.umap <- umap(tumor.hc.norm, n_neighbors = 100, 
-                        min_dist = 0.2, n_threads = 7)
+  tumor.hc.umap <- umap(tumor.hc.norm,
+    n_neighbors = 100,
+    min_dist = 0.2, n_threads = 7
+  )
   write_rds(tumor.hc.umap, cache, "gz")
 }
 
@@ -101,25 +91,17 @@ tumor.hc.umap.sample <-
   tumor.hc.umap %>%
   `colnames<-`(c("U1", "U2")) %>%
   as_tibble()
-
 ```
 
-Check if sample is representative in UMAP space
+Plot UMAP and check for obvious patient batches
 
 ```{r}
-all <- ggplot(tumor.hc.umap.sample, aes(x = U1, y = U2)) +
+patient <- str_extract(data$`Sample Name`, "[0-9]+_[0-9]+")
+palette <- hcl.colors(58, palette = "Dynamic")
+ggplot(tumor.hc.umap.sample, aes(x = U1, y = U2, color = patient)) +
   geom_point(size = 0.5) +
+  scale_color_manual(values = palette) +
   theme_classic()
-
-sampled <- ggplot(tumor.hc.umap.sample %>% slice(subsamp), aes(x = U1, y = U2)) +
-  geom_point(color = "darkgreen", size = 0.5) +
-  theme_classic()
-
-unsampled <- ggplot(tumor.hc.umap.sample %>% slice(-subsamp), aes(x = U1, y = U2)) +
-  geom_point(color = "darkred", size = 0.5) +
-  theme_classic()
-
-plot_grid(all, sampled, unsampled)
 ```
 
 
@@ -128,12 +110,12 @@ plot_grid(all, sampled, unsampled)
 We use an efficient implementation of alternating non negative least-squares with regularized to favor sparse coefficient matrices snmf/r. In this way we aim for cleaner clustering.
 
 ```{r}
-cache <- "output/tumor.hc.nmf.all.3.rds"
+cache <- "output/tumor.hc.nmf.2cores.all.3.rds"
 
 if (file.exists(cache)) {
   tumor.hc.nmf <- read_rds(cache)
 } else {
-  tumor.hc.nmf <- nmf(as.matrix(t(tumor.hc.rank[subsamp, ])),
+  tumor.hc.nmf <- nmf(as.matrix(t(tumor.hc.rank)),
     rank = 3, method = "snmf/r",
     nrun = 10, seed = 42, verbose = TRUE,
     .options = "vkp10-m"
@@ -155,41 +137,26 @@ nmf.clusters <- apply(fit(tumor.hc.nmf)@H, 2, which.max)
 
 Assignments per core
 ```{r}
-percore <- data %>% slice(subsamp) %>% select(`Sample Name`) %>% mutate(Cluster = nmf.clusters) %>% 
-  group_by(`Sample Name`) %>% select(Cluster) %>% table() %>% data.frame() %>% pivot_wider(names_from = Cluster, values_from = Freq) %>%
-  rowwise() %>% mutate(purity = max(`1`, `2` ,`3`)/sum(`1`,`2`,`3`))
+percore <- data %>%
+  select(`Sample Name`) %>%
+  mutate(Cluster = nmf.clusters) %>%
+  group_by(`Sample Name`) %>%
+  select(Cluster) %>%
+  table() %>%
+  data.frame() %>%
+  pivot_wider(names_from = Cluster, values_from = Freq) %>%
+  rowwise() %>%
+  mutate(purity = max(`1`, `2`, `3`) / sum(`1`, `2`, `3`))
 
-head(percore, n=10)
+head(percore, n = 10)
 write_csv(percore, "output/clusters_per_core.csv")
-
 ```
-
-Use the calculated factorization to predict cell clusters in excluded samples
-```{r}
-other.cores <- as.matrix(t(tumor.hc.rank[-subsamp, ]))
-
-res.H <- fcnnls(fit(tumor.hc.nmf)@W, other.cores, pseudo = FALSE)
-nmf.clusters.other <-  apply(res.H$x, 2, which.max)
-
-percore.other <- data %>% slice(-subsamp) %>% select(`Sample Name`) %>% mutate(Cluster = nmf.clusters.other) %>% 
-  group_by(`Sample Name`) %>% select(Cluster) %>% table() %>% data.frame() %>% pivot_wider(names_from = Cluster, values_from = Freq) %>%
-  rowwise() %>% mutate(purity = max(`1`, `2` ,`3`)/sum(`1`,`2`,`3`))
-
-test.summary  <- rbind(cbind(percore, test = FALSE),cbind(percore.other, test = TRUE))
-test.summary.patient <- cbind(test.summary, patient = str_extract(test.summary$Sample.Name, "[0-9]{2}_[0-9]+"))
-
-
-write_csv(percore, "output/clusters_per_core_other.csv")
-write_csv(test.summary.patient, "output/clusters_per_core_test_summary.csv")
-```
-
 
 ### Plot in 2D
 
 ```{r}
 tumor.hc.umap.clus <-
   tumor.hc.umap.sample %>%
-  slice(subsamp) %>%
   mutate(Cluster = as.factor(nmf.clusters))
 
 ggplot(tumor.hc.umap.clus, aes(x = U1, y = U2, color = Cluster)) +
@@ -200,20 +167,20 @@ ggplot(tumor.hc.umap.clus, aes(x = U1, y = U2, color = Cluster)) +
 ### Expression profiles per cluster 
 
 ```{r fig.width=10, fig.height=10}
-tumor.hc.clustered.nmf <- tumor.hc.norm[subsamp, ] %>%
+tumor.hc.clustered.nmf <- tumor.hc.norm %>%
   mutate(Cluster = as.factor(nmf.clusters)) %>%
   pivot_longer(names_to = "Marker", values_to = "Norm.value", -Cluster)
 
 profiles <- seq_len(max(nmf.clusters)) %>% map(~
-ggplot(
-  tumor.hc.clustered.nmf %>% filter(Cluster == .x),
-  aes(x = Marker, y = Norm.value, color = Marker)
-) +
-  stat_summary(fun.data = mean_sdl, show.legend = FALSE) +
-  scale_color_brewer(palette = "Set2") +
-  ylim(-1, 3) +
-  theme_classic() +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1)))
+  ggplot(
+    tumor.hc.clustered.nmf %>% filter(Cluster == .x),
+    aes(x = Marker, y = Norm.value, color = Marker)
+  ) +
+    stat_summary(fun.data = mean_sdl, show.legend = FALSE) +
+    scale_color_brewer(palette = "Set2") +
+    ylim(-1, 3) +
+    theme_classic() +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1)))
 
 plot_grid(plotlist = profiles, labels = paste("Cluster", seq_len(max(nmf.clusters))))
 ```
@@ -222,8 +189,7 @@ plot_grid(plotlist = profiles, labels = paste("Cluster", seq_len(max(nmf.cluster
 
 ```{r}
 tumor.hc.umap.markers <- tumor.hc.norm %>%
-  bind_cols(tumor.hc.umap.sample) %>%
-  slice(subsamp)
+  bind_cols(tumor.hc.umap.sample) # %>%
 
 low <- RColorBrewer::brewer.pal(8, "Set2")[8]
 highs <- RColorBrewer::brewer.pal(8, "Set2")[seq_len(ncol(tumor.hc.norm))]
@@ -245,10 +211,14 @@ plot_grid(plotlist = tumor.hc.umap.markers.plots)
 tumor.hc.umap.cores <- data %>%
   select(`Sample Name`) %>%
   bind_cols(tumor.hc.umap.sample) %>%
-  slice(subsamp) %>%
+  # slice(subsamp) %>%
   mutate(
     c = nmf.clusters,
-    sample = str_extract(`Sample Name`, "[0-9]+_[0-9]+")
+    sample = paste0(
+      str_extract(`Sample Name`, "[0-9]+_[0-9]+"),
+      "_",
+      str_extract(`Sample Name`, "\\[.{1,2}\\,.{1,2}\\,.\\]")
+    )
   )
 
 tumor.hc.umap.cores %>%
@@ -275,7 +245,7 @@ tumor.hc.umap.cores %>%
   walk(\(s){
     output.fig <- paste0("output/cores_3/", s, ".png")
     if (!file.exists(output.fig)) {
-      png(output.fig, width  = 800, height = 800)
+      png(output.fig, width = 800, height = 800)
       (ggplot(
         tumor.hc.umap.cores %>%
           mutate(c = ifelse(sample == s, c, NA), Cluster = as.factor(c)) %>%
@@ -289,7 +259,6 @@ tumor.hc.umap.cores %>%
       dev.off()
     }
   })
-
 ```
 
 Figures with UMAPs for each core can be found in [output](https://github.com/saezlab/MultispectralHCC/tree/master/output).
@@ -299,34 +268,33 @@ Overlay cluster information on available tiffs
 ```{r}
 available.images <- list.files("data/core images/", full.names = TRUE)
 
-spatial <- data %>% 
-  select(`Sample Name`, `Cell X Position`, `Cell Y Position`) %>% 
+spatial <- data %>%
+  select(`Sample Name`, `Cell X Position`, `Cell Y Position`) %>%
   `colnames<-`(c("sample", "X", "Y")) %>%
-  slice(subsamp) %>% 
   mutate(Cluster = as.factor(nmf.clusters))
 
 available.images %>% walk(\(img){
   id <- str_extract(img, "[0-9]{2}_[0-9]+(_[^_\\.]*){4}")
   name <- str_extract(img, "[0-9]{2}_[0-9]+(_[^_\\.]*)*.tif")
-  s <- paste0(id,".im3")
-  if(s %in% spatial$sample){
+  s <- paste0(id, ".im3")
+  if (s %in% spatial$sample) {
     rb <- brick(img)
-    
-    
+
+
     names(rb) <- c("r", "g", "b")
-    
+
     pdf(paste0("output/cores_3/", name, ".pdf"))
-    #the t should be flipped along the y direction to match coordinates in spatial
-    (ggRGB(flip(rb, "y"), maxpixels = 1e8) + 
-      geom_point(data = spatial %>% filter(sample == s), 
-                 aes(x = X, y = Y, color = Cluster), pch = 21) +
+    # the t should be flipped along the y direction to match coordinates in spatial
+    (ggRGB(flip(rb, "y"), maxpixels = 1e8) +
+      geom_point(
+        data = spatial %>% filter(sample == s),
+        aes(x = X, y = Y, color = Cluster), pch = 21
+      ) +
       theme_map()) %>%
       print()
     dev.off()
   }
-  
 })
-
 ```
 
 
@@ -334,45 +302,51 @@ available.images %>% walk(\(img){
 
 Calculate the similarity of samples using the expression and the silhouette scores based on the assigned clusters.
 ```{r}
-cache <- "output/silhouette.nmf.rds"
+cache <- "output/silhouette.2cores.nmf.rds"
 
 if (file.exists(cache)) {
   silhouette.nmf <- read_rds(cache)
 } else {
   # manual calculation of silhouette scores with lazily evaluated distance matrix
-  subsamp.dists <- distances(tumor.hc.norm[subsamp, ])
-  
+  subsamp.dists <- distances(tumor.hc.norm)
+
   plan(multisession, workers = 5)
-  
+
   silhouette.nmf <- nmf.clusters %>% future_imap_dbl(\(c, i){
-    dists <- tibble(d = subsamp.dists[i,][-i], cluster = nmf.clusters[-i]) %>% 
-      group_by(cluster) %>% 
-      summarize(m = mean(d)) 
-    
-    a <- dists %>% filter(cluster == c) %>% pluck("m", 1)
-    b <- dists %>% filter(cluster != c) %>% pull(m) %>% min()
-    
-    (b - a)/max(a, b)
+    dists <- tibble(d = subsamp.dists[i, ][-i], cluster = nmf.clusters[-i]) %>%
+      group_by(cluster) %>%
+      summarize(m = mean(d))
+
+    a <- dists %>%
+      filter(cluster == c) %>%
+      pluck("m", 1)
+    b <- dists %>%
+      filter(cluster != c) %>%
+      pull(m) %>%
+      min()
+
+    (b - a) / max(a, b)
   }, .options = furrr::furrr_options(packages = "distances"), .progress = TRUE)
-  
+
   write_rds(silhouette.nmf, cache, "gz")
 }
 
-tibble(c = nmf.clusters, s = silhouette.nmf) %>% 
-  group_by(c) %>% 
+tibble(c = nmf.clusters, s = silhouette.nmf) %>%
+  group_by(c) %>%
   summarize(m = mean(s))
 
-tibble(c = nmf.clusters, s = silhouette.nmf) %>% 
-  group_by(c) %>% 
-  summarize(zeros = sum(s<0)) %>% write_csv("output/silhouette_less_zero.csv")
+tibble(c = nmf.clusters, s = silhouette.nmf) %>%
+  group_by(c) %>%
+  summarize(zeros = sum(s < 0)) %>%
+  write_csv("output/silhouette_less_zero.csv")
 
 print(paste0("Average silhouette score: ", mean(silhouette.nmf)))
 ```
 
-Select only the samples with positive silhouette scores as "core samples"
+Select only the samples with positive silhouette scores as "core samples". This step applies only to the differential expression analysis that follows!
 ```{r}
 core.samples <- which(silhouette.nmf > 0)
-tumor.hc.core.samples <- tumor.hc.norm[subsamp, ] %>%
+tumor.hc.core.samples <- tumor.hc.norm %>%
   add_column(Cluster = nmf.clusters) %>%
   slice(core.samples)
 ```
