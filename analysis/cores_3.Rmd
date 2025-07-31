@@ -343,13 +343,46 @@ tibble(c = nmf.clusters, s = silhouette.nmf) %>%
 print(paste0("Average silhouette score: ", mean(silhouette.nmf)))
 ```
 
-Select only the samples with positive silhouette scores as "core samples". This step applies only to the differential expression analysis that follows!
+Calculate number of negative scores per sample
+
+```{r}
+sample_negatives <- data %>%
+  select(`Sample Name`) %>%
+  mutate(Cluster = nmf.clusters, Silhouette = silhouette.nmf) %>%
+  group_by(`Sample Name`, Cluster) %>% summarise(negative = sum(Silhouette < 0)) %>%
+  pivot_wider(names_from = Cluster, values_from = negative)
+
+write_csv(sample_negatives, "output/negatives_per_core.csv")
+```
+
+
+
+
+Select only the samples with positive silhouette scores as "core samples". The results of this step apply only to the differential expression analysis that follows!
 ```{r}
 core.samples <- which(silhouette.nmf > 0)
+
+percore.positive <- data %>%
+  select(`Sample Name`) %>%
+  mutate(Cluster = nmf.clusters) %>%
+  slice(core.samples) %>%
+  group_by(`Sample Name`) %>%
+  select(Cluster) %>%
+  table() %>%
+  data.frame() %>%
+  pivot_wider(names_from = Cluster, values_from = Freq) %>%
+  rowwise() %>%
+  mutate(purity = max(`1`, `2`, `3`) / sum(`1`, `2`, `3`))
+
+write_tsv(percore.positive, "output/positive_clusters_per_core.csv")
+
+
 tumor.hc.core.samples <- tumor.hc.norm %>%
   add_column(Cluster = nmf.clusters) %>%
   slice(core.samples)
 ```
+
+
 
 Calculate difference in means (mean(cluster) - mean(other)), one-vs-all t-test per marker and correct for FDR. Filter q <= 0.05. Plot the differences.
 
