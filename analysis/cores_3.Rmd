@@ -162,6 +162,8 @@ tumor.hc.umap.clus <-
 ggplot(tumor.hc.umap.clus, aes(x = U1, y = U2, color = Cluster)) +
   geom_point(size = 0.5) +
   theme_classic()
+
+ggsave("umap_clusters.pdf", width = 5, height = 5)
 ```
 
 ### Expression profiles per cluster 
@@ -183,6 +185,7 @@ profiles <- seq_len(max(nmf.clusters)) %>% map(~
     theme(axis.text.x = element_text(angle = 90, hjust = 1)))
 
 plot_grid(plotlist = profiles, labels = paste("Cluster", seq_len(max(nmf.clusters))))
+ggsave("clusters_profiles.pdf", width = 8, height = 8)
 ```
 
 ### Marker abundance plots
@@ -203,6 +206,7 @@ tumor.hc.umap.markers.plots <- colnames(tumor.hc.norm) %>%
   })
 
 plot_grid(plotlist = tumor.hc.umap.markers.plots)
+ggsave("marker_abundance.pdf", width = 8, height = 8)
 ```
 
 ### Core plots
@@ -236,7 +240,7 @@ tumor.hc.umap.cores %>%
   pheatmap(
     scale = "none",
     color = colorRampPalette(brewer.pal(n = 7, name = "YlOrBr"))(100),
-    fontsize = 6
+    fontsize = 6, cluster_cols = FALSE
   )
 
 tumor.hc.umap.cores %>%
@@ -380,6 +384,38 @@ write_tsv(percore.positive, "output/positive_clusters_per_core.csv")
 tumor.hc.core.samples <- tumor.hc.norm %>%
   add_column(Cluster = nmf.clusters) %>%
   slice(core.samples)
+
+
+
+tumor.hc.core <- data %>%
+  select(`Sample Name`) %>%
+  mutate(
+    c = nmf.clusters,
+    sample = paste0(
+      str_extract(`Sample Name`, "[0-9]+_[0-9]+"),
+      "_",
+      str_extract(`Sample Name`, "\\[.{1,2}\\,.{1,2}\\,.\\]")
+    )
+  ) %>% slice(core.samples)
+
+tumor.hc.core %>%
+  group_by(sample) %>%
+  summarize(
+    Fraction = table(c) / n(),
+    Cluster = names(Fraction),
+    .groups = "drop"
+  ) %>%
+  mutate(Fraction = as.numeric(Fraction)) %>%
+  pivot_wider(names_from = "Cluster", values_from = "Fraction") %>%
+  column_to_rownames("sample") %>%
+  mutate(across(everything(), ~ replace_na(., 0))) %>%
+  as.matrix() %>%
+  pheatmap(
+    scale = "none",
+    color = colorRampPalette(brewer.pal(n = 7, name = "YlOrBr"))(100),
+    fontsize = 6, cluster_cols = FALSE
+  )
+
 ```
 
 
@@ -407,5 +443,6 @@ de.table %>%
   pivot_wider(names_from = "Cluster", values_from = "Difference", -c(p, q)) %>%
   column_to_rownames("Marker") %>%
   as.matrix() %>%
-  pheatmap(scale = "none")
+  pheatmap(scale = "none", breaks = seq(-1, 1.5, length.out=100))
+
 ```
