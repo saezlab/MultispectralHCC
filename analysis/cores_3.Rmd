@@ -155,6 +155,8 @@ write_csv(percore, "output/clusters_per_core.csv")
 ### Plot in 2D
 
 ```{r}
+
+
 tumor.hc.umap.clus <-
   tumor.hc.umap.sample %>%
   mutate(Cluster = as.factor(nmf.clusters))
@@ -192,7 +194,7 @@ ggsave("clusters_profiles.pdf", width = 8, height = 8)
 
 ```{r}
 tumor.hc.umap.markers <- tumor.hc.norm %>%
-  bind_cols(tumor.hc.umap.sample) # %>%
+  bind_cols(tumor.hc.umap.sample)
 
 low <- RColorBrewer::brewer.pal(8, "Set2")[8]
 highs <- RColorBrewer::brewer.pal(8, "Set2")[seq_len(ncol(tumor.hc.norm))]
@@ -206,7 +208,7 @@ tumor.hc.umap.markers.plots <- colnames(tumor.hc.norm) %>%
   })
 
 plot_grid(plotlist = tumor.hc.umap.markers.plots)
-ggsave("marker_abundance.pdf", width = 8, height = 8)
+ggsave("marker_abundance.jpg", width = 8, height = 8)
 ```
 
 ### Core plots
@@ -409,11 +411,13 @@ tumor.hc.core %>%
   pivot_wider(names_from = "Cluster", values_from = "Fraction") %>%
   column_to_rownames("sample") %>%
   mutate(across(everything(), ~ replace_na(., 0))) %>%
+  rename("Cluster C" = "1", "Cluster B" = "2", "Cluster A" = "3") %>%
+  relocate("Cluster C", .after = "Cluster A") %>% relocate("Cluster A", .before = "Cluster B") %>%
   as.matrix() %>%
   pheatmap(
     scale = "none",
     color = colorRampPalette(brewer.pal(n = 7, name = "YlOrBr"))(100),
-    fontsize = 6, cluster_cols = FALSE
+    fontsize = 6, cluster_cols = FALSE, show_rownames = F
   )
 
 ```
@@ -442,7 +446,10 @@ de.table %>%
 de.table %>%
   pivot_wider(names_from = "Cluster", values_from = "Difference", -c(p, q)) %>%
   column_to_rownames("Marker") %>%
+  `rownames<-`(c("GS", "EpCam", "CRP", "p-S6")) %>%
+  rename("Cluster C" = "1", "Cluster B" = "2", "Cluster A" = "3") %>%
+  relocate("Cluster C", .after = "Cluster B") %>% relocate("Cluster A", .before = "Cluster B") %>%
   as.matrix() %>%
-  pheatmap(scale = "none", breaks = seq(-1, 1.5, length.out=100))
+  pheatmap(scale = "none", breaks = seq(-1, 1.5, length.out=100), cluster_cols = FALSE)
 
 ```
